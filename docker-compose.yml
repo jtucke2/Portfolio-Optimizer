@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  po-task-queue:
+    container_name: po-task-queue
+    image: rabbitmq:3.8-rc-management-alpine
+    ports:
+     - "15672:15672"
+     - "5672:5672"
+    environment:
+     - RABBITMQ_DEFAULT_USER=admin
+     - RABBITMQ_DEFAULT_PASS=password
+  po-database:
+    container_name: po-database
+    image: mongo:latest
+    ports:
+     - "27017:27017"
+  po-api:
+    build: ./backend
+    container_name: po-api
+    entrypoint:
+     - python
+     - server/app.py
+    ports:
+     - "5000:5000"
+  po-celery:
+    build: ./backend
+    container_name: po-celery
+    entrypoint:
+     - celery
+     - -A
+     - server.app
+     - worker
+     - --loglevel=info
