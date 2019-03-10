@@ -1,0 +1,5 @@
+.vscode
+venv*
+*.code-workspace
+.idea
+db/*
