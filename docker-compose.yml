@@ -14,12 +14,15 @@ services:
     image: mongo:latest
     ports:
      - "27017:27017"
+    #  Note: commented out for windows only
+    # volumes:
+    #  - ./db:/data/db
   po-api:
     build: ./backend
     container_name: po-api
     entrypoint:
      - python
-     - server/app.py
+     - start_server.py
     ports:
      - "5000:5000"
   po-celery:
@@ -28,6 +31,7 @@ services:
     entrypoint:
      - celery
      - -A
-     - server.app
+     - server     
      - worker
+     - --app=server.app:celery
      - --loglevel=info

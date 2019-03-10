@@ -11,6 +11,7 @@ celery = {extras = ["mongodb"],version = "*"}
 pymongo = "*"
 flask-restplus = "*"
 yahoofinancials = "*"
+numpy = "*"
 
 [requires]
 python_version = "3.7"

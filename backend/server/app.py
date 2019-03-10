@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restplus import Resource, Api
-from make_celery import make_celery
+from server.make_celery import make_celery
 
 app = Flask(__name__)
 app.config.update(
@@ -23,5 +23,5 @@ class AssetPrices(Resource):
         return {'hello': 'world'}
 
 
-if __name__ == '__main__':
-    app.run(debug=True, port="5000", host="0.0.0.0")
+# if __name__ == '__main__':
+#     app.run(debug=True, port="5000", host="0.0.0.0")

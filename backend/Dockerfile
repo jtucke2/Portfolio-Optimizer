@@ -1,4 +1,4 @@
-FROM python:3.7-alpine3.7
+FROM python:3.7
 
 ENV WORKING_DIRECTORY /opt/portfolio-optimizer
 RUN mkdir -p $WORKING_DIRECTORY
