@@ -12,6 +12,8 @@ pymongo = "*"
 flask-restplus = "*"
 yahoofinancials = "*"
 numpy = "*"
+mypy-extensions = "*"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.7"

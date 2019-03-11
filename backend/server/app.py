@@ -1,14 +1,16 @@
 from flask import Flask
-from flask_restplus import Resource, Api
+from flask_restplus import Resource
+from server.api import api
 from server.make_celery import make_celery
+from server.config import config
 
 app = Flask(__name__)
 app.config.update(
-    CELERY_RESULT_BACKEND='mongodb://po-database:27017/tasks',
-    CELERY_BROKER_URL='pyamqp://admin:password@po-task-queue//'
+    CELERY_RESULT_BACKEND=f'mongodb://{config["DB_HOST"]}:{config["DB_PORT"]}/tasks',
+    CELERY_BROKER_URL=f'pyamqp://{config["BROKER_USER"]}:{config["BROKER_PASSWORD"]}@{config["BROKER_HOST"]}//'
 )
 celery = make_celery(app)
-api = Api(app, doc="/swagger")
+api.init_app(app)
 
 
 @celery.task(name="tasks.add_together")
@@ -21,7 +23,3 @@ class AssetPrices(Resource):
     def get(self):
         add_together.delay(234, 234243)
         return {'hello': 'world'}
-
-
-# if __name__ == '__main__':
-#     app.run(debug=True, port="5000", host="0.0.0.0")
