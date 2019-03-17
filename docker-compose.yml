@@ -18,9 +18,8 @@ services:
      - .env
     ports:
      - "27017:27017"
-    #  Note: commented out for windows only
-    # volumes:
-    #  - ./db:/data/db
+    volumes:
+     - mongo_data_vol:/data/db
   po-api:
     build: ./backend
     container_name: po-api
@@ -43,3 +42,5 @@ services:
      - worker
      - --app=server.app:celery
      - --loglevel=info
+volumes:
+  mongo_data_vol:
