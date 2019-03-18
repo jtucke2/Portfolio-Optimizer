@@ -18,6 +18,7 @@ numpy = "*"
 mypy-extensions = "*"
 python-dateutil = "*"
 pytest = "*"
+scipy = "*"
 
 [requires]
 python_version = "3.7"
