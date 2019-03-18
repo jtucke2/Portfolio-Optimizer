@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 deepdiff = "*"
+pycodestyle = "*"
 
 [packages]
 flask = "*"
@@ -22,4 +23,6 @@ pytest = "*"
 python_version = "3.7"
 
 [scripts]
+test = "pytest"
 start_api_dev = "python server/app.py"
+codestyle = "pycodestyle"

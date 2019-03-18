@@ -17,12 +17,12 @@ api = Namespace('prices', description='Handles retrieval of asset prices')
 
 asset_returns = api.model('Asset Returns', {
     'prices': fields.List(
-            fields.Nested(
-                api.model('price', {
-                    'date': fields.String(required=True),
-                    'close': fields.String(required=True)
-                })
+        fields.Nested(
+            api.model(
+                'price',
+                {'date': fields.String(required=True), 'close': fields.String(required=True)}
             )
+        )
     ),
     'ticker': fields.String(required=True)
 })
@@ -54,10 +54,11 @@ class Prices(Resource):
             yf = YahooFinancials(ticker)
             prices = yf.get_historical_price_data(start_date, end_date, args['interval'])
             print(prices)
-            ret_prices = [{'date': datetime.utcfromtimestamp(price['date']).strftime('%Y-%m-%d'), 'close': price['close']}
-                       for price in prices[ticker]['prices']]
+            ret_prices = [
+                {'date': datetime.utcfromtimestamp(price['date']).strftime('%Y-%m-%d'),
+                 'close': price['close']} for price in prices[ticker]['prices']]
             return {'prices': ret_prices, 'ticker': ticker}
-        except:
+        except Exception as e:
             pass
         return {
             'id': 3,
