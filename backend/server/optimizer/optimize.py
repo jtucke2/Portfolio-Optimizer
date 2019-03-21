@@ -1,10 +1,32 @@
 from typing import List
 from math import sqrt
 import numpy as np
-from scipy.optimize import minimize
+from scipy.optimize import minimize, OptimizeResult
 from functools import reduce
+from dataclasses import dataclass
+from json import loads as json_loads
 
 from server.optimizer.prep_data import AssetMatrices
+
+
+@dataclass
+class OptimizeOutcome:
+    goal: str
+    shorting_ok: bool
+    weights: np.ndarray
+    returns: np.ndarray
+    std_dev: float
+    sharpe_ratio: float
+    optimize_result: OptimizeResult
+
+    def as_json(self):
+        return json_loads({
+            'goal': self.goal,
+            'weights': self.weights,
+            'returns': self.returns,
+            'std_dev': self.std_dev,
+            'sharpe_ratio': self.sharpe_ratio
+        })
 
 
 class Optimize(object):
@@ -41,26 +63,33 @@ class Optimize(object):
         outer_matrix = np.matmul(inner_matrix, weights_vec)
         return sqrt(outer_matrix)
 
-    def generate_max_sharpe_ratio(self, shorting_allowed=False):
+    def generate_max_sharpe_ratio(self, shorting_allowed=False) -> OptimizeOutcome:
         def max_sharpe_fn(weights_vec: np.ndarray):
             ret = self.calculate_returns(weights_vec, self.asset_matrices.avg_returns_vec)
-            std_dev = self.calculate_std_dev(weights_vec, self.asset_matrices.x_transpose_x_matrix)
+            std_dev = self.calculate_std_dev(weights_vec, self.asset_matrices.variance_covariance_matrix)
             return (ret / std_dev) * -1
 
         bnds = self.short_ok_bnds if shorting_allowed else self.long_only_bnds
 
-        return minimize(
+        optimize_result: OptimizeResult = minimize(
             max_sharpe_fn,
             self.equal_weights,
             method='SLSQP',
             bounds=bnds,
-            constraints=self.weights_equal_1_constraint
+            constraints=[self.weights_equal_1_constraint]
         )
 
-    def optimize_all(self):
-        return {
-            'max_sharpe': self.generate_max_sharpe_ratio()
-        }
+        returns = self.calculate_returns(optimize_result.x, self.asset_matrices.avg_returns_vec)
+        std_dev = self.calculate_std_dev(optimize_result.x, self.asset_matrices.variance_covariance_matrix)
+        sharpe_ratio = returns / std_dev
+
+        return OptimizeOutcome('max-sharpe', shorting_allowed, optimize_result.x, returns, std_dev, sharpe_ratio, optimize_result)
+
+    def optimize_all(self) -> List[OptimizeOutcome]:
+        return [
+            self.generate_max_sharpe_ratio(),
+            self.generate_max_sharpe_ratio(True)
+        ]
 
 
 

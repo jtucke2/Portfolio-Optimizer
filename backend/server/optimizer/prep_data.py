@@ -71,7 +71,7 @@ class AssetMatrices(object):
 def transform_yahoo_finance_dict(historical_prices) -> Dict[str, List[float]]:
     ret_val = {}
     for ticker, data in historical_prices.items():
-        ret_val[ticker] = [price['close'] for price in data['prices']]
+        ret_val[ticker] = [price['close'] for price in data['prices']][::-1]
     return ret_val
 
 
