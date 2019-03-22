@@ -4,12 +4,6 @@ from yahoofinancials import YahooFinancials
 import numpy as np
 
 
-def get_data(tickers, start_date, end_date, interval='weekly'):
-    yahoo_financials = YahooFinancials(tickers)
-    historical_stock_prices = yahoo_financials.get_historical_price_data(start_date, end_date, interval)
-    return historical_stock_prices
-
-
 class AssetData(object):
     """Based on the asset ticker and price data, generate the following:
 
@@ -79,11 +73,21 @@ class AssetMatrices(object):
         return np.divide(self.variance_covariance_matrix, self.std_dev_matrix)
 
 
-def transform_yahoo_finance_dict(historical_prices) -> Dict[str, List[float]]:
+def get_data(tickers, start_date, end_date, interval='weekly'):
+    yahoo_financials = YahooFinancials(tickers)
+    historical_stock_prices = yahoo_financials.get_historical_price_data(start_date, end_date, interval)
+    return historical_stock_prices
+
+
+def transform_yahoo_finance_dict(historical_prices) -> [Dict[str, List[float]], List[str]]:
     ret_val = {}
+    dates = None
     for ticker, data in historical_prices.items():
         ret_val[ticker] = [price['close'] for price in data['prices']][::-1]
-    return ret_val
+        temp_dates = [price['formatted_date'] for price in data['prices']][::-1]
+        if not dates:
+            dates = temp_dates
+    return ret_val, dates
 
 
 def generate_asset_data_array(price_dict: Dict[str, List[float]]) -> List[AssetData]:

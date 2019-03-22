@@ -29,6 +29,7 @@ class OptimizeOutcome:
     def as_dict(self):
         return {
             'goal': self.goal.value,
+            'shorting_ok': self.shorting_ok,
             'weights': self.weights.tolist() if type(self.weights) == np.ndarray else self.weights,
             'returns': self.returns.tolist()[0] if type(self.returns) == np.ndarray else self.returns,
             'std_dev': self.std_dev,
