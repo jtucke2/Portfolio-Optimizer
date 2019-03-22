@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
 
 from flask_restplus import Namespace, Resource, fields
-from flask import request
+from flask import request, jsonify
 
 from server.app import task_optimize
 from .rest_models import *
+from server.db import portfolios
 
 api = Namespace('optimize', description='Handles portfolio optimization')
 
@@ -34,3 +35,16 @@ class SubmitOptimizeJob(Resource):
         task_id = task_optimize.delay(args['tickers'], args['start_date'], args['end_date'], args['interval'])
         return {'task_id': task_id}
 
+
+@api.route('/check-job/<id>')
+@api.doc(params={'id': 'id of job'})
+class CheckJob(Resource):
+    def get(self, id):
+        return jsonify(portfolios.get_by_task_id(id))
+
+
+@api.route('/portfolio/<id>')
+@api.doc(params={'id': 'Database ID of portfolio'})
+class Portfolio(Resource):
+    def get(self, id):
+        return jsonify(portfolios.get_portfolio(id))

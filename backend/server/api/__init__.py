@@ -3,11 +3,21 @@ from flask_restplus import Api
 from server.api.prices import api as prices_ns
 from server.api.optimize import api as optimize_ns
 
+authorizations = {
+    'apikey': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'authorization'
+    }
+}
+
 api = Api(
     title='Portfolio Optimizer',
     version='1.0',
     description='Optimize weights of financial assets inside of a portfolio',
-    doc="/swagger"
+    doc="/swagger",
+    authorizations=authorizations,
+    security='apikey'
 )
 
 api.add_namespace(prices_ns)
