@@ -19,6 +19,7 @@ mypy-extensions = "*"
 python-dateutil = "*"
 pytest = "*"
 scipy = "*"
+flask-jwt-extended = "*"
 
 [requires]
 python_version = "3.7"

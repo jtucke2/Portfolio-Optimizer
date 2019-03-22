@@ -1,7 +1,6 @@
 from flask import Flask
-from flask_restplus import Resource
+from flask_jwt_extended import JWTManager
 
-# from server.api import api
 from server.make_celery import make_celery
 from server.config import config
 from server.tasks.optimize import do_task_optimize
@@ -9,10 +8,12 @@ from server.tasks.optimize import do_task_optimize
 app = Flask(__name__)
 app.config.update(
     CELERY_RESULT_BACKEND=f'mongodb://{config["DB_HOST"]}:{config["DB_PORT"]}/tasks',
-    CELERY_BROKER_URL=f'pyamqp://{config["BROKER_USER"]}:{config["BROKER_PASSWORD"]}@{config["BROKER_HOST"]}//'
+    CELERY_BROKER_URL=f'pyamqp://{config["BROKER_USER"]}:{config["BROKER_PASSWORD"]}@{config["BROKER_HOST"]}//',
+    JWT_SECRET_KEY='super-secret-oh-change-this-plz',  # TODO
+    JWT_HEADER_TYPE=''
 )
 celery = make_celery(app)
-# api.init_app(app)
+jwt = JWTManager(app)
 
 
 @celery.task(name='tasks.task_optimize')

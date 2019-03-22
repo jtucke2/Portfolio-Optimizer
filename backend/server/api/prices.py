@@ -4,8 +4,8 @@ from dateutil import parser as dateparser
 from flask_restplus import Namespace, Resource, fields
 from flask import request
 from yahoofinancials import YahooFinancials
+from flask_jwt_extended import jwt_required
 
-from server.app import task_optimize
 from .rest_models import *
 
 
@@ -40,6 +40,7 @@ asset_price_request = api.model('Asset Price Request', {
 class Prices(Resource):
     @api.expect(asset_price_request, validate=True)
     @api.marshal_with(asset_returns)
+    @jwt_required
     def post(self) -> asset_returns:
         args = request.json
         print('Processing price request for', args)

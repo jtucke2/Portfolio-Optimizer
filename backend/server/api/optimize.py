@@ -33,7 +33,7 @@ class SubmitOptimizeJob(Resource):
         args = request.json
         print('Processing optimization job submission for', args)
         task_id = task_optimize.delay(args['tickers'], args['start_date'], args['end_date'], args['interval'])
-        return {'task_id': task_id}
+        return jsonify({'task_id': task_id})
 
 
 @api.route('/check-job/<id>')
