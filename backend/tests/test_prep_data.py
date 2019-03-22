@@ -8,12 +8,6 @@ from server.optimizer import prep_data
 sample_tickers = ['AAPL', 'XOM', 'WMT', 'BAC']
 
 
-def get_data(tickers, start_date, end_date, interval='weekly'):
-    yahoo_financials = YahooFinancials(tickers)
-    historical_stock_prices = yahoo_financials.get_historical_price_data(start_date, end_date, interval)
-    return historical_stock_prices
-
-
 # def test_transform_yahoo_finance_dict():
 #     data = get_data(sample_tickers, '2018-12-01', '2019-01-01')
 #     transformed_data = prep_data.transform_yahoo_finance_dict(data)
@@ -25,26 +19,26 @@ def get_data(tickers, start_date, end_date, interval='weekly'):
 #     }
 #     diff = DeepDiff(transformed_data, expected, ignore_order=True)
 #     assert diff == {}
-#
-#
-# def test_asset_data():
-#     data = get_data('AAPL', '2012-01-01', '2019-01-01')
-#     transformed_data = prep_data.transform_yahoo_finance_dict(data)
-#     obj = prep_data.AssetData('AAPL', transformed_data['AAPL'])
-#     assert len(obj.price_data) - 1 == len(obj.returns)
-#     assert obj.avg_return == -0.0026326179612188244
-#     assert obj.std_dev == 0.03652151061032085
-#
-#
-# def test_generate_asset_data_array():
-#     data = get_data(sample_tickers, '2012-01-01', '2019-01-01')
-#     transformed_data = prep_data.transform_yahoo_finance_dict(data)
-#     asset_data = prep_data.generate_asset_data_array(transformed_data)
-#     assert len(asset_data) == len(sample_tickers)
+
+
+def test_asset_data():
+    data = prep_data.get_data('AAPL', '2012-01-01', '2019-01-01')
+    transformed_data = prep_data.transform_yahoo_finance_dict(data)
+    obj = prep_data.AssetData('AAPL', transformed_data['AAPL'])
+    assert len(obj.price_data) - 1 == len(obj.returns)
+    assert obj.avg_return == -0.0026326179612188244
+    assert obj.std_dev == 0.03652151061032085
+
+
+def test_generate_asset_data_array():
+    data = prep_data.get_data(sample_tickers, '2012-01-01', '2019-01-01')
+    transformed_data = prep_data.transform_yahoo_finance_dict(data)
+    asset_data = prep_data.generate_asset_data_array(transformed_data)
+    assert len(asset_data) == len(sample_tickers)
 
 
 def test_matrix_data():
-    data = get_data(sample_tickers, '2012-01-01', '2019-01-01')
+    data = prep_data.get_data(sample_tickers, '2012-01-01', '2019-01-01')
     transformed_data = prep_data.transform_yahoo_finance_dict(data)
     asset_data = prep_data.generate_asset_data_array(transformed_data)
     matrices = prep_data.AssetMatrices(asset_data)

@@ -1,16 +1,12 @@
 from datetime import datetime, timedelta
-import enum
-
 from dateutil import parser as dateparser
+
 from flask_restplus import Namespace, Resource, fields
 from flask import request
 from yahoofinancials import YahooFinancials
 
-
-class PriceIntervalEnum(enum.Enum):
-    daily = 'daily'
-    weekly = 'weekly'
-    monthly = 'monthly'
+from server.app import task_optimize
+from .rest_models import *
 
 
 api = Namespace('prices', description='Handles retrieval of asset prices')
@@ -46,21 +42,24 @@ class Prices(Resource):
     @api.marshal_with(asset_returns)
     def post(self) -> asset_returns:
         args = request.json
-        print(args)
+        print('Processing price request for', args)
         try:
             ticker = args['ticker'].upper()
             start_date = dateparser.parse(args['start_date']).strftime('%Y-%m-%d')
             end_date = dateparser.parse(args['end_date']).strftime('%Y-%m-%d')
             yf = YahooFinancials(ticker)
             prices = yf.get_historical_price_data(start_date, end_date, args['interval'])
-            print(prices)
             ret_prices = [
                 {'date': datetime.utcfromtimestamp(price['date']).strftime('%Y-%m-%d'),
                  'close': price['close']} for price in prices[ticker]['prices']]
             return {'prices': ret_prices, 'ticker': ticker}
         except Exception as e:
             pass
+        # Todo - error message
         return {
             'id': 3,
             'name': 'bob'
         }
+
+
+

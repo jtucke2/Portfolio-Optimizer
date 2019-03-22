@@ -26,14 +26,14 @@ class OptimizeOutcome:
     sharpe_ratio: float
     optimize_result: OptimizeResult
 
-    def as_json(self):
-        return json_loads({
-            'goal': self.goal,
+    def as_dict(self):
+        return {
+            'goal': self.goal.value,
             'weights': self.weights.tolist() if type(self.weights) == np.ndarray else self.weights,
             'returns': self.returns.tolist()[0] if type(self.returns) == np.ndarray else self.returns,
             'std_dev': self.std_dev,
             'sharpe_ratio': self.sharpe_ratio
-        })
+        }
 
 
 class Optimize(object):

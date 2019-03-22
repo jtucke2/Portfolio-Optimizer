@@ -1,8 +1,10 @@
 from flask import Flask
 from flask_restplus import Resource
-from server.api import api
+
+# from server.api import api
 from server.make_celery import make_celery
 from server.config import config
+from server.tasks.optimize import do_task_optimize
 
 app = Flask(__name__)
 app.config.update(
@@ -10,16 +12,9 @@ app.config.update(
     CELERY_BROKER_URL=f'pyamqp://{config["BROKER_USER"]}:{config["BROKER_PASSWORD"]}@{config["BROKER_HOST"]}//'
 )
 celery = make_celery(app)
-api.init_app(app)
+# api.init_app(app)
 
 
-@celery.task(name="tasks.add_together")
-def add_together(a, b):
-    return a + b
-
-
-@api.route('/asset-prices')
-class AssetPrices(Resource):
-    def get(self):
-        add_together.delay(234, 234243)
-        return {'hello': 'world'}
+@celery.task(name='tasks.task_optimize')
+def task_optimize(tickers, start_date, end_date, interval='weekly'):
+    return do_task_optimize(tickers, start_date, end_date, interval)
