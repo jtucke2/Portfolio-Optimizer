@@ -1,8 +1,9 @@
 from enum import Enum
-from typing import Optional
+from typing import Optional, List
 from bcrypt import hashpw, checkpw, gensalt
 
 from server.db import user as user_dao
+
 
 class UserRoles(Enum):
     STANDARD_USER = 'STANDARD_USER'
@@ -27,15 +28,18 @@ def generate_user(username: str, password_str: str, first_name: str, last_name: 
             'first_name': first_name,
             'last_name': last_name,
             'email': email,
-            'role': role.value
+            'role': role.value,
+            'approved': False
         },
         'pw_hash': hashed
     }
     try:
         user_id = user_dao.insert_user(doc)
+        user = doc['data']
+        user['user_id'] = user_id
         return {
             'success': True,
-            'user_id': user_id
+            'user': user
         }
     except Exception as e:
         return {
@@ -50,3 +54,16 @@ def login(username: str, password_str: str) -> Optional[dict]:
     else:
         return None
 
+
+def get_unapproved_users() -> List[dict]:
+    users = []
+    temp = user_dao.find_users({'data.approved': False})
+    for item in temp:
+        user = item['data']
+        user['user_id'] = str(item['_id'])
+        users.append(user)
+    return users
+
+
+def change_user_approval(user_id, approved: bool = True) -> dict:
+    return user_dao.update_user(user_id, {'data.approved': approved})

@@ -3,6 +3,7 @@ from flask_restplus import Api
 from server.api.prices import api as prices_ns
 from server.api.optimize import api as optimize_ns
 from server.api.user import api as user_ns
+from server.api.admin import api as admin_ns
 
 authorizations = {
     'apikey': {
@@ -24,3 +25,4 @@ api = Api(
 api.add_namespace(prices_ns)
 api.add_namespace(optimize_ns)
 api.add_namespace(user_ns)
+api.add_namespace(admin_ns)
