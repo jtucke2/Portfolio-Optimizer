@@ -20,6 +20,7 @@ python-dateutil = "*"
 pytest = "*"
 scipy = "*"
 flask-jwt-extended = "*"
+bcrypt = "*"
 
 [requires]
 python_version = "3.7"

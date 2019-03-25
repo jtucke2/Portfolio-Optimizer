@@ -8,6 +8,7 @@ client = MongoClient(conn_string)
 # Portfolio-optimizer defined db/collections
 po_db = client.po
 portfolios_col = po_db.portfolios
+user_col = po_db.user
 
 # Celery defined db/collections
 tasks_db = client.tasks
