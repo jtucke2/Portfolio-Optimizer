@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from flask_restplus import Namespace, Resource, fields
 from flask import request
 from flask_jwt_extended import create_access_token
+from json import dumps as json_dumps
 
 from server.shared import auth
 
@@ -47,7 +48,8 @@ class SubmitOptimizeJob(Resource):
             return {'message': 'You are pending approval by an administrator'}, 401
         elif user and user.get('data') and user.get('data').get('approved'):
             user_id = str(user['_id'])
-            access_token = create_access_token(identity=user_id)
+            identity = json_dumps({'user_id': user_id, 'role': user.get('data').get('role')})
+            access_token = create_access_token(identity=identity)
             user_data = user.get('data')
             user_data['user_id'] = user_id
             return {

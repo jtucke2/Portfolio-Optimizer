@@ -1,3 +1,4 @@
+from json import loads as json_loads
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
@@ -14,6 +15,11 @@ app.config.update(
 )
 celery = make_celery(app)
 jwt = JWTManager(app)
+
+
+@jwt.user_loader_callback_loader
+def user_loader_callback(identity):
+    return json_loads(identity)
 
 
 @celery.task(name='tasks.task_optimize')
