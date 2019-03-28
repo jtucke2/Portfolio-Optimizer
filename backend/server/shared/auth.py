@@ -18,13 +18,12 @@ def check_pw(password_str: str, hashed: bytes) -> bool:
     return checkpw(str.encode(password_str), hashed)
 
 
-def generate_user(username: str, password_str: str, first_name: str, last_name: str,
+def generate_user(password_str: str, first_name: str, last_name: str,
                   email: str, role: UserRoles = UserRoles.STANDARD_USER) -> dict:
     # TODO check if name/email is unique + add index
     hashed = str_to_hash(password_str)
     doc = {
         'data': {
-            'username': username,
             'first_name': first_name,
             'last_name': last_name,
             'email': email,
@@ -47,8 +46,8 @@ def generate_user(username: str, password_str: str, first_name: str, last_name: 
         }
 
 
-def login(username: str, password_str: str) -> Optional[dict]:
-    user = user_dao.find_user_by_username(username)
+def login(email: str, password_str: str) -> Optional[dict]:
+    user = user_dao.find_user_by_email(email)
     if user and check_pw(password_str, user['pw_hash']):
         return user
     else:

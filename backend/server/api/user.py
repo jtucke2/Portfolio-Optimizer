@@ -10,7 +10,6 @@ from server.shared import auth
 api = Namespace('user', description='User/account related operations')
 
 user_model = api.model('user', {
-    'username': fields.String(),
     'first_name': fields.String(),
     'last_name': fields.String(),
     'email': fields.String(),
@@ -20,7 +19,7 @@ user_model = api.model('user', {
 })
 
 login_request = api.model('User Login Request', {
-    'username': fields.String(required=True),
+    'email': fields.String(required=True),
     'password': fields.String(required=True)
 })
 
@@ -36,14 +35,14 @@ class SubmitOptimizeJob(Resource):
     @api.expect(login_request, validate=True)
     @api.marshal_with(login_request_return)
     def post(self):
-        username = request.json.get('username', None)
+        email = request.json.get('email', None)
         password = request.json.get('password', None)
-        if not username:
-            return {'message': 'Missing username parameter'}, 400
+        if not email:
+            return {'message': 'Missing email parameter'}, 400
         if not password:
             return {'message': 'Missing password parameter'}, 400
 
-        user = auth.login(username, password)
+        user = auth.login(email, password)
         if user and user.get('data') and not user.get('data').get('approved'):
             return {'message': 'You are pending approval by an administrator'}, 401
         elif user and user.get('data') and user.get('data').get('approved'):
@@ -61,7 +60,6 @@ class SubmitOptimizeJob(Resource):
 
 
 register_request = api.model('register_request', {
-    'username': fields.String(required=True),
     'first_name': fields.String(required=True),
     'last_name': fields.String(required=True),
     'email': fields.String(required=True),
@@ -83,7 +81,7 @@ class Register(Resource):
         args = request.json
         if args.get('password') != args.get('password_confirm'):
             return {'message': 'Password must match password confirmation'}, 400
-        gen_user = auth.generate_user(args['username'], args['password'], args['first_name'], args['last_name'], args['email'])
+        gen_user = auth.generate_user(args['password'], args['first_name'], args['last_name'], args['email'])
         if gen_user.get('success'):
             return {'user': gen_user.get('user')}
         else:

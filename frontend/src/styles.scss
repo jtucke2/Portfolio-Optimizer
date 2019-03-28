@@ -1,0 +1,86 @@
+@import '~@angular/material/theming';
+$custom-typography: mat-typography-config($font-family: 'Rubik, monospace');
+@include mat-core($custom-typography);
+$frontend-primary: mat-palette($mat-cyan, 700);
+$frontend-accent: mat-palette($mat-pink, A200, A100, A400);
+$frontend-warn: mat-palette($mat-deep-orange);
+$frontend-theme: mat-dark-theme($frontend-primary, $frontend-accent, $frontend-warn);
+@include angular-material-theme($frontend-theme);
+
+
+// BS overrides
+
+// TODO delete these if not using reboot
+// $link-hover-decoration: none;
+// a:hover {
+//     color: inherit !important;
+// }
+.text-right {
+  text-align: right !important;
+}
+.text-center {
+  text-align: center !important;
+}
+// TODO update colors to match angular material
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+// @import "~bootstrap/scss/reboot";
+// TODO figure out how to get columns working w/o reboot
+
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/code";
+
+body {
+    margin: 0;
+    font-family: 'Rubik', "Helvetica Neue", sans-serif;
+    background: #303030;
+    color: #fff;
+}
+.mat-body {
+    font-family: 'Rubik', "Helvetica Neue", sans-serif;
+}
+
+.full-width {
+    width: 100%;
+}
+
+// Flex helpers
+.spacer {
+    flex: 1;
+}
+
+@for $i from 0 to 8 {
+  .mt-#{$i * 5} {
+    margin-top: $i * 5px;
+  }
+
+  .mb-#{$i * 5} {
+    margin-bottom: $i * 5px;
+  }
+
+  .mt-#{$i * 3} {
+    margin-top: $i * 3px;
+  }
+
+  .mb-#{$i * 3} {
+    margin-bottom: $i * 3px;
+  }
+
+  .pt-#{$i * 5} {
+    padding-top: $i * 5px !important;
+  }
+
+  .pb-#{$i * 5} {
+    padding-bottom: $i * 5px !important;
+  }
+
+  .pt-#{$i * 3} {
+    padding-top: $i * 3px !important;
+  }
+
+  .pb-#{$i * 3} {
+    padding-bottom: $i * 3px !important;
+  }
+}

@@ -14,8 +14,8 @@ def find_user_by_id(user_id: str) -> Optional[dict]:
     return user
 
 
-def find_user_by_username(username: str) -> Optional[dict]:
-    user = user_col.find_one({'data.username': username})
+def find_user_by_email(email: str) -> Optional[dict]:
+    user = user_col.find_one({'data.email': email})
     return user
 
 
