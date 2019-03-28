@@ -4,10 +4,11 @@ import { MatButtonModule, MatCardModule, MatToolbarModule } from '@angular/mater
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { NavComponent } from './components/nav/nav.component';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
+import { AuthInterceptor } from './services/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { AuthGuard } from './services/auth.guard';
   providers: [
     ApiService,
     AuthService,
-    AuthGuard
+    AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ]
 })
 export class GlobalModule { }

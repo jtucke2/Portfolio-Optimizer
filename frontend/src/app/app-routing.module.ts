@@ -5,6 +5,7 @@ import { LandingPageComponent } from './global/components/landing-page/landing-p
 import { userRoutes } from './user/user.routes';
 import { dashboardRoutes } from './dashboard/dashboard.routes';
 import { AuthGuard } from './global/services/auth.guard';
+import { UserRoles } from './models/user';
 
 const routes: Routes = [
   { path: 'home', component: LandingPageComponent },
@@ -14,6 +15,17 @@ const routes: Routes = [
     children: dashboardRoutes,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'admin',
+    loadChildren: './admin/admin.module#AdminModule',
+    canActivate: [AuthGuard],
+    data: {
+      allowedRoles: [
+        UserRoles.ADMIN
+      ]
+    }
+  },
+
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   // { path: '**', component: NoContentComponent },
 ];
