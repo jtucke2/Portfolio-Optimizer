@@ -1,0 +1,12 @@
+{
+  "/api": {
+    "target": "http://localhost:5005",
+    "secure": false,
+    "logLevel": "debug",
+    "ignorePath": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

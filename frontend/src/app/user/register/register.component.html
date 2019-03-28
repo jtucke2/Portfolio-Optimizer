@@ -2,63 +2,60 @@
   <div class="row">
     <div class="col-md-8 offset-md-2 col-xs-12">
       <br><br>
-      <div class="mt-20 mt-10">
+      <div class="mt-20 mb-10">
         <h3>Register to Use Portfolio Optimizer</h3>
         <p>After completing registration, you will be contacted upon approval.</p>
+        <div class="mt-5 mb-5" *ngIf="errorMessage !== ''">
+          <div class="alert alert-danger">{{ errorMessage }}</div>
+        </div>
       </div>
-      <mat-card>
-        <form [formGroup]="form" (ngSubmit)="registerSubmit()">
+      <form [formGroup]="form" (ngSubmit)="registerSubmit()">
+        <mat-card>        
+          <mat-card-content>        
+            <mat-form-field class="full-width mb-10">
+              <input matInput required placeholder="First Name" formControlName="first_name">
+              <mat-error *ngIf="form.get('first_name').hasError('required')">
+                First name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
 
-          <mat-form-field class="full-width mb-10">
-            <input matInput required placeholder="User Name" formControlName="userName">
-            <mat-error *ngIf="form.get('firstName').hasError('required')">
-              User name is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
+            <mat-form-field class="full-width mb-10">
+              <input matInput required placeholder="Last Name" formControlName="last_name">
+              <mat-error *ngIf="form.get('last_name').hasError('required')">
+                Last name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
 
-          <mat-form-field class="full-width mb-10">
-            <input matInput required placeholder="First Name" formControlName="firstName">
-            <mat-error *ngIf="form.get('firstName').hasError('required')">
-              First name is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
+            <mat-form-field class="full-width mb-10">
+              <input matInput required placeholder="Email" formControlName="email" type="email">
+              <mat-error *ngIf="form.get('email').hasError('email') && !form.get('email').hasError('required')">
+                Please enter a valid email address </mat-error>
+              <mat-error *ngIf="form.get('email').hasError('required')">
+                Email is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
 
-          <mat-form-field class="full-width mb-10">
-            <input matInput required placeholder="Last Name" formControlName="lastName">
-            <mat-error *ngIf="form.get('lastName').hasError('required')">
-              Last name is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
+            <mat-form-field class="full-width mb-10">
+              <input matInput required placeholder="Password" formControlName="password" type="password">
+              <mat-error *ngIf="form.get('password').hasError('required')">
+                Password is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
 
-          <mat-form-field class="full-width mb-10">
-            <input matInput required placeholder="Email" formControlName="email">
-            <mat-error *ngIf="form.get('email').hasError('email') && !form.get('email').hasError('required')">
-              Please enter a valid email address </mat-error>
-            <mat-error *ngIf="form.get('email').hasError('required')">
-              Email is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
+            <mat-form-field class="full-width mb-10">
+              <input matInput required placeholder="Confirm Password" formControlName="password_confirm" type="password">
+              <mat-error *ngIf="form.get('password_confirm').hasError('required')">
+                Password Confirmation is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>            
+          </mat-card-content>
 
-          <mat-form-field class="full-width mb-10">
-            <input matInput required placeholder="Password" formControlName="password">
-            <mat-error *ngIf="form.get('password').hasError('required')">
-              Password is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="full-width mb-10">
-            <input matInput required placeholder="Confirm Password" formControlName="passwordConfirm">
-            <mat-error *ngIf="form.get('passwordConfirm').hasError('required')">
-              Password Confirmation is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-
-          <div class="text-right">
-            <button mat-button>Cancel</button>&nbsp;
+          <mat-card-actions class="text-right">
+            <a mat-button type="button" routerLink="/home">Cancel</a>&nbsp;
             <button mat-raised-button color="primary" [disabled]="form.status !== 'VALID'">Register</button>
-          </div>
-        </form>        
-      </mat-card>
+          </mat-card-actions>
+        </mat-card>
+      </form>
     </div>
   </div>
 </div>

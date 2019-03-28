@@ -1,3 +1,38 @@
-<p>
-  login works!
-</p>
+<div class="container" id="loginComponent">
+  <div class="row">
+    <div class="col-md-8 offset-md-2 col-xs-12">
+      <br><br>
+      <div class="mt-20 mb-10">
+        <h3>Login</h3>
+        <div class="mt-5 mb-5" *ngIf="errorMessage !== ''">
+          <div class="alert alert-danger">{{ errorMessage }}</div>
+        </div>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="loginSubmit()">
+        <mat-card>
+          <mat-card-content>
+            <mat-form-field class="full-width mb-10">
+              <input matInput required placeholder="Email" formControlName="email" type="email">
+              <mat-error *ngIf="form.get('email').hasError('email') && !form.get('email').hasError('required')">
+                Please enter a valid email address </mat-error>
+              <mat-error *ngIf="form.get('email').hasError('required')">
+                Email is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="full-width mb-10">
+              <input matInput required placeholder="Password" formControlName="password" type="password">
+              <mat-error *ngIf="form.get('password').hasError('required')">
+                Password is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </mat-card-content>
+          <mat-card-actions class="text-right">
+            <a mat-button type="button" routerLink="/home">Cancel</a>&nbsp;
+            <button mat-raised-button color="primary" [disabled]="form.status !== 'VALID'">Sign In</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </div>
+  </div>
+</div>

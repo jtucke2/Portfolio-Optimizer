@@ -27,6 +27,9 @@ $frontend-theme: mat-dark-theme($frontend-primary, $frontend-accent, $frontend-w
 @import "~bootstrap/scss/mixins";
 // @import "~bootstrap/scss/reboot";
 // TODO figure out how to get columns working w/o reboot
+* {
+  box-sizing: border-box;
+}
 
 @import "~bootstrap/scss/grid";
 @import "~bootstrap/scss/alert";

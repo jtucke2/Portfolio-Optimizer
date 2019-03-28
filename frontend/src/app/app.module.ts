@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GlobalModule } from './global/global.module';
 import { UserModule } from './user/user.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     GlobalModule,
     UserModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DashboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

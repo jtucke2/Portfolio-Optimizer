@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-12">
       <br><br>
+      <div *ngIf="userService.user && !userService.user.approved" class="mt-5 mb-10 alert alert-primary">You have successfully registered and are pending approval.</div>
       <div class="mat-display-3 text-center">Portfolio Optimizer</div>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem cumque, excepturi dignissimos tempore rerum fuga error reprehenderit neque, illo, esse ad odio. Nesciunt sit aliquam, autem beatae aut iste porro.</p>
       <p><img src="/assets/images/stock-chart.jpg" alt="Stock Chart" id="stockChart" class="lp-img"></p>

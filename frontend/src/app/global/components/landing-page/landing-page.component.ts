@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { UserService } from '../../services/user.service';
+
 @Component({
   selector: 'landing-page',
   templateUrl: './landing-page.component.html',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(public userService: UserService) { }
 
   ngOnInit() {
   }
