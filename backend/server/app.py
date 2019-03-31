@@ -1,4 +1,5 @@
 from json import loads as json_loads
+from datetime import timedelta
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
@@ -11,7 +12,8 @@ app.config.update(
     CELERY_RESULT_BACKEND=f'mongodb://{config["DB_HOST"]}:{config["DB_PORT"]}/tasks',
     CELERY_BROKER_URL=f'pyamqp://{config["BROKER_USER"]}:{config["BROKER_PASSWORD"]}@{config["BROKER_HOST"]}//',
     JWT_SECRET_KEY='super-secret-oh-change-this-plz',  # TODO
-    JWT_HEADER_TYPE=''
+    JWT_HEADER_TYPE='',
+    JWT_ACCESS_TOKEN_EXPIRES=timedelta(days=3)
 )
 celery = make_celery(app)
 jwt = JWTManager(app)

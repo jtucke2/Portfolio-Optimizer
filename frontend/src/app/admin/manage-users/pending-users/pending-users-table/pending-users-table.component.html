@@ -21,10 +21,10 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Approve / Deny User</th>
         <td mat-cell *matCellDef="let row">
-          <button mat-icon-button color="primary" (click)="approveUser(row)">
+          <button mat-icon-button color="primary" (click)="processUser('approve', row)">
             <i class="material-icons">check</i>
           </button>&nbsp;
-          <button mat-icon-button color="accent" (click)="denyUser(row)">
+          <button mat-icon-button color="accent" (click)="processUser('delete', row)">
             <i class="material-icons">close</i>
           </button>
         </td>
