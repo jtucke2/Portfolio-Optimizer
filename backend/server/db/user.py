@@ -1,5 +1,6 @@
 from typing import Optional, List
 from bson.objectid import ObjectId
+from pymongo.results import DeleteResult
 
 from server.db.connect import user_col
 
@@ -29,6 +30,10 @@ def update_user(user_id: str, update_dict: dict) -> dict:
         'found': bool(res.matched_count),
         'updated': bool(res.modified_count)
     }
+
+
+def delete_user(user_id: str) -> DeleteResult:
+    return user_col.delete_one({'_id': ObjectId(user_id)})
 
 
 def get_unapproved_users() -> List[dict]:

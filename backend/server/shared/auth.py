@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Optional, List
 from bcrypt import hashpw, checkpw, gensalt
+from pymongo.results import DeleteResult
 
 from server.db import user as user_dao
 
@@ -66,3 +67,7 @@ def get_unapproved_users() -> List[dict]:
 
 def change_user_approval(user_id, approved: bool = True) -> dict:
     return user_dao.update_user(user_id, {'data.approved': approved})
+
+
+def delete_user(user_id) -> DeleteResult:
+    return user_dao.delete_user(user_id)

@@ -13,4 +13,12 @@ export class AdminService {
   public getUnapprovedUsers(): Observable<User[]> {
     return this.api.get(`${this.baseUrl}/unapproved-users`);
   }
+
+  public approveUser(id: string): Observable<{success: boolean, message?: string}> {
+    return this.api.get(`${this.baseUrl}/approve-user/${id}`);
+  }
+
+  public deleteUser(id: string): Observable<{ success: boolean, message?: string }> {
+    return this.api.get(`${this.baseUrl}/delete-user/${id}`);
+  }
 }
