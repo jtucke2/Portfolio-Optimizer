@@ -6,11 +6,14 @@ import { LayoutComponent } from './layout/layout.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { AdminRoutingModule } from './admin.routing';
 import { MatTabsModule, MatTableModule, MatPaginatorModule, MatSortModule, MatButtonModule, MatTooltipModule } from '@angular/material';
-import { PendingUsersComponent } from './manage-users/pending-users/pending-users.component';
-import { PendingUsersTableComponent } from './manage-users/pending-users/pending-users-table/pending-users-table.component';
+import { ManageUsersTableComponent } from './manage-users/manage-users-table/manage-users-table.component';
 
 @NgModule({
-  declarations: [LayoutComponent, ManageUsersComponent, PendingUsersComponent, PendingUsersTableComponent],
+  declarations: [
+    LayoutComponent,
+    ManageUsersComponent,
+    ManageUsersTableComponent
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,

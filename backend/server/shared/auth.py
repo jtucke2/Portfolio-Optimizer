@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional, List
+from typing import Optional, List, Union
 from bcrypt import hashpw, checkpw, gensalt
 from pymongo.results import DeleteResult
 
@@ -9,6 +9,10 @@ from server.db import user as user_dao
 class UserRoles(Enum):
     STANDARD_USER = 'STANDARD_USER'
     ADMIN = 'ADMIN'
+
+    @classmethod
+    def has_value(cls, value):
+        return any(value == item.value for item in cls)
 
 
 def str_to_hash(password_str: str) -> bytes:
@@ -55,9 +59,9 @@ def login(email: str, password_str: str) -> Optional[dict]:
         return None
 
 
-def get_unapproved_users() -> List[dict]:
+def get_unapproved_or_approved_users(approved: bool = False) -> List[dict]:
     users = []
-    temp = user_dao.find_users({'data.approved': False})
+    temp = user_dao.find_users({'data.approved': approved})
     for item in temp:
         user = item['data']
         user['user_id'] = str(item['_id'])
@@ -65,8 +69,13 @@ def get_unapproved_users() -> List[dict]:
     return users
 
 
-def change_user_approval(user_id, approved: bool = True) -> dict:
+def change_user_approval(user_id: str, approved: bool = True) -> dict:
     return user_dao.update_user(user_id, {'data.approved': approved})
+
+
+def change_user_role(user_id: str, role: Union[UserRoles, str]) -> dict:
+    role_str = role.value if type(role) == UserRoles else role
+    return user_dao.update_user(user_id, {'data.role': role_str})
 
 
 def delete_user(user_id) -> DeleteResult:

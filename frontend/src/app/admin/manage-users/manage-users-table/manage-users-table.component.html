@@ -1,0 +1,63 @@
+<div id="manageUsersTableComponent">
+  <div class="alert alert-primary" *ngIf="message">{{ message }}</div>
+  <div class="mat-elevation-z8">
+    <table mat-table class="full-width" [dataSource]="dataSource" matSort aria-label="Elements">
+
+      <ng-container matColumnDef="first_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+        <td mat-cell *matCellDef="let row">{{row.first_name}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="last_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+        <td mat-cell *matCellDef="let row">{{row.last_name}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let row">{{row.email}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>
+          <span *ngFor="let action of actions; last as last">{{ action | titlecase }} <span *ngIf="!last">/
+            </span></span> User
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <span *ngFor="let action of actions">
+            <span [ngSwitch]="action">
+              <button mat-icon-button color="primary" (click)="processUser('approve', row)" *ngSwitchCase="'approve'"
+                matTooltip="Approve User">
+                <i class="material-icons">check</i>
+              </button>
+              <span *ngSwitchCase="'promote'">
+                <button mat-icon-button color="primary" (click)="processUser('promote', row)" *ngIf="row.role !== 'ADMIN'" matTooltip="Promote to Admin">
+                  <i class="material-icons">arrow_upward</i>
+                </button>
+                <button mat-icon-button disabled="true" (click)="processUser('promote', row)" *ngIf="row.role === 'ADMIN'">
+                  <i class="material-icons">how_to_reg</i>
+                </button>
+              </span>
+              <button mat-icon-button color="accent" (click)="processUser('delete', row)" *ngSwitchCase="'delete'"
+                matTooltip="Delete User">
+                <i class="material-icons">close</i>
+              </button>
+            </span>
+          </span>
+          <!-- <button mat-icon-button color="primary" (click)="processUser('approve', row)">
+            <i class="material-icons">check</i>
+          </button>&nbsp;
+          <button mat-icon-button color="accent" (click)="processUser('delete', row)">
+            <i class="material-icons">close</i>
+          </button> -->
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[10, 25, 50]">
+    </mat-paginator>
+  </div>
+</div>

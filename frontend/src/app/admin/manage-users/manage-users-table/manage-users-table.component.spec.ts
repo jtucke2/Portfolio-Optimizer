@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PendingUsersComponent } from './pending-users.component';
+import { ManageUsersTableComponent } from './manage-users-table.component';
 
-describe('PendingUsersComponent', () => {
-  let component: PendingUsersComponent;
-  let fixture: ComponentFixture<PendingUsersComponent>;
+describe('ManageUsersTableComponent', () => {
+  let component: ManageUsersTableComponent;
+  let fixture: ComponentFixture<ManageUsersTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PendingUsersComponent ]
+      declarations: [ ManageUsersTableComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PendingUsersComponent);
+    fixture = TestBed.createComponent(ManageUsersTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
