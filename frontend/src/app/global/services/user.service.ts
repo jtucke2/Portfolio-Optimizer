@@ -21,7 +21,7 @@ export class UserService {
   constructor() {
     const localUser = localStorage.getItem('user');
     if (localUser) {
-      this.user = JSON.parse(localUser);
+      this.setUser(JSON.parse(localUser));
     }
     const token = localStorage.getItem('jwt');
     if (token) {
@@ -32,6 +32,9 @@ export class UserService {
   public setUser(user: User) {
     this.user = user;
     localStorage.setItem('user', JSON.stringify(user));
+    if (user.approved) {
+      this.loggedIn = true;
+    }
   }
 
   public logout() {

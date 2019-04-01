@@ -1,1 +1,2 @@
 stock-chart.jpg: https://www.pexels.com/photo/stock-exchange-board-210607/
+bull.svg: Modified from https://image.flaticon.com/icons/svg/578/578366.svg
