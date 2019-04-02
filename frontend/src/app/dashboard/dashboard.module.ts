@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule, MatDatepickerModule, MatSelectModule, MatButtonModule, MatCardModule } from '@angular/material';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
 import { DashboardService } from './dashboard.service';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { DashboardService } from './dashboard.service';
     MatDatepickerModule,
     MatSelectModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    ChartsModule
   ],
   providers: [
     DashboardService
