@@ -9,11 +9,13 @@ import { ApiService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
 import { AuthInterceptor } from './services/auth-interceptor.service';
+import { PageTitleComponent } from './components/page-title/page-title.component';
 
 @NgModule({
   declarations: [
     LandingPageComponent,
-    NavComponent
+    NavComponent,
+    PageTitleComponent,
   ],
   imports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { AuthInterceptor } from './services/auth-interceptor.service';
   ],
   exports: [
     LandingPageComponent,
-    NavComponent
+    NavComponent,
+    PageTitleComponent,
   ],
   providers: [
     ApiService,

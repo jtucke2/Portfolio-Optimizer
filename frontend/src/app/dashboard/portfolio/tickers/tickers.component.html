@@ -1,0 +1,25 @@
+<div id="tickersComponent">
+  <div class="row">
+    <div class="col-12">   
+
+      <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <div id="tickerSearchBox">
+        <form (ngSubmit)="tickerCtrlSubmit()">
+          <mat-form-field>
+            <input type="text" placeholder="Ticker Symbol" matInput [formControl]="tickerCtrl">
+          </mat-form-field>
+          <span class="formSpacer">&nbsp;</span>
+          <button mat-raised-button color="primary" type="submit" [disabled]="tickerCtrl.status !== 'VALID'">Add Ticker</button>
+        </form>
+      </div>    
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4 mb-30" *ngFor="let priceData of priceDataArr">
+      <mat-card>
+        <mat-card-content>{{ priceData.ticker }}</mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

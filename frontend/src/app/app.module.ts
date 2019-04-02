@@ -9,6 +9,7 @@ import { GlobalModule } from './global/global.module';
 import { UserModule } from './user/user.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { MatNativeDateModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     UserModule,
     FormsModule,
     ReactiveFormsModule,
-    DashboardModule
+    DashboardModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

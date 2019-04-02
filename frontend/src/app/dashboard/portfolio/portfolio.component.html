@@ -1,3 +1,21 @@
-<p>
-  portfolio works!
-</p>
+<div id="portfolioComponent">
+  <page-title title="Create a Portfolio"></page-title>
+  <div class="container">
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <h3>Portfolio Parameters</h3>
+      </div>
+    </div>
+    <portfolio-form [form]="form"></portfolio-form>
+    <div class="row">
+      <div class="col-12">
+        <h3>Asset Ticker Symbols</h3>
+      </div>
+    </div>
+    <tickers [form]="form"></tickers>
+    <hr>
+    <h3>Debug</h3>
+    <p>{{ form.value | json }}</p>
+  </div>  
+</div>

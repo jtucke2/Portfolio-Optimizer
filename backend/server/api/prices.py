@@ -55,12 +55,4 @@ class Prices(Resource):
                  'close': price['close']} for price in prices[ticker]['prices']]
             return {'prices': ret_prices, 'ticker': ticker}
         except Exception as e:
-            pass
-        # Todo - error message
-        return {
-            'id': 3,
-            'name': 'bob'
-        }
-
-
-
+            return {'message': 'Unable to retrive prices'}, 500

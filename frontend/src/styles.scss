@@ -54,6 +54,11 @@ body {
     flex: 1;
 }
 
+.formSpacer {
+  display: inline-block;
+  width: 1rem;
+}
+
 @for $i from 0 to 8 {
   .mt-#{$i * 5} {
     margin-top: $i * 5px;
