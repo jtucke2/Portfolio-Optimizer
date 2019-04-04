@@ -4,7 +4,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
 import { GlobalModule } from '../global/global.module';
 import { PortfolioFormComponent } from './portfolio/portfolio-form/portfolio-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule, MatDatepickerModule, MatSelectModule, MatButtonModule, MatCardModule } from '@angular/material';
+import { MatInputModule, MatDatepickerModule, MatSelectModule, MatButtonModule, MatCardModule, MatTooltipModule } from '@angular/material';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
 import { DashboardService } from './dashboard.service';
 import { ChartsModule } from 'ng2-charts';
@@ -25,6 +25,7 @@ import { ChartsModule } from 'ng2-charts';
     MatSelectModule,
     MatButtonModule,
     MatCardModule,
+    MatTooltipModule,
     ChartsModule
   ],
   providers: [

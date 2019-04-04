@@ -14,8 +14,12 @@
       </div>
     </div>
     <tickers [form]="form"></tickers>
-    <hr>
-    <h3>Debug</h3>
-    <p>{{ form.value | json }}</p>
+    <div class="row">
+      <div class="col-12">
+        <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.status !== 'VALID'">Create Portfolio</button>
+        </form>
+      </div>
+    </div>
   </div>  
 </div>

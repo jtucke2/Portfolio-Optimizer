@@ -3,30 +3,45 @@
 
     <div class="row">
       <div class="col-12">
-        <span>
-          <mat-form-field>
-            <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date" formControlName="start_date" [max]="form.get('end_date').value">
-            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #startDatePicker></mat-datepicker>
-          </mat-form-field>
-        </span>
-        <span class="formSpacer">&nbsp;</span>
-        <span>
-          <mat-form-field>
-            <input matInput [matDatepicker]="endDatePicker" placeholder="End Date" formControlName="end_date" [min]="form.get('start_date').value">
-            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #endDatePicker></mat-datepicker>
-          </mat-form-field>
-        </span>
-        <span class="formSpacer">&nbsp;</span>
-        <span>
-          <mat-form-field>
-            <mat-label>Time Interval</mat-label>
-            <mat-select formControlName="interval">
-              <mat-option *ngFor="let interval of intervals" [value]="interval">{{ interval | titlecase }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </span>
+        <mat-form-field class="full-width">
+          <input type="text" matInput placeholder="Name" formControlName="name">
+          <mat-error *ngIf="form.get('name').hasError('required')">
+            Name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 col-sm-12">
+        <mat-form-field class="full-width">
+          <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date" formControlName="start_date"
+            [max]="form.get('end_date').value">
+          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #startDatePicker></mat-datepicker>
+          <mat-error *ngIf="form.get('start_date').hasError('required')">
+            Start date is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <mat-form-field class="full-width">
+          <input matInput [matDatepicker]="endDatePicker" placeholder="End Date" formControlName="end_date"
+            [min]="form.get('start_date').value">
+          <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #endDatePicker></mat-datepicker>
+          <mat-error *ngIf="form.get('end_date').hasError('required')">
+            End date is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <mat-form-field class="full-width">
+          <mat-label>Time Interval</mat-label>
+          <mat-select formControlName="interval">
+            <mat-option *ngFor="let interval of intervals" [value]="interval">{{ interval | titlecase }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
 

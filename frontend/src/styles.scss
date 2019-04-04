@@ -1,12 +1,24 @@
 @import '~@angular/material/theming';
 $custom-typography: mat-typography-config($font-family: 'Rubik, monospace');
 @include mat-core($custom-typography);
-$frontend-primary: mat-palette($mat-cyan, 700);
+$frontend-primary: mat-palette($mat-cyan, 700, 400, 900);
 $frontend-accent: mat-palette($mat-pink, A200, A100, A400);
 $frontend-warn: mat-palette($mat-deep-orange);
 $frontend-theme: mat-dark-theme($frontend-primary, $frontend-accent, $frontend-warn);
 @include angular-material-theme($frontend-theme);
 
+$primary: mat-color($frontend-primary);
+$accent: mat-color($frontend-accent);
+$warn: mat-color($frontend-warn);
+.text-primary {
+  color: $primary;
+}
+.text-accent {
+  color: $accent;
+}
+.text-warn {
+  color: $warn;
+}
 
 // BS overrides
 
@@ -50,7 +62,13 @@ body {
 }
 
 // Flex helpers
-.spacer {
+.flex {
+  display: flex;
+}
+.flexItemsCenter {
+  align-content: center;
+}
+.flex1, .spacer {
     flex: 1;
 }
 

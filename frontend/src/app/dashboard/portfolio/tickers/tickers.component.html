@@ -1,38 +1,43 @@
 <div id="tickersComponent">
   <div class="row">
-    <div class="col-12">   
-
+    <div class="col-12">
       <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
-
-      <div id="tickerSearchBox">
-        <form (ngSubmit)="tickerCtrlSubmit()">
-          <mat-form-field>
-            <input type="text" placeholder="Ticker Symbol" matInput [formControl]="tickerCtrl">
-          </mat-form-field>
-          <span class="formSpacer">&nbsp;</span>
-          <button mat-raised-button color="primary" type="submit" [disabled]="tickerCtrl.status !== 'VALID'">Add Ticker</button>
-        </form>
-      </div>    
     </div>
   </div>
+  <form [formGroup]="tickerForm" (ngSubmit)="tickerCtrlSubmit()">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field class="full-width">
+          <input type="text" placeholder="Ticker Symbol" matInput formControlName="ticker">
+        </mat-form-field>
+      </div>
+      <div class="col-md-8">
+        <button mat-button color="primary" type="submit" [disabled]="tickerForm.status !== 'VALID'">Add Ticker</button>
+      </div>
+    </div>
+  </form>
   <div class="row">
-    <div class="col-4 mb-30" *ngFor="let priceData of priceDataArr">
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-30" *ngFor="let priceData of priceDataArr; index as i">
       <mat-card>
         <mat-card-header>
           <mat-card-title>{{ priceData.ticker }}</mat-card-title>
           <mat-card-subtitle>Prices over the last year</mat-card-subtitle>
+          <button mat-icon-button matTooltip="Remove Asset" (click)="removeAsset(i, priceData.ticker)">
+            <i class="material-icons">close</i>
+          </button>
         </mat-card-header>
         <mat-card-content>
           <div class="chartWrapper">
             <canvas baseChart
-              [datasets]="lineChartData[priceData.ticker]"
-              [labels]="lineChartLabels[priceData.ticker]"
+              [datasets]="priceData.chartData"
+              [labels]="priceData.chartLabels"
               [options]="lineChartOptions" 
               [colors]="lineChartColors"
               chartType="line"
               style="display: block"></canvas>
             </div>
         </mat-card-content>
+        <div class="text-right returnPercent" [class.negative]="priceData.returnPercent[0] === '-'">{{ priceData.returnPercent }}%</div>
       </mat-card>
     </div>
   </div>

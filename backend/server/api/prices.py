@@ -52,7 +52,24 @@ class Prices(Resource):
             prices = yf.get_historical_price_data(start_date, end_date, args['interval'])
             ret_prices = [
                 {'date': datetime.utcfromtimestamp(price['date']).strftime('%Y-%m-%d'),
-                 'close': price['close']} for price in prices[ticker]['prices']]
+                 'close': price['close']} for price in prices[ticker]['prices'] if price['close'] is not None]
             return {'prices': ret_prices, 'ticker': ticker}
+        except Exception as e:
+            return {'message': 'Unable to retrive prices'}, 500
+
+
+@api.route('/asset-data/<ticker>')
+@api.doc(params={'ticker': 'The ticker symbol of the asset'})
+@api.response(404, 'Asset')
+class Prices(Resource):
+    @jwt_required
+    def get(self, ticker: str) -> asset_returns:
+        try:
+            ticker = ticker.upper()
+            yf = YahooFinancials(ticker)
+            quote_type_data = yf.get_stock_quote_type_data()
+            # This one seems very slow
+            key_stats = yf.get_key_statistics_data()
+            return {'ticker': ticker, 'quote_type_data': quote_type_data[ticker], 'key_stats': key_stats[ticker]}
         except Exception as e:
             return {'message': 'Unable to retrive prices'}, 500
