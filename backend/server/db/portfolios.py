@@ -1,4 +1,7 @@
+from typing import List
+import json
 from bson.objectid import ObjectId
+from bson import json_util
 
 from server.db.connect import portfolios_col, celery_taskmeta_col
 from . import _id_to_str_util
@@ -32,3 +35,19 @@ def get_by_task_id(task_id: str) -> dict:
 
 def get_portfolio(portfolio_id: str) -> dict:
     return _id_to_str_util(portfolios_col.find_one({'_id': ObjectId(portfolio_id)}))
+
+
+def get_portfolios_by_user(user_id: str, include_published = True) -> List[dict]:
+    if include_published:
+        query = {
+            "$or": [
+                {"user_id": user_id},
+                {"published": True}
+            ]
+        }
+    else:
+        query = {"user_id": user_id}
+    doc_list = list(portfolios_col.find(query))
+    str_id_list = [_id_to_str_util(doc) for doc in doc_list]
+    ret_val = json.loads(json.dumps(str_id_list, default=json_util.default))
+    return ret_val

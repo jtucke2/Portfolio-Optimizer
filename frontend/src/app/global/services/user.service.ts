@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { User } from 'src/app/models/user';
 
@@ -11,12 +12,18 @@ export class UserService {
 
   public get token() { return this._token; }
   public set token(token: string) {
-    this._token = token;
     if (token) {
-      localStorage.setItem('jwt', token);
+      if (!this.jwtHelper.isTokenExpired(token)) {
+        this._token = token;
+        this.loggedIn = true;
+        localStorage.setItem('jwt', token);
+      } else {
+        this.logout();
+      }
     }
   }
-  private _token: string;
+  private jwtHelper = new JwtHelperService();
+  private _token: string = null;
 
   constructor() {
     const localUser = localStorage.getItem('user');
@@ -32,9 +39,6 @@ export class UserService {
   public setUser(user: User) {
     this.user = user;
     localStorage.setItem('user', JSON.stringify(user));
-    if (user.approved) {
-      this.loggedIn = true;
-    }
   }
 
   public logout() {

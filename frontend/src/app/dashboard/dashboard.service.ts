@@ -8,7 +8,7 @@ import { OptimizeJob } from '../models/optimize';
 @Injectable()
 export class DashboardService {
   private pricesUrl = '/api/prices/';
-  private optimizeUrl = '/api/optimize';
+  private optimizeUrl = '/api/optimize/';
 
   constructor(private api: ApiService) { }
 
@@ -33,6 +33,11 @@ export class DashboardService {
       start_date: jobData.start_date.toISOString().split('T')[0],
       end_date: jobData.end_date.toISOString().split('T')[0]
     };
-    return this.api.post(`${this.optimizeUrl}/submit-job`, updatedJobDate);
+    return this.api.post(`${this.optimizeUrl}submit-job`, updatedJobDate);
+  }
+
+  // TODO add portfolio typing
+  public getPortfolios(): Observable<any> {
+    return this.api.get(`${this.optimizeUrl}portfolio`);
   }
 }

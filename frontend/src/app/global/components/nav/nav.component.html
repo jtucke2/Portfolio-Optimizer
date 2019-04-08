@@ -4,6 +4,7 @@
   </a>
   <span class="spacer">&nbsp;</span>
   <a mat-button routerLink="/dashboard/portfolio" *ngIf="userService.loggedIn">Create Portfolio</a>
+  <a mat-button routerLink="/dashboard/optimization" *ngIf="userService.loggedIn">Optimization Results</a>
   <a mat-button routerLink="/admin" *ngIf="userService.loggedIn && userService.user && userService.user.role === 'ADMIN'">Admin</a>
   <a mat-button routerLink="/home" *ngIf="userService.loggedIn" (click)="userService.logout()">Sign out</a>
 

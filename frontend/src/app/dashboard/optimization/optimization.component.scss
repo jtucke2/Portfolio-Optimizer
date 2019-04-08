@@ -1,0 +1,14 @@
+// TODO get navbar height from var
+#optimizationComponent {
+    min-height: calc(100vh - 64px);
+}
+#sidenav {
+    width: 30vw;
+    max-width: 500px;
+}
+#sidenavToggle {
+    transition: all 0.2s ease-in-out;
+    .opened & {
+        transform: rotate(180deg);
+    }
+}

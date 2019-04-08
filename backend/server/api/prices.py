@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from dateutil import parser as dateparser
+import json
 
 from flask_restplus import Namespace, Resource, fields
 from flask import request
@@ -61,7 +62,7 @@ class Prices(Resource):
 @api.route('/asset-data/<ticker>')
 @api.doc(params={'ticker': 'The ticker symbol of the asset'})
 @api.response(404, 'Asset')
-class Prices(Resource):
+class AssetData(Resource):
     @jwt_required
     def get(self, ticker: str) -> asset_returns:
         try:
@@ -70,6 +71,6 @@ class Prices(Resource):
             quote_type_data = yf.get_stock_quote_type_data()
             # This one seems very slow
             key_stats = yf.get_key_statistics_data()
-            return {'ticker': ticker, 'quote_type_data': quote_type_data[ticker], 'key_stats': key_stats[ticker]}
+            return json.dumps({'ticker': ticker, 'quote_type_data': quote_type_data[ticker], 'key_stats': key_stats[ticker]})
         except Exception as e:
             return {'message': 'Unable to retrive prices'}, 500

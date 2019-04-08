@@ -1,5 +1,6 @@
 from json import loads as json_loads
 from datetime import timedelta
+from typing import List
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
@@ -25,5 +26,6 @@ def user_loader_callback(identity):
 
 
 @celery.task(name='tasks.task_optimize')
-def task_optimize(tickers, start_date, end_date, interval='weekly'):
-    return do_task_optimize(tickers, start_date, end_date, interval)
+def task_optimize(name: str, tickers: List[str], start_date: str, end_date: str, user_id: str, interval='weekly'):
+    task_id = task_optimize.request.id
+    return do_task_optimize(name, tickers, start_date, end_date, user_id, task_id, interval)

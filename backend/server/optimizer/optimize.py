@@ -160,6 +160,7 @@ class Optimize(object):
                                pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result)
 
     def optimize_all(self) -> List[OptimizeOutcome]:
+        # TODO add equal weight to this return
         return [
             self.generate_max_sharpe_ratio(),
             self.generate_max_sharpe_ratio(True),

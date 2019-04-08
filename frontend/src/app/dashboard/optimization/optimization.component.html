@@ -1,0 +1,13 @@
+<mat-sidenav-container id="optimizationComponent" [class.opened]="opened">
+  <mat-sidenav #sidenav mode="side" class="mat-elevation-z8" [opened]="opened" id="sidenav">
+    <job-list></job-list>
+  </mat-sidenav>
+  <mat-sidenav-content id="sidenavContent">
+    <div>
+      <button mat-icon-button (click)="opened=!opened" id="sidenavToggle">
+        <i class="material-icons">keyboard_arrow_right</i>
+      </button>
+    </div>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

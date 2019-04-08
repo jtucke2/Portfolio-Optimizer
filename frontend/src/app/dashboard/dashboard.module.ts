@@ -4,16 +4,33 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
 import { GlobalModule } from '../global/global.module';
 import { PortfolioFormComponent } from './portfolio/portfolio-form/portfolio-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule, MatDatepickerModule, MatSelectModule, MatButtonModule, MatCardModule, MatTooltipModule } from '@angular/material';
+import {
+  MatInputModule,
+  MatDatepickerModule,
+  MatSelectModule,
+  MatButtonModule,
+  MatCardModule,
+  MatTooltipModule,
+  MatSidenavModule
+} from '@angular/material';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
 import { DashboardService } from './dashboard.service';
 import { ChartsModule } from 'ng2-charts';
+import { OptimizationComponent } from './optimization/optimization.component';
+import { JobListComponent } from './optimization/job-list/job-list.component';
+import { JobViewerComponent } from './optimization/job-viewer/job-viewer.component';
+import { SelectJobMsgComponent } from './optimization/select-job-msg/select-job-msg.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     PortfolioComponent,
     PortfolioFormComponent,
-    TickersComponent
+    TickersComponent,
+    OptimizationComponent,
+    JobListComponent,
+    JobViewerComponent,
+    SelectJobMsgComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +43,9 @@ import { ChartsModule } from 'ng2-charts';
     MatButtonModule,
     MatCardModule,
     MatTooltipModule,
-    ChartsModule
+    MatSidenavModule,
+    ChartsModule,
+    RouterModule
   ],
   providers: [
     DashboardService

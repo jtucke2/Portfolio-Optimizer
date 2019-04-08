@@ -1,0 +1,17 @@
+<div id="jobListComponent">
+
+  <div *ngIf="userPortfolios$ | async as userPortfolios">
+    <div *ngIf="userPortfolios.length">  
+      <h3>My Portfolios</h3>
+      <div *ngFor="let userPortfolio of userPortfolios">{{ userPortfolio._id }}</div>
+    </div>
+  </div>
+
+  <div *ngIf="publishedPortfolios$ | async as publishedPortfolios">
+    <div *ngIf="publishedPortfolios.length">
+      <h3>Community Portfolios</h3>
+      <div *ngFor="let publishedPortfolio of publishedPortfolios">{{ publishedPortfolio._id }}</div>
+    </div>
+  </div>
+  
+</div>
