@@ -40,4 +40,8 @@ export class DashboardService {
   public getPortfolios(): Observable<any> {
     return this.api.get(`${this.optimizeUrl}portfolio`);
   }
+
+  public getPortfolioById(id: string): Observable<any> {
+    return this.api.get(`${this.optimizeUrl}portfolio/${id}`);
+  }
 }

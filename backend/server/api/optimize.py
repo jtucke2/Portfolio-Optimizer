@@ -62,5 +62,4 @@ class Portfolio(Resource):
     @jwt_required
     def get(self):
         user_id = current_user.get('user_id')
-        a = portfolios.get_portfolios_by_user(user_id)
-        return a
+        return portfolios.get_portfolios_by_user(user_id)

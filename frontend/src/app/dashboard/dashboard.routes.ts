@@ -13,7 +13,7 @@ export const dashboardRoutes = [
         component: OptimizationComponent,
         children: [
             {
-                path: 'job',
+                path: 'job/:id',
                 component: JobViewerComponent
             },
             {

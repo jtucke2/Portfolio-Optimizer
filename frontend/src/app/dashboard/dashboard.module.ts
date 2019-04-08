@@ -11,7 +11,8 @@ import {
   MatButtonModule,
   MatCardModule,
   MatTooltipModule,
-  MatSidenavModule
+  MatSidenavModule,
+  MatListModule
 } from '@angular/material';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
 import { DashboardService } from './dashboard.service';
@@ -44,6 +45,7 @@ import { RouterModule } from '@angular/router';
     MatCardModule,
     MatTooltipModule,
     MatSidenavModule,
+    MatListModule,
     ChartsModule,
     RouterModule
   ],

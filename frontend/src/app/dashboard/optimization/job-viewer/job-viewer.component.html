@@ -1,3 +1,5 @@
-<p>
-  job-viewer works!
-</p>
+<div id="jobViewerComponent">
+  <div *ngIf="loading">Loading Portfolio</div>
+  <div *ngIf="portfolio$ | async as portfolio">{{ portfolio.name }}</div>
+  
+</div>

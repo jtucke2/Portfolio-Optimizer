@@ -34,7 +34,8 @@ def get_by_task_id(task_id: str) -> dict:
 
 
 def get_portfolio(portfolio_id: str) -> dict:
-    return _id_to_str_util(portfolios_col.find_one({'_id': ObjectId(portfolio_id)}))
+    doc = _id_to_str_util(portfolios_col.find_one({'_id': ObjectId(portfolio_id)}))
+    return json.loads(json.dumps(doc, default=json_util.default))
 
 
 def get_portfolios_by_user(user_id: str, include_published = True) -> List[dict]:

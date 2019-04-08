@@ -63,7 +63,7 @@ body {
 
 // Flex helpers
 .flex {
-  display: flex;
+  display: flex !important;
 }
 .flexItemsCenter {
   align-content: center;

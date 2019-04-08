@@ -23,6 +23,13 @@ export class JobListComponent implements OnInit {
     const masterList$ = this.dashboardService.getPortfolios()
       .pipe(
         filter(() => !!this.userService.user && !!this.userService.user.user_id),
+        map((portfolios) => portfolios.sort((a, b) => {
+          if (a.job_end.$date < b.job_end.$date) {
+            return 1;
+          } else {
+            return -1;
+          }
+        })),
         share()
       );
 

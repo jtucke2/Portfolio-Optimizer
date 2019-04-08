@@ -2,15 +2,31 @@
 
   <div *ngIf="userPortfolios$ | async as userPortfolios">
     <div *ngIf="userPortfolios.length">  
-      <h3>My Portfolios</h3>
-      <div *ngFor="let userPortfolio of userPortfolios">{{ userPortfolio._id }}</div>
+      <h3 class="listPadding">My Portfolios</h3>
+      <mat-nav-list>
+        <mat-list-item *ngFor="let userPortfolio of userPortfolios">
+          <a matLine routerLink="job/{{ userPortfolio._id }}" class="flex" routerLinkActive="active-link">
+            <span>{{ userPortfolio.name }}</span>
+            <span class="flex1">&nbsp;</span>
+            <small>{{ userPortfolio.job_end.$date | date }}</small>
+          </a>
+        </mat-list-item>
+      </mat-nav-list>
     </div>
   </div>
 
   <div *ngIf="publishedPortfolios$ | async as publishedPortfolios">
     <div *ngIf="publishedPortfolios.length">
-      <h3>Community Portfolios</h3>
-      <div *ngFor="let publishedPortfolio of publishedPortfolios">{{ publishedPortfolio._id }}</div>
+      <h3 class="listPadding">Community Portfolios</h3>
+      <mat-nav-list>
+        <mat-list-item *ngFor="let publishedPortfolio of publishedPortfolios">
+          <a matLine routerLink="job/{{ publishedPortfolio._id }}" class="flex" routerLinkActive="active-link">
+            <span>{{ publishedPortfolio.name }}</span>
+            <span class="flex1">&nbsp;</span>
+            <small>{{ publishedPortfolio.job_end.$date | date }}</small>
+          </a>
+        </mat-list-item>
+      </mat-nav-list>
     </div>
   </div>
   
