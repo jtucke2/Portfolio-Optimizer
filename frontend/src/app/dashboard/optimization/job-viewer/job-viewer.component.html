@@ -1,5 +1,49 @@
-<div id="jobViewerComponent">
+<div id="jobViewerComponent" class="container-fluid">
   <div *ngIf="loading">Loading Portfolio</div>
-  <div *ngIf="portfolio$ | async as portfolio">{{ portfolio.name }}</div>
-  
+  <div *ngIf="portfolio$ | async as p">
+
+    <div class="row">
+      <div class="col-12">
+        <h1>{{ p.name }}</h1>
+        <hr>
+      </div>
+    </div>
+
+    <div id="pInfo" class="mb-10 row">
+      <div class="col-12">
+        <h3>Portfolio Information</h3>
+        <p>
+          <strong>Ticker Symbols: </strong>
+          <span>{{ p.parameters.tickers.join(', ') }}</span><br>
+          <strong>Start Date: </strong>
+          <span>{{ p.parameters.start_date }}</span><br>
+          <strong>End Date: </strong>
+          <span>{{ p.parameters.end_date }}</span><br>
+          <strong>Interval: </strong>
+          <span>{{ p.parameters.interval | titlecase }}</span>
+        </p>
+      </div>
+    </div>
+
+    <div id="optimizations" class="mb-10">
+      <div class="row">
+        <h3 class="col-12">Optimization Results</h3>
+      </div>
+      <div class="row">
+        <div *ngFor="let opt of p.results" class="col-6 mb-15">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{ opt.goal }}</mat-card-title>
+              <mat-card-subtitle>{{ opt.shorting_ok ? "Short Selling OK" : "No Short Selling" }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div *ngFor="let opt of p.results">{{ opt | json }}</div>
+    </div>
+
+  </div>  
 </div>

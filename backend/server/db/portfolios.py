@@ -48,7 +48,16 @@ def get_portfolios_by_user(user_id: str, include_published = True) -> List[dict]
         }
     else:
         query = {"user_id": user_id}
-    doc_list = list(portfolios_col.find(query))
+    project = {
+        'job_start': 1,
+        'job_end': 1,
+        'parameters': 1,
+        'user_id': 1,
+        'task_id': 1,
+        'published': 1,
+        'name': 1
+    }
+    doc_list = list(portfolios_col.find(query, project))
     str_id_list = [_id_to_str_util(doc) for doc in doc_list]
     ret_val = json.loads(json.dumps(str_id_list, default=json_util.default))
     return ret_val

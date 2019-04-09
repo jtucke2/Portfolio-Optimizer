@@ -1,15 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap, tap, debounceTime } from 'rxjs/operators';
 import { DashboardService } from '../../dashboard.service';
+import { Observable } from 'rxjs';
+import { Portfolio } from 'src/app/models/portfolio';
 
 @Component({
   selector: 'job-viewer',
   templateUrl: './job-viewer.component.html',
   styleUrls: ['./job-viewer.component.scss']
 })
-export class JobViewerComponent implements OnInit, OnDestroy {
-  private portfolio$;
+export class JobViewerComponent implements OnInit {
+  private portfolio$: Observable<Portfolio>;
   private loading = true;
 
   constructor(
@@ -26,12 +28,6 @@ export class JobViewerComponent implements OnInit, OnDestroy {
         switchMap(id => this.dashboardService.getPortfolioById(id)),
         tap(() => this.loading = false)
       );
-  }
-
-  ngOnDestroy() {
-    if (this.portfolio$) {
-      this.portfolio$.unsubscribe();
-    }
   }
 
 }

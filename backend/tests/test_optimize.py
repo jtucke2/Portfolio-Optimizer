@@ -13,6 +13,7 @@ def test_optimize():
     transformed_data, dates = prep_data.transform_yahoo_finance_dict(data)
     asset_data = prep_data.generate_asset_data_array(transformed_data)
     matrices = prep_data.AssetMatrices(asset_data)
+    foo = matrices.as_dict()
     optimizer = optimize.Optimize(matrices)
     results = optimizer.optimize_all()
 

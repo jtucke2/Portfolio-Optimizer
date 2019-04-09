@@ -4,6 +4,12 @@
     "codelyzer"
   ],
   "rules": {
+    "variable-name": [
+      true,
+      "check-format",
+      "allow-leading-underscore",
+      "allow-snake-case"
+    ],
     "array-type": false,
     "arrow-parens": false,
     "deprecation": {

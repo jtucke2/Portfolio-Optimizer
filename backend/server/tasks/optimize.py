@@ -15,9 +15,8 @@ def do_task_optimize(name, tickers, start_date, end_date, user_id, task_id, inte
     job = {
         'job_start': job_start,
         'job_end': job_end,
-        'std_dev_vec': matrices.std_dev_vec.tolist(),
-        'avg_returns_vec': matrices.avg_returns_vec.tolist(),
-        'correlation_matrix': matrices.correlation_matrix.tolist(),
+        'asset_data': [a.as_dict() for a in asset_data],
+        'matrices': matrices.as_dict(),
         'price_dates': dates,
         'parameters': {
             'tickers': tickers,

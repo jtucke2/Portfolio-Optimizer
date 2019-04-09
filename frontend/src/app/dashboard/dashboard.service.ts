@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../global/services/api.service';
-import { IntervalEnum } from '../models/portfolio';
+import { IntervalEnum, Portfolio } from '../models/portfolio';
 import { Observable } from 'rxjs';
 import { Prices, AssetData } from '../models/price';
 import { OptimizeJob } from '../models/optimize';
@@ -36,12 +36,11 @@ export class DashboardService {
     return this.api.post(`${this.optimizeUrl}submit-job`, updatedJobDate);
   }
 
-  // TODO add portfolio typing
-  public getPortfolios(): Observable<any> {
+  public getPortfolios(): Observable<Partial<Portfolio>[]> {
     return this.api.get(`${this.optimizeUrl}portfolio`);
   }
 
-  public getPortfolioById(id: string): Observable<any> {
+  public getPortfolioById(id: string): Observable<Portfolio> {
     return this.api.get(`${this.optimizeUrl}portfolio/${id}`);
   }
 }

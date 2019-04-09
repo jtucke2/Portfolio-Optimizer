@@ -38,6 +38,15 @@ class AssetData(object):
             ret_val.append(np.log(prices[i] / prices[i + 1]))
         return ret_val
 
+    def as_dict(self) -> dict:
+        return {
+            'ticker': self.ticker,
+            'price_data': self.price_data,
+            'returns': self.returns,
+            'std_dev': self.std_dev,
+            'avg_return': self.avg_return
+        }
+
 
 class AssetMatrices(object):
     def __init__(self, asset_data: List[AssetData]):
@@ -71,6 +80,18 @@ class AssetMatrices(object):
 
     def generate_correlation_matrix(self) -> np.ndarray:
         return np.divide(self.variance_covariance_matrix, self.std_dev_matrix)
+
+    def as_dict(self) -> dict:
+        return {
+            'n': self.n,
+            'avg_returns_vec': self.avg_returns_vec.tolist(),
+            'std_dev_vec': self.std_dev_vec.tolist(),
+            'returns_matrix': self.returns_matrix.tolist(),
+            'x_transpose_x_matrix': self.x_transpose_x_matrix.tolist(),
+            'variance_covariance_matrix': self.variance_covariance_matrix.tolist(),
+            'std_dev_matrix': self.std_dev_matrix.tolist(),
+            'correlation_matrix': self.correlation_matrix.tolist(),
+        }
 
 
 def get_data(tickers, start_date, end_date, interval='weekly'):
