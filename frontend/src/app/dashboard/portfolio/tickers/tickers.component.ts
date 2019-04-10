@@ -3,10 +3,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DashboardService } from '../../dashboard.service';
 import { IntervalEnum } from 'src/app/models/portfolio';
 import { Prices } from 'src/app/models/price';
-import { Color, Label as ng2ChartLabel} from 'ng2-charts';
-import { ChartDataSets, ChartOptions } from 'chart.js';
+import { Label as ng2ChartLabel} from 'ng2-charts';
+import { ChartDataSets } from 'chart.js';
 
-interface PricesExtended extends Prices {
+export interface PricesExtended extends Prices {
   chartData: ChartDataSets[];
   chartLabels: ng2ChartLabel[];
   returnPercent: number | string;
@@ -24,38 +24,6 @@ export class TickersComponent implements OnInit {
   });
   public errorMessage = '';
   public priceDataArr: PricesExtended[] = [];
-
-  public lineChartOptions: ChartOptions = {
-    responsive: true,
-    legend: {
-      display: false
-    },
-    scales: {
-      xAxes: [{
-        display: false
-      }],
-      yAxes: [{
-        gridLines: {
-          color: '#616161'
-        },
-        ticks: {
-          fontColor: '#bdbdbd',
-          fontFamily: '\'Rubik\', monospace'
-        }
-      }]
-    }
-  };
-
-  public lineChartColors: Color[] = [
-    {
-      backgroundColor: 'rgba(233,30,99,0.2)',
-      borderColor: '#E91E63',
-      pointBackgroundColor: '#E91E63',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: '#E91E63'
-    },
-  ];
 
   constructor(private dashboardService: DashboardService) { }
 

@@ -22,6 +22,7 @@ import { JobListComponent } from './optimization/job-list/job-list.component';
 import { JobViewerComponent } from './optimization/job-viewer/job-viewer.component';
 import { SelectJobMsgComponent } from './optimization/select-job-msg/select-job-msg.component';
 import { RouterModule } from '@angular/router';
+import { AssetCardComponent } from './portfolio/asset-card/asset-card.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { RouterModule } from '@angular/router';
     OptimizationComponent,
     JobListComponent,
     JobViewerComponent,
-    SelectJobMsgComponent
+    SelectJobMsgComponent,
+    AssetCardComponent
   ],
   imports: [
     CommonModule,

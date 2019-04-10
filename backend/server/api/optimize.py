@@ -33,7 +33,6 @@ class SubmitOptimizeJob(Resource):
     def post(self):
         args = request.json
         print('Processing optimization job submission for', args)
-        # TODO add name and user ID to task
         user_id = current_user.get('user_id')
         task_id = task_optimize.delay(args['name'], args['tickers'], args['start_date'], args['end_date'], user_id, args['interval'])
         # TODO stub out entry in results db with task and user id

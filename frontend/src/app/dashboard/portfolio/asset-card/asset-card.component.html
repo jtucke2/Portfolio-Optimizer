@@ -1,0 +1,19 @@
+<div class="assetCardComponent">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ priceData.ticker }}</mat-card-title>
+      <mat-card-subtitle>Prices over the last year</mat-card-subtitle>
+      <button mat-icon-button matTooltip="Remove Asset" (click)="removeAsset.emit(priceData.ticker)" *ngIf="removable">
+        <i class="material-icons">close</i>
+      </button>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="chartWrapper">
+        <canvas baseChart [datasets]="priceData.chartData" [labels]="priceData.chartLabels" [options]="lineChartOptions"
+          [colors]="lineChartColors" chartType="line" style="display: block"></canvas>
+      </div>
+    </mat-card-content>
+    <div class="text-right returnPercent" [class.negative]="priceData.returnPercent[0] === '-'">
+      {{ priceData.returnPercent }}%</div>
+  </mat-card>
+</div>

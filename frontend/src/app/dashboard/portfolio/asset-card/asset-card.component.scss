@@ -1,0 +1,10 @@
+.returnPercent {
+  margin-top: -20px;
+  font-size: 12px;
+
+  &.negative {
+    color: #F44336;
+  }
+
+  color: #4CAF50;
+}
