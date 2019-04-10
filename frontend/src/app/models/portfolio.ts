@@ -25,6 +25,9 @@ export interface Portfolio {
         interval: IntervalEnum;
         tickers: string[]
     };
+    benchmark_index: {
+        asset_data: AssetData;
+    };
     asset_data: AssetData[];
     matrices: Matricies;
     results: OptimizationResult[];

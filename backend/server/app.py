@@ -26,6 +26,6 @@ def user_loader_callback(identity):
 
 
 @celery.task(name='tasks.task_optimize')
-def task_optimize(name: str, tickers: List[str], start_date: str, end_date: str, user_id: str, interval='weekly'):
+def task_optimize(name: str, tickers: List[str], benchmark_index: str, start_date: str, end_date: str, user_id: str, interval='weekly'):
     task_id = task_optimize.request.id
-    return do_task_optimize(name, tickers, start_date, end_date, user_id, task_id, interval)
+    return do_task_optimize(name, tickers, benchmark_index, start_date, end_date, user_id, task_id, interval)

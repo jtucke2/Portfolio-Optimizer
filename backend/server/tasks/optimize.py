@@ -3,15 +3,26 @@ from server.db.portfolios import insert_job
 from datetime import datetime
 
 
-def do_task_optimize(name, tickers, start_date, end_date, user_id, task_id, interval='weekly'):
+def do_task_optimize(name, tickers, benchmark_index: str, start_date, end_date, user_id, task_id, interval='weekly'):
     job_start = datetime.now()
+
+    # Get & prepare portfolio data
     data = prep_data.get_data(tickers, start_date, end_date, interval)
     transformed_data, dates = prep_data.transform_yahoo_finance_dict(data)
     asset_data = prep_data.generate_asset_data_array(transformed_data)
+
+    # Get benchmark data
+    benchmark_data = prep_data.get_data(benchmark_index, start_date, end_date, interval)
+    benchmark_transformed_data, _ = prep_data.transform_yahoo_finance_dict(benchmark_data)
+    benchmark_asset_data = prep_data.generate_asset_data_array(benchmark_transformed_data)
+
+    # Optimize portfolio
     matrices = prep_data.AssetMatrices(asset_data)
     optimizer = optimize.Optimize(matrices)
     results = optimizer.optimize_all()
+
     job_end = datetime.now()
+
     job = {
         'job_start': job_start,
         'job_end': job_end,
@@ -23,6 +34,9 @@ def do_task_optimize(name, tickers, start_date, end_date, user_id, task_id, inte
             'start_date': start_date,
             'end_date': end_date,
             'interval': interval
+        },
+        'benchmark_index': {
+            'asset_data': benchmark_asset_data[0].as_dict()
         },
         'results': [res.as_dict() for res in results],
         'user_id': user_id,
