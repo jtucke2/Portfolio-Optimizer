@@ -2,10 +2,12 @@
 #optimizationComponent {
     min-height: calc(100vh - 64px);
 }
+
 #sidenav {
     width: 30vw;
     max-width: 350px;
 }
+
 #sidenavToggle {
     transition: all 0.2s ease-in-out;
     .opened & {

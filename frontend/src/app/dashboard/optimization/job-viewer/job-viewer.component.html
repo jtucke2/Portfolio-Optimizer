@@ -4,45 +4,169 @@
 
     <div class="row">
       <div class="col-12">
-        <h1>{{ p.name }}</h1>
-        <hr>
+        <h1 class="mat-display-3">{{ p.name }}</h1>
       </div>
     </div>
 
-    <div id="pInfo" class="mb-10 row">
-      <div class="col-12">
-        <h3>Portfolio Information</h3>
-        <p>
-          <strong>Ticker Symbols: </strong>
-          <span>{{ p.parameters.tickers.join(', ') }}</span><br>
-          <strong>Start Date: </strong>
-          <span>{{ p.parameters.start_date }}</span><br>
-          <strong>End Date: </strong>
-          <span>{{ p.parameters.end_date }}</span><br>
-          <strong>Interval: </strong>
-          <span>{{ p.parameters.interval | titlecase }}</span>
-        </p>
+    <div id="pInfo" class="mb-10">
+
+      <div class="row">
+        <div class="col-12">
+          <h2 class="mat-h2">Portfolio Information</h2>
+        </div>
       </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-md-12 mb-10 mb-30">
+          <mat-card class="full-height">
+            <mat-card-header>
+              <mat-card-title>Portfolio Parameters</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <strong>Asset Ticker Symbols: </strong>
+              <span>{{ p.parameters.tickers.join(', ') }}</span><br>
+              <strong>Start Date: </strong>
+              <span>{{ p.parameters.start_date }}</span><br>
+              <strong>End Date: </strong>
+              <span>{{ p.parameters.end_date }}</span><br>
+              <strong>Interval: </strong>
+              <span>{{ p.parameters.interval | titlecase }}</span>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-lg-6 col-md-12 mb-10 mb-30">
+          <mat-card class="full-height">
+            <mat-card-header>
+              <mat-card-title>Asset Return Correlations</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <table class="gridTable">
+                <thead>
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th *ngFor="let ticker of p.parameters.tickers" class="text-left">{{ ticker }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of p.matrices.correlation_matrix; index as rowIdx">
+                    <th class="text-right">{{ p.parameters.tickers[rowIdx] }}</th>
+                    <td *ngFor="let column of p.matrices.correlation_matrix[rowIdx]; index as colIdx">
+                      {{ rowIdx === colIdx ? 1 : column.toFixed(3) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>                
+      </div>
+
+      <div class="row">   
+        <div class="col-lg-6 col-md-12 mb-10 mb-30">
+          <mat-card class="full-height">
+            <mat-card-header>
+              <mat-card-title>Average {{ p.parameters.interval | titlecase }} Returns by Asset</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <table class="gridTable">
+                <thead>
+                  <tr>
+                    <th *ngFor="let ticker of p.parameters.tickers; index as i" class="text-left" [class.text-accent]="i === maxReturnsIdx">{{ ticker }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td *ngFor="let ret of p.matrices?.avg_returns_vec; index as i" [class.text-accent]="i === maxReturnsIdx">{{ (ret * 100).toFixed(4) }}%</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="mt-3 text-muted">
+                <small>Asset with highest average return is highlighted</small>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div> 
+        <div class="col-lg-6 col-md-12 mb-10 mb-30">
+          <mat-card class="full-height">
+            <mat-card-header>
+              <mat-card-title>Standard Deviation of Asset Returns</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <table class="gridTable">
+                <thead>
+                  <tr>
+                    <th *ngFor="let ticker of p.parameters.tickers; index as i" class="text-left" [class.text-accent]="i === minStdDevIdx">{{ ticker }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td *ngFor="let stdDev of p.matrices?.std_dev_vec; index as i" [class.text-accent]="i === minStdDevIdx">{{ stdDev.toFixed(4) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="mt-3 text-muted">
+                <small>Asset with lowest standard deviation of returns is highlighted</small>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div> 
     </div>
 
     <div id="optimizations" class="mb-10">
+
       <div class="row">
-        <h3 class="col-12">Optimization Results</h3>
+        <h2 class="mat-h2 col-12">Optimization Results</h2>
       </div>
+
       <div class="row">
-        <div *ngFor="let opt of p.results" class="col-6 mb-15">
-          <mat-card>
+        <div *ngFor="let opt of p.results" class="col-lg-6 col-md-12 mb-30">
+          <mat-card class="full-height" class="optimizationResultCard">
             <mat-card-header>
               <mat-card-title>{{ opt.goal }}</mat-card-title>
               <mat-card-subtitle>{{ opt.shorting_ok ? "Short Selling OK" : "No Short Selling" }}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
 
+              <div class="performance mb-10">
+                <h3 class="mat-subheading-2">Performance</h3>
+                <table>
+                  <tbody>
+                    <tr>
+                      <th class="text-right">Returns:&nbsp;</th>
+                      <td>{{ (opt.returns * 100).toFixed(4) }}%</td>
+                    </tr>
+                    <tr>
+                      <th class="text-right">Standard Deviation:&nbsp;</th>
+                      <td>{{ opt.std_dev.toFixed(4) }}</td>
+                    </tr>
+                    <tr>
+                      <th class="text-right">Sharpe Ratio:&nbsp;</th>
+                      <td>{{ opt.sharpe_ratio.toFixed(4) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="weights mb-10">
+                <h3 class="mat-subheading-2">Asset Weights</h3>
+                <table class="gridTable">
+                  <thead>
+                    <tr>
+                      <th *ngFor="let ticker of p.parameters.tickers" class="text-left">{{ ticker }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>                    
+                    <tr>
+                      <td *ngFor="let weight of opt.weights">{{ (weight * 100).toFixed(2) }}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
             </mat-card-content>
           </mat-card>
         </div>
       </div>
-      <div *ngFor="let opt of p.results">{{ opt | json }}</div>
+
     </div>
 
   </div>  

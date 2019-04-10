@@ -13,6 +13,9 @@ $warn: mat-color($frontend-warn);
 .text-primary {
   color: $primary;
 }
+.bg-primary {
+  background: $primary;
+}
 .text-accent {
   color: $accent;
 }
@@ -33,12 +36,16 @@ $warn: mat-color($frontend-warn);
 .text-center {
   text-align: center !important;
 }
+.text-left {
+  text-align: left;
+}
+.text-muted {
+  color: $light-disabled-text;
+}
 // TODO update colors to match angular material
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
-// @import "~bootstrap/scss/reboot";
-// TODO figure out how to get columns working w/o reboot
 * {
   box-sizing: border-box;
 }
@@ -51,7 +58,7 @@ body {
     margin: 0;
     font-family: 'Rubik', "Helvetica Neue", sans-serif;
     background: #303030;
-    color: #fff;
+    color: $light-primary-text;
 }
 .mat-body {
     font-family: 'Rubik', "Helvetica Neue", sans-serif;
@@ -59,6 +66,10 @@ body {
 
 .full-width {
     width: 100%;
+}
+
+.full-height {
+  height: 100%;
 }
 
 // Flex helpers
@@ -108,5 +119,13 @@ body {
 
   .pb-#{$i * 3} {
     padding-bottom: $i * 3px !important;
+  }
+}
+
+.gridTable {
+  border-collapse: collapse;
+  th, td {
+    border: 1px solid map-get($mat-grey, 700);
+    padding: 0.1rem 0.2rem;
   }
 }
