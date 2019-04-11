@@ -8,7 +8,9 @@
       true,
       "check-format",
       "allow-leading-underscore",
-      "allow-snake-case"
+      "allow-snake-case",
+      "allow-pascal-case",
+      "allow-trailing-underscore"
     ],
     "array-type": false,
     "arrow-parens": false,
