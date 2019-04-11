@@ -1,0 +1,68 @@
+@import 'modules/variables';
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $accent,
+  "info": $primary-lighter,
+  "success": $success,
+  "danger": $warn,
+  "warning": $warn,
+) !default;
+
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/code";
+
+// ~~~ Helpers and things missing from minimal bootstrap imports ~~~
+
+* {
+  box-sizing: border-box;
+}
+
+.text-primary {
+  color: $primary;
+}
+
+.bg-primary {
+  background: $primary;
+}
+
+.text-accent {
+  color: $accent;
+}
+
+.text-warn {
+  color: $warn;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-muted {
+  color: $light-disabled-text;
+}
+
+.hidden {
+  display: none;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.paddedContainer {
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+}

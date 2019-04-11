@@ -1,6 +1,8 @@
-<div id="jobViewerComponent" class="container-fluid">
-  <div *ngIf="loading">Loading Portfolio</div>
-  <div *ngIf="portfolio$ | async as p">
+<div id="jobViewerComponent" class="container-fluid paddedContainer">
+  <div *ngIf="loading">
+    <loading-spinner></loading-spinner>
+  </div>
+  <div *ngIf="portfolio$ | async as p" [class.hidden]="loading">
 
     <div class="row">
       <div class="col-12">
@@ -56,21 +58,23 @@
               <mat-card-title>Asset Return Correlations</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <table class="gridTable">
-                <thead>
-                  <tr>
-                    <th>&nbsp;</th>
-                    <th *ngFor="let ticker of p.parameters.tickers" class="text-left">{{ ticker }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let row of p.matrices.correlation_matrix; index as rowIdx">
-                    <th class="text-right">{{ p.parameters.tickers[rowIdx] }}</th>
-                    <td *ngFor="let column of p.matrices.correlation_matrix[rowIdx]; index as colIdx">
-                      {{ rowIdx === colIdx ? 1 : column.toFixed(3) }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="overflowX">              
+                <table class="gridTable">
+                  <thead>
+                    <tr>
+                      <th>&nbsp;</th>
+                      <th *ngFor="let ticker of p.parameters.tickers" class="text-left">{{ ticker }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of p.matrices.correlation_matrix; index as rowIdx">
+                      <th class="text-right">{{ p.parameters.tickers[rowIdx] }}</th>
+                      <td *ngFor="let column of p.matrices.correlation_matrix[rowIdx]; index as colIdx">
+                        {{ rowIdx === colIdx ? 1 : column.toFixed(3) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </mat-card-content>
           </mat-card>
         </div>                

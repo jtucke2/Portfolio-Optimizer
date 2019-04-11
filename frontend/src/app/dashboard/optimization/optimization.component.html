@@ -3,11 +3,9 @@
     <job-list></job-list>
   </mat-sidenav>
   <mat-sidenav-content id="sidenavContent">
-    <div>
-      <button mat-icon-button (click)="opened=!opened" id="sidenavToggle">
-        <i class="material-icons">keyboard_arrow_right</i>
-      </button>
-    </div>
+    <button mat-icon-button (click)="opened=!opened" id="sidenavToggle">
+      <i class="material-icons">keyboard_arrow_right</i>
+    </button>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

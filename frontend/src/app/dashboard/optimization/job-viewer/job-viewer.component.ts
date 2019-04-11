@@ -32,6 +32,7 @@ export class JobViewerComponent implements OnInit {
           this.loading = true;
           this.maxReturnsIdx = -1;
           this.minStdDevIdx = -1;
+          this.benchmarkName = '';
         }),
         switchMap(id => this.dashboardService.getPortfolioById(id)),
         tap((portfolio) => {

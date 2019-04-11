@@ -1,0 +1,15 @@
+.loadingContainer {
+width: 100%;
+display: flex;
+flex-flow: column;
+}
+
+.loadingContainer mat-spinner {
+margin: auto auto;
+}
+
+.loadingContainer .loading-text {
+margin-left: auto;
+margin-right: auto;
+display: block;
+}

@@ -1,0 +1,11 @@
+@import 'partials/angular-material-config';
+
+$primary: mat-color($frontend-primary);
+$primary-lighter: mat-color($frontend-primary, lighter);
+$primary-darker: mat-color($frontend-primary, darker);
+$accent: mat-color($frontend-accent);
+$accent-lighter: mat-color($frontend-accent, lighter);
+$accent-darker: mat-color($frontend-accent, darker);
+$warn: mat-color($frontend-warn);
+
+$success: map-get($mat-green, 500);

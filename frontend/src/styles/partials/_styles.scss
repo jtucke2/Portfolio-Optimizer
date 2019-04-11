@@ -1,0 +1,62 @@
+@import 'modules/variables';
+
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.formSpacer {
+  display: inline-block;
+  width: 1rem;
+}
+
+@for $i from 0 to 8 {
+  .mt-#{$i * 5} {
+    margin-top: $i * 5px;
+  }
+
+  .mb-#{$i * 5} {
+    margin-bottom: $i * 5px;
+  }
+
+  .mt-#{$i * 3} {
+    margin-top: $i * 3px;
+  }
+
+  .mb-#{$i * 3} {
+    margin-bottom: $i * 3px;
+  }
+
+  .pt-#{$i * 5} {
+    padding-top: $i * 5px !important;
+  }
+
+  .pb-#{$i * 5} {
+    padding-bottom: $i * 5px !important;
+  }
+
+  .pt-#{$i * 3} {
+    padding-top: $i * 3px !important;
+  }
+
+  .pb-#{$i * 3} {
+    padding-bottom: $i * 3px !important;
+  }
+}
+
+.overflowX {
+  overflow-x: auto;
+}
+
+.gridTable {
+  border-collapse: collapse;
+
+  th,
+  td {
+    border: 1px solid map-get($mat-grey, 700);
+    padding: 0.1rem 0.2rem;
+  }
+}

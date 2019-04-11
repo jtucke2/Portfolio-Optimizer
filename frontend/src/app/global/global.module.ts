@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatToolbarModule, MatProgressSpinnerModule } from '@angular/material';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { NavComponent } from './components/nav/nav.component';
 import { RouterModule } from '@angular/router';
@@ -10,18 +10,21 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
 import { AuthInterceptor } from './services/auth-interceptor.service';
 import { PageTitleComponent } from './components/page-title/page-title.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
     LandingPageComponent,
     NavComponent,
     PageTitleComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     CommonModule,
     MatButtonModule,
     MatCardModule,
     MatToolbarModule,
+    MatProgressSpinnerModule,
     RouterModule,
     HttpClientModule
   ],
@@ -29,6 +32,7 @@ import { PageTitleComponent } from './components/page-title/page-title.component
     LandingPageComponent,
     NavComponent,
     PageTitleComponent,
+    LoadingSpinnerComponent,
   ],
   providers: [
     ApiService,
