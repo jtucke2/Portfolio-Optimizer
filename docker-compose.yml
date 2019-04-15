@@ -8,14 +8,15 @@ services:
      - "5672:5672"
     env_file:
      - .env
+     - overrides.env
     environment:
      - RABBITMQ_DEFAULT_USER=admin
-     - RABBITMQ_DEFAULT_PASS=password
   po-database:
     container_name: po-database
     image: mongo:latest
     env_file:
      - .env
+     - overrides.env
     ports:
      - "27017:27017"
     volumes:
@@ -25,6 +26,7 @@ services:
     container_name: po-api
     env_file:
      - .env
+     - overrides.env
     entrypoint:
      - python
      - start_server.py
@@ -35,6 +37,7 @@ services:
     container_name: po-celery
     env_file:
      - .env
+     - overrides.env
     entrypoint:
      - celery
      - -A
