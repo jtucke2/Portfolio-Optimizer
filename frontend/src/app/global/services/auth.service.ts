@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, pluck } from 'rxjs/operators';
 
 import { ApiService } from './api.service';
 import { User } from 'src/app/models/user';
@@ -43,6 +43,13 @@ export class AuthService {
       .pipe(
         tap((dat) => dat.user ? this.userService.setUser(dat.user) : null),
         tap((dat) => dat.token ? this.userService.token = dat.token : null)
+      );
+  }
+
+  public emailTaken(email: string): Observable<boolean> {
+    return this.apiService.get(`${this.baseUrl}/email-taken/${email}`)
+      .pipe(
+        pluck('email_taken')
       );
   }
 }

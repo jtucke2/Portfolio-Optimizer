@@ -33,6 +33,9 @@
               <mat-error *ngIf="form.get('email').hasError('required')">
                 Email is <strong>required</strong>
               </mat-error>
+              <mat-error *ngIf="form.get('email').hasError('emailTaken')">
+                Email is <strong>taken</strong>
+              </mat-error>
             </mat-form-field>
 
             <mat-form-field class="full-width mb-10">
