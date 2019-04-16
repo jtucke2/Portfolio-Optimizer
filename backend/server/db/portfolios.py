@@ -38,7 +38,7 @@ def get_portfolio(portfolio_id: str) -> dict:
     return json.loads(json.dumps(doc, default=json_util.default))
 
 
-def get_portfolios_by_user(user_id: str, include_published = True) -> List[dict]:
+def get_portfolios_by_user(user_id: str, include_published: bool = True) -> List[dict]:
     if include_published:
         query = {
             "$or": [

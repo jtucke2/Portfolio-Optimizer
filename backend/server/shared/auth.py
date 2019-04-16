@@ -24,7 +24,7 @@ def check_pw(password_str: str, hashed: bytes) -> bool:
 
 
 def generate_user(password_str: str, first_name: str, last_name: str,
-                  email: str, role: UserRoles = UserRoles.STANDARD_USER) -> dict:
+                  email: str, role: UserRoles = UserRoles.STANDARD_USER, approved: bool = False) -> dict:
     # TODO check if name/email is unique + add index
     hashed = str_to_hash(password_str)
     doc = {
@@ -33,7 +33,7 @@ def generate_user(password_str: str, first_name: str, last_name: str,
             'last_name': last_name,
             'email': email,
             'role': role.value,
-            'approved': False
+            'approved': approved
         },
         'pw_hash': hashed
     }
