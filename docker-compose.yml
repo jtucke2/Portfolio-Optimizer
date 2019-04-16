@@ -62,12 +62,16 @@ services:
     build: ./frontend
     volumes:
      - ./frontend/src/:/opt/portfolio-optimizer/src
+     - ./frontend/static-html/:/opt/portfolio-optimizer/static-html
+     - ./frontend/package.json:/opt/portfolio-optimizer/package.json
+     - html_vol:/html
     env_file:
      - .env
      - overrides.env
     entrypoint:
      - npm
-     - start
+     - run
+     - build-docker
 volumes:
   mongo_data_vol:
   html_vol:
