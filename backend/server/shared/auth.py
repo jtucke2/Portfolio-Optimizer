@@ -23,15 +23,28 @@ def check_pw(password_str: str, hashed: bytes) -> bool:
     return checkpw(str.encode(password_str), hashed)
 
 
+def email_taken(email: str) -> bool:
+    l_email = email.lower()
+    user_with_email = user_dao.find_user_by_email(l_email)
+    if user_with_email:
+        return True
+    else:
+        return False
+
+
 def generate_user(password_str: str, first_name: str, last_name: str,
                   email: str, role: UserRoles = UserRoles.STANDARD_USER, approved: bool = False) -> dict:
-    # TODO check if name/email is unique + add index
+    if email_taken(email):
+        return {
+            'success': False,
+            'message': 'Email is already registered.'
+        }
     hashed = str_to_hash(password_str)
     doc = {
         'data': {
             'first_name': first_name,
             'last_name': last_name,
-            'email': email,
+            'email': email.lower(),
             'role': role.value,
             'approved': approved
         },
@@ -52,7 +65,7 @@ def generate_user(password_str: str, first_name: str, last_name: str,
 
 
 def login(email: str, password_str: str) -> Optional[dict]:
-    user = user_dao.find_user_by_email(email)
+    user = user_dao.find_user_by_email(email.lower())
     if user and check_pw(password_str, user['pw_hash']):
         return user
     else:

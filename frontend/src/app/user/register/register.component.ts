@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable, timer as observableTimer } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 import { AuthService, RegisterReturnData } from 'src/app/global/services/auth.service';
-import { UserService } from 'src/app/global/services/user.service';
 
 @Component({
   selector: 'register',
@@ -15,7 +16,7 @@ export class RegisterComponent implements OnInit {
   public form: FormGroup = new FormGroup({
     first_name: new FormControl('', Validators.required),
     last_name: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required, Validators.email], this.validateEmail.bind(this)),
     password: new FormControl('', Validators.required),
     password_confirm: new FormControl('', Validators.required)
   });
@@ -39,5 +40,12 @@ export class RegisterComponent implements OnInit {
           this.errorMessage = err.error.message;
         }
       );
+  }
+
+  private validateEmail(emailCtrl: FormControl): Observable<any> {
+    return observableTimer(100).pipe(
+      switchMap(() => this.authService.emailTaken(emailCtrl.value)),
+      map((emailTaken: boolean) => emailTaken ? { emailTaken: true } : null)
+    );
   }
 }
