@@ -27,5 +27,6 @@ python_version = "3.7"
 
 [scripts]
 test = "pytest"
-start_api_dev = "python server/app.py"
+start = "python start_server.py"
 codestyle = "pycodestyle"
+processor = "python processor.py"

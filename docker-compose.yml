@@ -8,14 +8,15 @@ services:
      - "5672:5672"
     env_file:
      - .env
+     - overrides.env
     environment:
      - RABBITMQ_DEFAULT_USER=admin
-     - RABBITMQ_DEFAULT_PASS=password
   po-database:
     container_name: po-database
     image: mongo:latest
     env_file:
      - .env
+     - overrides.env
     ports:
      - "27017:27017"
     volumes:
@@ -25,16 +26,33 @@ services:
     container_name: po-api
     env_file:
      - .env
+     - overrides.env
+    volumes:
+     - ./backend:/opt/portfolio-optimizer
     entrypoint:
      - python
      - start_server.py
     ports:
      - "5000:5000"
+  po-processor:
+    build: ./backend
+    container_name: po-processor
+    env_file:
+     - .env
+     - overrides.env
+    volumes:
+     - ./backend:/opt/portfolio-optimizer
+    entrypoint:
+     - python
+     - processor.py
   po-celery:
     build: ./backend
     container_name: po-celery
     env_file:
      - .env
+     - overrides.env
+    volumes:
+     - ./backend:/opt/portfolio-optimizer
     entrypoint:
      - celery
      - -A
@@ -42,5 +60,33 @@ services:
      - worker
      - --app=server.app:celery
      - --loglevel=info
+  po-gateway:
+    container_name: po-gateway
+    image: nginx:latest
+    ports:
+     - "80:80"
+     - "443:443"
+    volumes: 
+     - ./gateway/default.conf:/etc/nginx/conf.d/default.conf
+     - html_vol:/etc/nginx/html
+    env_file:
+     - .env
+     - overrides.env
+  po-build-ui:
+    container_name: po-build-ui
+    build: ./frontend
+    volumes:
+     - ./frontend/src/:/opt/portfolio-optimizer/src
+     - ./frontend/static-html/:/opt/portfolio-optimizer/static-html
+     - ./frontend/package.json:/opt/portfolio-optimizer/package.json
+     - html_vol:/html
+    env_file:
+     - .env
+     - overrides.env
+    entrypoint:
+     - npm
+     - run
+     - build-docker
 volumes:
   mongo_data_vol:
+  html_vol:
