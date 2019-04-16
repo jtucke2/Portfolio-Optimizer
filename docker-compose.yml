@@ -45,5 +45,29 @@ services:
      - worker
      - --app=server.app:celery
      - --loglevel=info
+  po-gateway:
+    container_name: po-gateway
+    image: nginx:latest
+    ports:
+     - "80:80"
+     - "443:443"
+    volumes: 
+     - ./gateway/default.conf:/etc/nginx/conf.d/default.conf
+     - html_vol:/etc/nginx/html
+    env_file:
+     - .env
+     - overrides.env
+  po-build-ui:
+    container_name: po-build-ui
+    build: ./frontend
+    volumes:
+     - ./frontend/src/:/opt/portfolio-optimizer/src
+    env_file:
+     - .env
+     - overrides.env
+    entrypoint:
+     - npm
+     - start
 volumes:
   mongo_data_vol:
+  html_vol:

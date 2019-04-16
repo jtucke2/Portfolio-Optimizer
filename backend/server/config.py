@@ -10,7 +10,8 @@ Config = TypedDict('Config', {
     'BROKER_USER': str,
     'BROKER_PASSWORD': str,
     'DB_HOST': str,
-    'DC_PORT': str
+    'DC_PORT': str,
+    'JWT_SECRET_KEY': str,
 })
 
 
