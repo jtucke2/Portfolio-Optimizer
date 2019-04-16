@@ -27,17 +27,32 @@ services:
     env_file:
      - .env
      - overrides.env
+    volumes:
+     - ./backend:/opt/portfolio-optimizer
     entrypoint:
      - python
      - start_server.py
     ports:
      - "5000:5000"
+  po-processor:
+    build: ./backend
+    container_name: po-processor
+    env_file:
+     - .env
+     - overrides.env
+    volumes:
+     - ./backend:/opt/portfolio-optimizer
+    entrypoint:
+     - python
+     - processor.py
   po-celery:
     build: ./backend
     container_name: po-celery
     env_file:
      - .env
      - overrides.env
+    volumes:
+     - ./backend:/opt/portfolio-optimizer
     entrypoint:
      - celery
      - -A
