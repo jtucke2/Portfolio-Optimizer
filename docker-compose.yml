@@ -1,5 +1,63 @@
 version: '3.3'
-services:
+services:  
+  po-api:
+    container_name: po-api
+    image: po-backend
+    build: ./backend
+    env_file:
+     - .env
+     - overrides.env
+    volumes:
+     - ./backend:/opt/portfolio-optimizer
+    entrypoint:
+     - python
+     - start_server.py
+    ports:
+     - "5000:5000"
+  po-processor:
+    container_name: po-processor
+    image: po-backend
+    build: ./backend
+    env_file:
+     - .env
+     - overrides.env
+    volumes:
+     - ./backend:/opt/portfolio-optimizer
+    entrypoint:
+     - python
+     - processor.py
+  po-celery:
+    container_name: po-celery
+    image: po-backend
+    build: ./backend
+    env_file:
+     - .env
+     - overrides.env
+    volumes:
+     - ./backend:/opt/portfolio-optimizer
+    entrypoint:
+     - celery
+     - -A
+     - server     
+     - worker
+     - --app=server.app:celery
+     - --loglevel=info  
+  po-build-ui:
+    container_name: po-build-ui
+    image: po-frontend
+    build: ./frontend
+    volumes:
+     - ./frontend/src/:/opt/portfolio-optimizer/src
+     - ./frontend/static-html/:/opt/portfolio-optimizer/static-html
+     - ./frontend/package.json:/opt/portfolio-optimizer/package.json
+     - html_vol:/html
+    env_file:
+     - .env
+     - overrides.env
+    entrypoint:
+     - npm
+     - run
+     - build-docker
   po-task-queue:
     container_name: po-task-queue
     image: rabbitmq:3.8-rc-management-alpine
@@ -21,45 +79,6 @@ services:
      - "27017:27017"
     volumes:
      - mongo_data_vol:/data/db
-  po-api:
-    build: ./backend
-    container_name: po-api
-    env_file:
-     - .env
-     - overrides.env
-    volumes:
-     - ./backend:/opt/portfolio-optimizer
-    entrypoint:
-     - python
-     - start_server.py
-    ports:
-     - "5000:5000"
-  po-processor:
-    build: ./backend
-    container_name: po-processor
-    env_file:
-     - .env
-     - overrides.env
-    volumes:
-     - ./backend:/opt/portfolio-optimizer
-    entrypoint:
-     - python
-     - processor.py
-  po-celery:
-    build: ./backend
-    container_name: po-celery
-    env_file:
-     - .env
-     - overrides.env
-    volumes:
-     - ./backend:/opt/portfolio-optimizer
-    entrypoint:
-     - celery
-     - -A
-     - server     
-     - worker
-     - --app=server.app:celery
-     - --loglevel=info
   po-gateway:
     container_name: po-gateway
     image: nginx:latest
@@ -72,21 +91,6 @@ services:
     env_file:
      - .env
      - overrides.env
-  po-build-ui:
-    container_name: po-build-ui
-    build: ./frontend
-    volumes:
-     - ./frontend/src/:/opt/portfolio-optimizer/src
-     - ./frontend/static-html/:/opt/portfolio-optimizer/static-html
-     - ./frontend/package.json:/opt/portfolio-optimizer/package.json
-     - html_vol:/html
-    env_file:
-     - .env
-     - overrides.env
-    entrypoint:
-     - npm
-     - run
-     - build-docker
 volumes:
   mongo_data_vol:
   html_vol:

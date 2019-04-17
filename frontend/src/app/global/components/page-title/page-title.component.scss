@@ -1,5 +1,8 @@
+@import 'modules/variables';
+
 #pageTitleComponent {
-    background: #00ACC1;
+    background: $primary-lighter;
+
     .col-12 {
         min-height: 80px;
         display: flex;

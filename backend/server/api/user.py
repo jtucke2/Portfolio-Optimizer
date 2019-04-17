@@ -85,4 +85,15 @@ class Register(Resource):
         if gen_user.get('success'):
             return {'user': gen_user.get('user')}
         else:
-            return {'message': 'An error occurred while attempting to create user'}, 500
+            message = gen_user.get('message') if gen_user.get('message') \
+                else 'An error occurred while attempting to create user'
+            return {'message': message}, 500
+
+
+@api.route('/email-taken/<email>')
+@api.doc(params={'email': 'The email to check if taken'})
+class EmailTaken(Resource):
+    def get(self, email):
+        return {
+            'email_taken': auth.email_taken(email)
+        }

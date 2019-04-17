@@ -1,0 +1,22 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.23.2
+
+before_script:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - touch overrides.env
+  - docker-compose up --build -d
+
+script:
+  - docker exec -it po-api pycodestyle
+  - docker run --rm -it po-frontend npm run lint-all
+
+after_script:
+  - docker-compose down
