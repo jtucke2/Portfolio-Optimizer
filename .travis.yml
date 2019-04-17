@@ -16,7 +16,7 @@ before_script:
 
 script:
   - docker exec -it po-api pycodestyle
-  - docker run --rm -it po-frontend npm run lint
+  - docker run --rm -it po-frontend npm run lint-all
 
 after_script:
   - docker-compose down
