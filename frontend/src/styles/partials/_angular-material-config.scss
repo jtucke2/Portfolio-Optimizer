@@ -1,7 +1,7 @@
 @import '~@angular/material/theming';
 $custom-typography: mat-typography-config($font-family: 'Rubik, monospace');
 @include mat-core($custom-typography);
-$frontend-primary: mat-palette($mat-cyan, 700, 400, 900);
+$frontend-primary: mat-palette($mat-cyan, 700, 600, 900);
 $frontend-accent: mat-palette($mat-pink, A200, A100, A400);
 $frontend-warn: mat-palette($mat-deep-orange);
 $frontend-theme: mat-dark-theme($frontend-primary, $frontend-accent, $frontend-warn);
