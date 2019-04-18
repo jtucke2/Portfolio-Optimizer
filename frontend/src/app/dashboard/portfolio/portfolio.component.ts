@@ -55,13 +55,13 @@ export class PortfolioComponent implements OnInit {
             );
         }),
         map((priceData) => {
-          this.lastValidPriceData = priceData;
           return {
             ...priceData,
             prices: ArrayHelpers.spaceOutArrayElements(priceData.prices, globalVars.NUMBER_OF_PRICES_TO_GRAPH)
           };
         }),
         map(priceData => {
+          this.lastValidPriceData = priceData;
           const prices = priceData.prices.map(p => parseFloat(parseFloat(p.close as any).toFixed(2)));
           const chartData = [{ data: prices, label: priceData.ticker }];
           const chartLabels = priceData.prices.map(p => p.date);

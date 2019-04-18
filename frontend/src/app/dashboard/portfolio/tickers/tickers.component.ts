@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DashboardService } from '../../dashboard.service';
-import { IntervalEnum } from 'src/app/models/portfolio';
 import { Prices } from 'src/app/models/price';
 import { Label as ng2ChartLabel} from 'ng2-charts';
 import { ChartDataSets } from 'chart.js';
 import ArrayHelpers from 'src/app/global/helpers/array-helpers';
-import { map } from 'rxjs/operators';
+import { map, switchMap, startWith, debounceTime } from 'rxjs/operators';
+import { merge as observableMerge } from 'rxjs';
 import { globalVars } from 'src/app/global/global-vars';
 
 export interface PricesExtended extends Prices {
@@ -27,6 +27,7 @@ export class TickersComponent implements OnInit {
   });
   public errorMessage = '';
   public priceDataArr: PricesExtended[] = [];
+  public hideTickerInput = false;
 
   constructor(private dashboardService: DashboardService) { }
 
@@ -43,14 +44,21 @@ export class TickersComponent implements OnInit {
       const tickers = this.form.get('tickers').value;
       tickers.push(ticker);
       this.form.get('tickers').patchValue(tickers);
-      this.tickerForm.reset();
-      const getPrices$ = this.dashboardService.getPrices(
-          ticker,
-          this.form.get('start_date').value,
-          this.form.get('end_date').value,
-          this.form.get('interval').value
-        )
+      this.tickerForm.get('ticker').reset();
+      const { start_date, end_date, interval } = this.form.value;
+      const getPrices$ = this.dashboardService.getPrices(ticker, start_date, end_date, interval)
         .pipe(
+          switchMap((priceData) => {
+            return observableMerge(this.form.get('start_date').valueChanges, this.form.get('start_date').valueChanges)
+              .pipe(
+                debounceTime(300),
+                switchMap(() => {
+                  const { start_date: sd, end_date: ed, interval: it } = this.form.value;
+                  return this.dashboardService.getPrices(ticker, sd, ed, it);
+                }),
+                startWith(priceData)
+              );
+          }),
           map((priceData) => {
             return {
               ...priceData,
@@ -66,12 +74,18 @@ export class TickersComponent implements OnInit {
             const rawPrices = priceData.prices.map(p => p.close);
             let returnPercent: string | number = (rawPrices[rawPrices.length - 1] - rawPrices[0]) / rawPrices[0] * 100;
             returnPercent = returnPercent > 0 ? `+${returnPercent.toFixed(2)}` : returnPercent.toFixed(2);
-            this.priceDataArr.push({
+            const data = {
               ...priceData,
               chartData,
               chartLabels,
               returnPercent
-            });
+            };
+            const currentIndex = this.priceDataArr.findIndex(pd => pd.ticker === priceData.ticker);
+            if (currentIndex > -1) {
+              this.priceDataArr[currentIndex] = data;
+            } else {
+              this.priceDataArr.push(data);
+            }
           },
           (err) => {
             console.log(err);
