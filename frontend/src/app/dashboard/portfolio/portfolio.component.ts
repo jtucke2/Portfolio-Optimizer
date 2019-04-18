@@ -76,7 +76,9 @@ export class PortfolioComponent implements OnInit {
             ...priceData,
             chartData,
             chartLabels,
-            returnPercent
+            returnPercent,
+            startDate: this.form.get('start_date').value,
+            endDate: this.form.get('end_date').value
           };
         })
       );
