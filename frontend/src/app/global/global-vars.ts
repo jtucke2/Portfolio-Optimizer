@@ -13,5 +13,6 @@ export const globalVars = {
             value: '^IXIC'
         }
     ],
-    FONT_FAMILY: '\'Rubik\', monospace'
+    FONT_FAMILY: '\'Rubik\', monospace',
+    NUMBER_OF_PRICES_TO_GRAPH: 20,
 };

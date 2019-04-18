@@ -5,6 +5,9 @@ import { IntervalEnum } from 'src/app/models/portfolio';
 import { Prices } from 'src/app/models/price';
 import { Label as ng2ChartLabel} from 'ng2-charts';
 import { ChartDataSets } from 'chart.js';
+import ArrayHelpers from 'src/app/global/helpers/array-helpers';
+import { map } from 'rxjs/operators';
+import { globalVars } from 'src/app/global/global-vars';
 
 export interface PricesExtended extends Prices {
   chartData: ChartDataSets[];
@@ -41,11 +44,24 @@ export class TickersComponent implements OnInit {
       tickers.push(ticker);
       this.form.get('tickers').patchValue(tickers);
       this.tickerForm.reset();
-      const getPrices$ = this.dashboardService.getPrices(ticker, startDate, new Date(), IntervalEnum.MONTHLY)
+      const getPrices$ = this.dashboardService.getPrices(
+          ticker,
+          this.form.get('start_date').value,
+          this.form.get('end_date').value,
+          this.form.get('interval').value
+        )
+        .pipe(
+          map((priceData) => {
+            return {
+              ...priceData,
+              prices: ArrayHelpers.spaceOutArrayElements(priceData.prices, globalVars.NUMBER_OF_PRICES_TO_GRAPH)
+            };
+          })
+        )
         .subscribe(
           (priceData) => {
-            const prices = priceData.prices.map(p => parseFloat(parseFloat(p.close as any).toFixed(2)));
-            const chartData = [{ data: prices, label: ticker }];
+            const pricesRounded = priceData.prices.map(p => parseFloat(parseFloat(p.close as any).toFixed(2)));
+            const chartData = [{ data: pricesRounded, label: ticker }];
             const chartLabels = priceData.prices.map(p => p.date);
             const rawPrices = priceData.prices.map(p => p.close);
             let returnPercent: string | number = (rawPrices[rawPrices.length - 1] - rawPrices[0]) / rawPrices[0] * 100;

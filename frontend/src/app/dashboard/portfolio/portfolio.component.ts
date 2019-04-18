@@ -3,9 +3,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IntervalEnum } from 'src/app/models/portfolio';
 import { DashboardService } from '../dashboard.service';
 import { globalVars } from 'src/app/global/global-vars';
-import { Observable } from 'rxjs';
+import { Observable, merge as observableMerge, of as observableOf } from 'rxjs';
 import { PricesExtended } from './tickers/tickers.component';
-import { switchMap, map, startWith } from 'rxjs/operators';
+import { switchMap, map, startWith, catchError, debounceTime } from 'rxjs/operators';
+import ArrayHelpers from 'src/app/global/helpers/array-helpers';
+import { Prices } from 'src/app/models/price';
 
 @Component({
   selector: 'portfolio',
@@ -14,6 +16,7 @@ import { switchMap, map, startWith } from 'rxjs/operators';
 })
 export class PortfolioComponent implements OnInit {
   public benchmarkPrices$: Observable<PricesExtended>;
+  public lastValidPriceData: PricesExtended | Prices;
   public form = new FormGroup({
     name: new FormControl('', Validators.required),
     start_date: new FormControl(null, Validators.required),
@@ -34,11 +37,29 @@ export class PortfolioComponent implements OnInit {
 
     const startDate = new Date();
     startDate.setFullYear(startDate.getFullYear() - 1);
-    this.benchmarkPrices$ = this.form.get('benchmark_index').valueChanges
+    this.benchmarkPrices$ = observableMerge(
+        this.form.get('benchmark_index').valueChanges,
+        this.form.get('start_date').valueChanges,
+        this.form.get('end_date').valueChanges
+      )
       .pipe(
         startWith(this.form.get('benchmark_index').value),
-        switchMap(ticker => {
-          return this.dashboardService.getPrices(ticker, startDate, new Date(), IntervalEnum.MONTHLY);
+        debounceTime(300),
+        switchMap(() => {
+          const { benchmark_index, start_date, end_date, interval } = this.form.value;
+          return this.dashboardService.getPrices(benchmark_index, start_date, end_date, interval)
+            .pipe(
+              catchError(() => {
+                return observableOf(this.lastValidPriceData);
+              })
+            );
+        }),
+        map((priceData) => {
+          this.lastValidPriceData = priceData;
+          return {
+            ...priceData,
+            prices: ArrayHelpers.spaceOutArrayElements(priceData.prices, globalVars.NUMBER_OF_PRICES_TO_GRAPH)
+          };
         }),
         map(priceData => {
           const prices = priceData.prices.map(p => parseFloat(parseFloat(p.close as any).toFixed(2)));

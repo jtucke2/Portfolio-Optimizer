@@ -2,7 +2,7 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ priceData.ticker }}</mat-card-title>
-      <mat-card-subtitle>Prices over the last year</mat-card-subtitle>
+      <!-- <mat-card-subtitle>{{ Prices over the last year</mat-card-subtitle> -->
       <button mat-icon-button matTooltip="Remove Asset" (click)="removeAsset.emit(priceData.ticker)" *ngIf="removable">
         <i class="material-icons">close</i>
       </button>
