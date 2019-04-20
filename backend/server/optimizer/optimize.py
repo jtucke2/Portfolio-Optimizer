@@ -8,6 +8,7 @@ from json import loads as json_loads
 from enum import Enum
 
 from server.optimizer.prep_data import AssetMatrices
+from server.optimizer.returns import PortfolioReturns
 
 
 class OptimizeGoal(Enum):
@@ -25,6 +26,7 @@ class OptimizeOutcome:
     std_dev: float
     sharpe_ratio: float
     optimize_result: OptimizeResult
+    portfolio_returns: PortfolioReturns
 
     def as_dict(self):
         return {
@@ -33,7 +35,8 @@ class OptimizeOutcome:
             'weights': self.weights.tolist() if type(self.weights) == np.ndarray else self.weights,
             'returns': self.returns.tolist()[0] if type(self.returns) == np.ndarray else self.returns,
             'std_dev': self.std_dev,
-            'sharpe_ratio': self.sharpe_ratio
+            'sharpe_ratio': self.sharpe_ratio,
+            'portfolio_returns': self.portfolio_returns.as_dict()
         }
 
 
@@ -117,9 +120,10 @@ class Optimize(object):
         )
 
         pw = self.process_weights(optimize_result.x)
+        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x)
 
         return OptimizeOutcome(OptimizeGoal.MAX_SHARPE, shorting_allowed, optimize_result.x,
-                               pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result)
+                               pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result, portfolio_returns)
 
     def generate_max_returns(self, shorting_allowed=False) -> OptimizeOutcome:
         def max_returns_fn(weights_vec: np.ndarray):
@@ -136,9 +140,10 @@ class Optimize(object):
         )
 
         pw = self.process_weights(optimize_result.x)
+        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x)
 
         return OptimizeOutcome(OptimizeGoal.MAX_RETURNS, shorting_allowed, optimize_result.x,
-                               pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result)
+                               pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result, portfolio_returns)
 
     def generate_min_std_dev(self, shorting_allowed=False) -> OptimizeOutcome:
         def min_std_dev_fn(weights_vec: np.ndarray):
@@ -155,9 +160,10 @@ class Optimize(object):
         )
 
         pw = self.process_weights(optimize_result.x)
+        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x)
 
         return OptimizeOutcome(OptimizeGoal.MIN_STD_DEV, shorting_allowed, optimize_result.x,
-                               pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result)
+                               pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result, portfolio_returns)
 
     def optimize_all(self) -> List[OptimizeOutcome]:
         # TODO add equal weight to this return

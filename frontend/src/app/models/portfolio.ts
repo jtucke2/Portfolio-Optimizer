@@ -27,6 +27,7 @@ export interface Portfolio {
     };
     benchmark_index: {
         asset_data: AssetData;
+        returns: PortfolioReturns;
     };
     asset_data: AssetData[];
     matrices: Matricies;
@@ -53,6 +54,13 @@ export interface Matricies {
     correlation_matrix: number[][];
 }
 
+export interface PortfolioReturns {
+    portfolio_prices: number[];
+    portfolio_values: number[];
+    portfolio_returns: number[];
+    total_return: number;
+}
+
 export interface OptimizationResult {
     // TODO add enum for goals
     goal: string;
@@ -61,4 +69,5 @@ export interface OptimizationResult {
     shorting_ok: boolean;
     std_dev: number;
     weights: number[];
+    portfolio_returns: PortfolioReturns;
 }

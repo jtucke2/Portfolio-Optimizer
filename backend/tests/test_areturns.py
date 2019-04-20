@@ -16,13 +16,19 @@ def test_returns():
     matrices = prep_data.AssetMatrices(asset_data)
     optimizer = optimize.Optimize(matrices)
     results = optimizer.optimize_all()
-    portfolio_returns = PortfolioReturns(results[0].weights, asset_data)
-    # TODO do a test
+
+    portfolio_returns = results[0].portfolio_returns
+    assert len(portfolio_returns.portfolio_returns) == len(asset_data[0].returns)
+    assert len(portfolio_returns.portfolio_values) == len(asset_data[0].price_data)
+
+    portfolio_returns_dict = portfolio_returns.as_dict()
+    assert portfolio_returns_dict['total_return'] > 0
 
 
-def test_returns_s_and_p():
+def test_returns_s_and_p_500():
     data = prep_data.get_data('^GSPC', '2018-05-01', '2019-02-01', 'weekly')
     transformed_data, dates = prep_data.transform_yahoo_finance_dict(data)
     asset_data = prep_data.generate_asset_data_array(transformed_data)
-    portfolio_returns = PortfolioReturns(np.array([1.]), asset_data)
-    # TODO do a test
+    portfolio_returns = PortfolioReturns(asset_data)
+    assert len(portfolio_returns.portfolio_returns) == len(asset_data[0].returns)
+    assert len(portfolio_returns.portfolio_values) == len(asset_data[0].price_data)
