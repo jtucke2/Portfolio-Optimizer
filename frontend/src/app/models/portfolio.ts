@@ -61,9 +61,15 @@ export interface PortfolioReturns {
     total_return: number;
 }
 
+export enum OptimizeGoal {
+    MAX_SHARPE = 'Maximum Sharpe Ratio',
+    MAX_RETURNS = 'Maximum Returns',
+    MIN_STD_DEV = 'Minimum Standard Deviation',
+    EQUAL_WEIGHT = 'Equal Weights'
+}
+
 export interface OptimizationResult {
-    // TODO add enum for goals
-    goal: string;
+    goal: OptimizeGoal;
     returns: number;
     sharpe_ratio: number;
     shorting_ok: boolean;

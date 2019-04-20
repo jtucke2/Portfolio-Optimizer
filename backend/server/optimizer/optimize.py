@@ -4,7 +4,7 @@ import numpy as np
 from scipy.optimize import minimize, OptimizeResult
 from functools import reduce
 from dataclasses import dataclass
-from json import loads as json_loads
+from typing import Optional
 from enum import Enum
 
 from server.optimizer.prep_data import AssetMatrices
@@ -15,6 +15,7 @@ class OptimizeGoal(Enum):
     MAX_SHARPE = 'Maximum Sharpe Ratio'
     MAX_RETURNS = 'Maximum Returns'
     MIN_STD_DEV = 'Minimum Standard Deviation'
+    EQUAL_WEIGHT = 'Equal Weights'
 
 
 @dataclass
@@ -25,7 +26,7 @@ class OptimizeOutcome:
     returns: Union[np.ndarray, float]
     std_dev: float
     sharpe_ratio: float
-    optimize_result: OptimizeResult
+    optimize_result: Optional[OptimizeResult]
     portfolio_returns: PortfolioReturns
 
     def as_dict(self):
@@ -41,6 +42,7 @@ class OptimizeOutcome:
 
 
 class Optimize(object):
+    equal_weights_outcome: OptimizeOutcome
     weights_equal_1_constraint = {
         'type': 'eq',
         'fun': lambda arr: reduce(lambda acc, cur: acc + cur, arr) - 1
@@ -55,7 +57,11 @@ class Optimize(object):
 
         # Generate equal returns data as a baseline
         self.equal_weights = np.array([1 / len(asset_matrices.asset_data)] * len(asset_matrices.asset_data))
-        self.equal_weights_results = self.process_weights(self.equal_weights)
+        equal_weights_results = self.process_weights(self.equal_weights)
+        equal_weights_returns = PortfolioReturns(self.asset_matrices.asset_data, self.equal_weights)
+        self.equal_weights_outcome = OptimizeOutcome(OptimizeGoal.EQUAL_WEIGHT, False, self.equal_weights,
+                                                     equal_weights_results['returns'], equal_weights_results['std_dev'],
+                                                     equal_weights_results['sharpe_ratio'], None, equal_weights_returns)
 
         self.min_std_dev = np.min(asset_matrices.std_dev_vec)
         # The standard deviation must be <= the lowest standard deviation of any assets
@@ -168,6 +174,7 @@ class Optimize(object):
     def optimize_all(self) -> List[OptimizeOutcome]:
         # TODO add equal weight to this return
         return [
+            self.equal_weights_outcome,
             self.generate_max_sharpe_ratio(),
             self.generate_max_sharpe_ratio(True),
             self.generate_max_returns(),

@@ -172,6 +172,10 @@
                       <th class="text-right">Sharpe Ratio:&nbsp;</th>
                       <td>{{ opt.sharpe_ratio.toFixed(4) }}</td>
                     </tr>
+                    <tr>
+                      <th class="text-right">Total Return:&nbsp;</th>
+                      <td>{{ (opt.portfolio_returns.total_return * 100).toFixed(4) }}%</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
