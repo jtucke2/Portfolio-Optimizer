@@ -1,3 +1,15 @@
 <p>
   select-job-msg works!
 </p>
+<div class="container">
+  <div class="row" *ngFor="let chart of charts">
+    <div class="col-12">
+      <br>
+      <mat-card>
+        <mat-card-content>
+          <div [chart]="chart" id="bar"></div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

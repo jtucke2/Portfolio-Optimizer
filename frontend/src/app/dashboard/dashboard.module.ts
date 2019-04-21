@@ -23,6 +23,31 @@ import { JobViewerComponent } from './optimization/job-viewer/job-viewer.compone
 import { SelectJobMsgComponent } from './optimization/select-job-msg/select-job-msg.component';
 import { RouterModule } from '@angular/router';
 import { AssetCardComponent } from './portfolio/asset-card/asset-card.component';
+import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
+import stock from 'highcharts/modules/stock.src';
+import more from 'highcharts/highcharts-more.src';
+import theme from 'highcharts/themes/dark-unica.src';
+
+function highChartsCustom(highchartsParam) {
+  const extendedTheme = {
+    ...highchartsParam.theme,
+    colors: [
+      'red', 'blue'
+    ],
+    series: {
+      ...highchartsParam.theme.series,
+      fillColor: 'green'
+    },
+    chart: {
+      ...highchartsParam.theme.chart,
+      style: {
+        fontFamily: '\'Rubik\', monospace'
+      }
+    }
+  };
+  highchartsParam.setOptions(extendedTheme);
+  return highchartsParam;
+}
 
 @NgModule({
   declarations: [
@@ -49,10 +74,12 @@ import { AssetCardComponent } from './portfolio/asset-card/asset-card.component'
     MatSidenavModule,
     MatListModule,
     ChartsModule,
-    RouterModule
+    RouterModule,
+    ChartModule
   ],
   providers: [
-    DashboardService
+    DashboardService,
+    { provide: HIGHCHARTS_MODULES, useFactory: () => [stock, more, theme, highChartsCustom] }
   ]
 })
 export class DashboardModule { }
