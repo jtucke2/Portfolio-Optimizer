@@ -73,15 +73,15 @@ export class JobViewerComponent implements OnInit {
             },
 
             tooltip: {
-              pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.change}%</b><br/></span>',
+              pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.change}%</b><br>',
               valueDecimals: 2,
               split: true
             },
             series: [
               this.generateChartSeries(
-                portfolio.results[0].goal, portfolio.price_dates, portfolio.results[0].portfolio_returns.portfolio_values),
-              this.generateChartSeries(
                 portfolio.results[1].goal, portfolio.price_dates, portfolio.results[1].portfolio_returns.portfolio_values),
+              this.generateChartSeries(
+                portfolio.results[0].goal, portfolio.price_dates, portfolio.results[0].portfolio_returns.portfolio_values),
               this.generateChartSeries(
                 'Benchmark Index', portfolio.price_dates, portfolio.benchmark_index.returns.portfolio_values),
             ]

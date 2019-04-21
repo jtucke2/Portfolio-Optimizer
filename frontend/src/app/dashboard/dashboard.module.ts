@@ -28,6 +28,8 @@ import stock from 'highcharts/modules/stock.src';
 import more from 'highcharts/highcharts-more.src';
 import theme from 'highcharts/themes/dark-unica.src';
 
+import { cyan, pink, blueGrey, grey } from 'material-colors';
+
 function highChartsCustom(highchartsParam) {
   const extendedTheme = {
     ...highchartsParam.theme,
@@ -36,7 +38,7 @@ function highChartsCustom(highchartsParam) {
     },
     // TODO add color gradients to globalVars
     colors: [
-      'red', 'blue', 'green', 'orange', 'purple'
+      pink['500'], blueGrey['400'], grey['300']
     ],
     chart: {
       ...highchartsParam.theme.chart,
