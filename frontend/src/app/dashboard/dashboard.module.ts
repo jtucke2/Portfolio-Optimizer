@@ -31,15 +31,16 @@ import theme from 'highcharts/themes/dark-unica.src';
 function highChartsCustom(highchartsParam) {
   const extendedTheme = {
     ...highchartsParam.theme,
-    colors: [
-      'red', 'blue'
-    ],
-    series: {
-      ...highchartsParam.theme.series,
-      fillColor: 'green'
+    rangeSelector: {
+      selected: 4
     },
+    // TODO add color gradients to globalVars
+    colors: [
+      'red', 'blue', 'green', 'orange', 'purple'
+    ],
     chart: {
       ...highchartsParam.theme.chart,
+      backgroundColor: 'rgba(0,0,0,0)',
       style: {
         fontFamily: '\'Rubik\', monospace'
       }

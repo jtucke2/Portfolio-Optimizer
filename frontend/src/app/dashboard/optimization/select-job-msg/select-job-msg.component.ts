@@ -8,15 +8,6 @@ import { StockChart } from 'angular-highcharts';
 })
 export class SelectJobMsgComponent implements OnInit {
   chartOptions = {
-    chart: {
-      backgroundColor: 'rgba(0,0,0,0)',
-      // style: {
-      //   fontFamily: '\'Rubik\''
-      // }
-    },
-    rangeSelector: {
-      selected: 1
-    },
     title: {
       text: 'AAPL Stock Price'
     },
