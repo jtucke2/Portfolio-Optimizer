@@ -32,6 +32,7 @@ class OptimizeOutcome:
     def as_dict(self):
         return {
             'goal': self.goal.value,
+            'description': self.get_goal_description(),
             'shorting_ok': self.shorting_ok,
             'weights': self.weights.tolist() if type(self.weights) == np.ndarray else self.weights,
             'returns': self.returns.tolist()[0] if type(self.returns) == np.ndarray else self.returns,
@@ -39,6 +40,33 @@ class OptimizeOutcome:
             'sharpe_ratio': self.sharpe_ratio,
             'portfolio_returns': self.portfolio_returns.as_dict()
         }
+
+    def get_goal_description(self) -> str:
+        ret_val = 'This strategy '
+        if self.goal == OptimizeGoal.MAX_SHARPE:
+            ret_val += 'will optimize the portfolio\'s Sharpe Ratio, ' + \
+                'finding the highest ratio of the portfolio\'s average returns to standard deviation of returns.'
+        elif self.goal == OptimizeGoal.MAX_RETURNS:
+            ret_val += 'will maximize the portfolio\'s returns while keeping the standard deviation of the ' + \
+                       'portfolio at or below the standard deviation of the least volatile asset in the portfolio. ' + \
+                       'If this is not possible, the least volatile asset will be weighed at 100%.'
+        elif self.goal == OptimizeGoal.MIN_STD_DEV:
+            ret_val += 'will minimize the portfolio\'s standard deviation of returns while keeping the portfolio\'s ' + \
+                       'overall return at or above the returns of the highest returning asset in the ' + \
+                       'portfolio.  If this is not possible, and the highest returning asset will be ' + \
+                       'weighed at 100%.'
+        elif self.goal == OptimizeGoal.EQUAL_WEIGHT:
+            ret_val += 'will place equal weights on all assets.  This included for a benchmark to compare the ' + \
+                'optimized portfolios against.'
+
+        if self.shorting_ok:
+            ret_val += '  This portfolio uses a long/short strategy, where asset weights can ' + \
+                'either be positive (long) or negative (short), with a bias towards long positions ' + \
+                'as all weights must equal 1.'
+        else:
+            ret_val += '  This portfolio uses a long only strategy, where asset weights can only be positive (long.)'
+
+        return ret_val
 
 
 class Optimize(object):
@@ -172,13 +200,12 @@ class Optimize(object):
                                pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result, portfolio_returns)
 
     def optimize_all(self) -> List[OptimizeOutcome]:
-        # TODO add equal weight to this return
         return [
-            self.equal_weights_outcome,
             self.generate_max_sharpe_ratio(),
             self.generate_max_sharpe_ratio(True),
             self.generate_max_returns(),
             self.generate_max_returns(True),
             self.generate_min_std_dev(),
-            self.generate_min_std_dev(True)
+            self.generate_min_std_dev(True),
+            self.equal_weights_outcome
         ]
