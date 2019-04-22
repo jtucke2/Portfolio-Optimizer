@@ -104,8 +104,9 @@ def transform_yahoo_finance_dict(historical_prices) -> [Dict[str, List[float]], 
     ret_val = {}
     dates = None
     for ticker, data in historical_prices.items():
-        ret_val[ticker] = [price['close'] for price in data['prices']][::-1]
-        temp_dates = [price['formatted_date'] for price in data['prices']][::-1]
+        prices = [price for price in data['prices'] if price['close'] is not None]
+        ret_val[ticker] = [price['close'] for price in prices][::-1]
+        temp_dates = [price['formatted_date'] for price in prices][::-1]
         if not dates:
             dates = temp_dates
     return ret_val, dates
