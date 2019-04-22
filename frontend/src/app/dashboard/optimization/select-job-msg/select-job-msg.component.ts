@@ -1872,7 +1872,7 @@ export class SelectJobMsgComponent implements OnInit {
 
   constructor() {
     for (let i = 0; i < 2; i++) {
-      this.charts.push(new StockChart(this.chartOptions));
+      this.charts.push(new StockChart({...this.chartOptions}));
     }
   }
 

@@ -19,6 +19,7 @@ export class JobViewerComponent implements OnInit {
   public benchmarkName: string;
   public loading = true;
   public stockChart: StockChart;
+  public volChart: StockChart;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +42,7 @@ export class JobViewerComponent implements OnInit {
       },
       type: null,
       name,
+      id: name,
       data: values.map((ret, i) => [this.stringToUnix(dates[i]), ret]).reverse()
     };
   }
@@ -65,6 +67,9 @@ export class JobViewerComponent implements OnInit {
           this.maxReturnsIdx = portfolio.matrices.avg_returns_vec.indexOf(Math.max(...portfolio.matrices.avg_returns_vec));
           this.minStdDevIdx = portfolio.matrices.std_dev_vec.indexOf(Math.min(...portfolio.matrices.std_dev_vec));
           this.stockChart = new StockChart({
+            legend: {
+              enabled: true
+            },
             plotOptions: {
               series: {
                 compare: 'percent',
@@ -84,6 +89,24 @@ export class JobViewerComponent implements OnInit {
                 portfolio.results[0].goal, portfolio.price_dates, portfolio.results[0].portfolio_returns.portfolio_values),
               this.generateChartSeries(
                 'Benchmark Index', portfolio.price_dates, portfolio.benchmark_index.returns.portfolio_values),
+            ]
+          });
+
+          this.volChart = new StockChart({
+            legend: {
+              enabled: true
+            },
+            title: {
+              text: 'Volatility'
+            },
+            series: [
+              this.generateChartSeries(
+                portfolio.results[1].goal, portfolio.price_dates, portfolio.results[1].portfolio_returns.portfolio_values),
+              {
+                type: 'bb',
+                name: 'Bollinger Bands',
+                linkedTo: portfolio.results[1].goal
+              }
             ]
           });
         })

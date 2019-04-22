@@ -23,30 +23,39 @@ import { JobViewerComponent } from './optimization/job-viewer/job-viewer.compone
 import { SelectJobMsgComponent } from './optimization/select-job-msg/select-job-msg.component';
 import { RouterModule } from '@angular/router';
 import { AssetCardComponent } from './portfolio/asset-card/asset-card.component';
+
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
-import stock from 'highcharts/modules/stock.src';
+import * as Highcharts from 'highcharts';
 import more from 'highcharts/highcharts-more.src';
+import stock from 'highcharts/modules/stock.src';
+import indicators from 'highcharts/indicators/indicators.src';
+import bb from 'highcharts/indicators/bollinger-bands.src';
 import theme from 'highcharts/themes/dark-unica.src';
 
 import { cyan, pink, blueGrey, grey } from 'material-colors';
 
 function highChartsCustom(highchartsParam) {
-  const extendedTheme = {
+  const extendedTheme: Highcharts.Options = {
     ...highchartsParam.theme,
-    rangeSelector: {
-      selected: 4
-    },
-    // TODO add color gradients to globalVars
-    colors: [
-      pink['500'], blueGrey['400'], grey['300']
-    ],
+    // TODO add color gradients to globalVars 
     chart: {
       ...highchartsParam.theme.chart,
       backgroundColor: 'rgba(0,0,0,0)',
       style: {
         fontFamily: '\'Rubik\', monospace'
       }
-    }
+    },
+    colors: [
+      pink['500'], blueGrey['400'], grey['300']
+    ],
+    navigator: {
+      series: {
+        lineColor: grey['600']
+      }
+    },
+    rangeSelector: {
+      selected: 5
+    },
   };
   highchartsParam.setOptions(extendedTheme);
   return highchartsParam;
@@ -82,7 +91,7 @@ function highChartsCustom(highchartsParam) {
   ],
   providers: [
     DashboardService,
-    { provide: HIGHCHARTS_MODULES, useFactory: () => [stock, more, theme, highChartsCustom] }
+    { provide: HIGHCHARTS_MODULES, useFactory: () => [stock, more, theme, indicators, bb, highChartsCustom] }
   ]
 })
 export class DashboardModule { }

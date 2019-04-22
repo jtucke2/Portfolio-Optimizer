@@ -5,10 +5,19 @@
   <div *ngIf="portfolio$ | async as p" [class.hidden]="loading">
 
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 mb-20">
         <mat-card>
           <mat-card-content>
             <div [chart]="stockChart"></div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <br>
+      <div class="col-12 mb-20">
+        <mat-card>
+          <mat-card-content>
+            <div [chart]="volChart"></div>
 
           </mat-card-content>
         </mat-card>
