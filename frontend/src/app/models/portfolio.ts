@@ -70,6 +70,7 @@ export enum OptimizeGoal {
 
 export interface OptimizationResult {
     goal: OptimizeGoal;
+    description?: string;
     returns: number;
     sharpe_ratio: number;
     shorting_ok: boolean;
