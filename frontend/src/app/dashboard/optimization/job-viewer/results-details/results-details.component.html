@@ -1,0 +1,12 @@
+<div id="resultsDetailsComponent" *ngIf="optimizationResult$ | async as optimizationResult">
+  <!-- <div>{{ benchmarkIndex | json }}</div> -->
+  <div class="row" *ngIf="comparisonChart$ | async as comparisonChart">
+    <div class="col-12">
+      <mat-card>
+        <mat-card-content>
+          <div [chart]="comparisonChart" id="bar"></div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

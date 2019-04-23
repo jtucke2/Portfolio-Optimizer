@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, switchMap, tap, debounceTime, share } from 'rxjs/operators';
+import { map, switchMap, tap, debounceTime } from 'rxjs/operators';
 import { DashboardService } from '../../dashboard.service';
-import { Observable } from 'rxjs';
-import { Portfolio } from 'src/app/models/portfolio';
+import { Observable, ReplaySubject } from 'rxjs';
+import { Portfolio, OptimizationResult } from 'src/app/models/portfolio';
 import { globalVars } from 'src/app/global/global-vars';
 
 @Component({
@@ -17,6 +17,7 @@ export class JobViewerComponent implements OnInit {
   public portfolio$: Observable<Portfolio>;
   public benchmarkName: string;
   public loading = true;
+  public optimizationResult$: ReplaySubject<OptimizationResult> = new ReplaySubject();
 
   constructor(
     private route: ActivatedRoute,

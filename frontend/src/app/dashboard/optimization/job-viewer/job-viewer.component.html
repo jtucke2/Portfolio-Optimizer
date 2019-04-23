@@ -148,8 +148,8 @@
       </div>
 
       <div class="row">
-        <div *ngFor="let opt of p.results" class="col-lg-6 col-md-12 mb-30">
-          <mat-card class="full-height" class="optimizationResultCard">
+        <div *ngFor="let opt of p.results" class="col-lg-6 col-md-12 mb-30 full-height">
+          <mat-card class="optimizationResultCard full-height" (click)="optimizationResult$.next(opt)">
             <mat-card-header>
               <mat-card-title>{{ opt.goal }}</mat-card-title>
               <mat-card-subtitle>{{ opt.shorting_ok ? "Short Selling OK" : "No Short Selling" }}</mat-card-subtitle>
@@ -206,6 +206,13 @@
             </mat-card-content>
           </mat-card>
         </div>
+      </div>
+
+      <div>
+        <results-details 
+          [optimizationResult$]="optimizationResult$" 
+          [benchmarkIndex]="p.benchmark_index"
+          [priceDates]="p.price_dates"></results-details>
       </div>
 
     </div>
