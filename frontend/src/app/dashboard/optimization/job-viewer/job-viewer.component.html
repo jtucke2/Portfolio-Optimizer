@@ -174,7 +174,7 @@
                     </tr>
                     <tr>
                       <th class="text-right">Total Return:&nbsp;</th>
-                      <td>{{ (opt.portfolio_returns.total_return * 100).toFixed(4) }}%</td>
+                      <td>{{ (opt.portfolio_returns.total_return * 100).toFixed(2) }}%</td>
                     </tr>
                   </tbody>
                 </table>
@@ -212,7 +212,8 @@
         <results-details 
           [optimizationResult$]="optimizationResult$" 
           [benchmarkIndex]="p.benchmark_index"
-          [priceDates]="p.price_dates"></results-details>
+          [priceDates]="p.price_dates"
+          [equalWeightResults$]="equalWeightResults$"></results-details>
       </div>
 
     </div>

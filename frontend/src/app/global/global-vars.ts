@@ -23,6 +23,14 @@ export const globalVars = {
             value: '^IXIC'
         }
     ],
+    GET_BENCHMARK_NAME(symbol: string) {
+        const benchmark = this.BENCHMARK_INDEXES.find((idx) => idx.value.toUpperCase() === symbol.toUpperCase());
+        if (benchmark) {
+            return benchmark.name;
+        } else {
+            return symbol;
+        }
+    },
     FONT_FAMILY: '\'Rubik\', monospace',
     NUMBER_OF_PRICES_TO_GRAPH: 20,
     THEME: theme,
@@ -42,7 +50,7 @@ export const globalVars = {
         COMPARISON: [
             theme.ACCENT,
             blueGrey['400'],
-            grey['300'],
+            grey['400'],
             amber['900']
         ]
     }

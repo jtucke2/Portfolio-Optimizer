@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, switchMap, tap, debounceTime } from 'rxjs/operators';
 import { DashboardService } from '../../dashboard.service';
 import { Observable, ReplaySubject } from 'rxjs';
-import { Portfolio, OptimizationResult } from 'src/app/models/portfolio';
+import { Portfolio, OptimizationResult, OptimizeGoal } from 'src/app/models/portfolio';
 import { globalVars } from 'src/app/global/global-vars';
 
 @Component({
@@ -18,6 +18,7 @@ export class JobViewerComponent implements OnInit {
   public benchmarkName: string;
   public loading = true;
   public optimizationResult$: ReplaySubject<OptimizationResult> = new ReplaySubject();
+  public equalWeightResults$: ReplaySubject<OptimizationResult> = new ReplaySubject();
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +44,18 @@ export class JobViewerComponent implements OnInit {
           this.loading = false;
           this.maxReturnsIdx = portfolio.matrices.avg_returns_vec.indexOf(Math.max(...portfolio.matrices.avg_returns_vec));
           this.minStdDevIdx = portfolio.matrices.std_dev_vec.indexOf(Math.min(...portfolio.matrices.std_dev_vec));
+
+          const findEqualWeight = portfolio.results.find(opt => opt.goal === OptimizeGoal.EQUAL_WEIGHT);
+          if (findEqualWeight) {
+            this.equalWeightResults$.next(findEqualWeight);
+          } else {
+            this.equalWeightResults$.next(null);
+          }
+
+          const findOptRes = portfolio.results.find(opt => opt.goal !== OptimizeGoal.EQUAL_WEIGHT);
+          if (findOptRes) {
+            this.optimizationResult$.next(findOptRes);
+          }
         })
       );
   }
