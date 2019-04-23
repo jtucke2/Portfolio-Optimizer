@@ -208,7 +208,7 @@
         </div>
       </div>
 
-      <div>
+      <div *ngIf="showDetails">
         <results-details 
           [optimizationResult$]="optimizationResult$" 
           [benchmarkIndex]="p.benchmark_index"

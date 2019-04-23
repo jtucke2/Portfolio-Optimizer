@@ -53,8 +53,7 @@ export class ResultsDetailsComponent implements OnInit {
                 opt.portfolio_returns
               ),
               ...comparisonSeries
-              // TODO add handling for side nav
-              // TODO add handling for routing
+              // TODO add handling for side nav -- Will have to be through a service
             ]
           });
         })

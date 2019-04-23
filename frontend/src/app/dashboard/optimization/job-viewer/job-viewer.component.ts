@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap, tap, debounceTime } from 'rxjs/operators';
 import { DashboardService } from '../../dashboard.service';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { Portfolio, OptimizationResult, OptimizeGoal } from 'src/app/models/portfolio';
 import { globalVars } from 'src/app/global/global-vars';
 
@@ -17,6 +17,7 @@ export class JobViewerComponent implements OnInit {
   public portfolio$: Observable<Portfolio>;
   public benchmarkName: string;
   public loading = true;
+  public showDetails = false;
   public optimizationResult$: ReplaySubject<OptimizationResult> = new ReplaySubject();
   public equalWeightResults$: ReplaySubject<OptimizationResult> = new ReplaySubject();
 
@@ -35,6 +36,7 @@ export class JobViewerComponent implements OnInit {
           this.maxReturnsIdx = -1;
           this.minStdDevIdx = -1;
           this.benchmarkName = '';
+          this.showDetails = false;
         }),
         switchMap(id => this.dashboardService.getPortfolioById(id)),
         tap((portfolio) => {
@@ -55,6 +57,9 @@ export class JobViewerComponent implements OnInit {
           const findOptRes = portfolio.results.find(opt => opt.goal !== OptimizeGoal.EQUAL_WEIGHT);
           if (findOptRes) {
             this.optimizationResult$.next(findOptRes);
+            this.showDetails = true;
+          } else {
+            this.showDetails = true;
           }
         })
       );

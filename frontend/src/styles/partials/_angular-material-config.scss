@@ -13,3 +13,8 @@ body {
   background: #303030;
   color: $light-primary-text;
 }
+
+.mat-card-header-text {
+  // This assumes no card avatars are being used
+  margin-left: 0 !important;
+}
