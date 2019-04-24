@@ -17,7 +17,6 @@ import {
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
 import { DashboardService } from './dashboard.service';
-import { ChartsModule } from 'ng2-charts';
 import { OptimizationComponent } from './optimization/optimization.component';
 import { JobListComponent } from './optimization/job-list/job-list.component';
 import { JobViewerComponent } from './optimization/job-viewer/job-viewer.component';
@@ -52,7 +51,6 @@ import { ResultsDetailsComponent } from './optimization/job-viewer/results-detai
     MatTooltipModule,
     MatSidenavModule,
     MatListModule,
-    ChartsModule,
     RouterModule,
     ChartModule
   ],
