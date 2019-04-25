@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Observable, ReplaySubject, combineLatest, of as observableOf } from 'rxjs';
-import { StockChart } from 'angular-highcharts';
+import { StockChart, Chart } from 'angular-highcharts';
 
 import { OptimizationResult, BenchmarkIndex, OptimizeGoal } from 'src/app/models/portfolio';
 import { map, switchMap, delay, share } from 'rxjs/operators';
@@ -18,14 +18,18 @@ export class ResultsDetailsComponent implements OnInit {
   @Input() public equalWeightResults$: ReplaySubject<OptimizationResult>;
   @Input() public benchmarkIndex: BenchmarkIndex;
   @Input() public priceDates: string[];
+  @Input() public tickers: string[];
   @ViewChild('comparisonChartRef') public comparisonChartRef: ElementRef;
 
   public comparisonChart$: Observable<StockChart>;
   public volatilityChart$: Observable<StockChart>;
+  public weightsChart$: Observable<Chart>;
 
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit() {
+    console.log(this.tickers);
+    
     // Reflow graphs after sidenav is opened/closed, wait for open/close to finish
     const sidenavOpened$ = this.dashboardService.sidenavOpened$
       .pipe(
@@ -105,6 +109,43 @@ export class ResultsDetailsComponent implements OnInit {
           });
         })
       );
+
+    this.weightsChart$ = this.optimizationResult$
+        .pipe(
+          map(opt => {
+            const prefixFn = (x: number) => x < 0 ? '-' : opt.shorting_ok ? '+' : '';
+            return new Chart({
+              chart: {
+                events: {
+                  load() {
+                    sidenavOpened$.subscribe(() => this.reflow());
+                  }
+                },
+                type: 'pie'
+              },
+              series: [
+                {
+                  name: 'Weights',
+                  type: null,
+                  data: opt.weights
+                    .map((w, i) => ({
+                      name: `${prefixFn(w)}${this.tickers[i]}`,
+                      y: Math.abs(w) * 100,
+                      prefix: prefixFn(w)
+                    }))
+                    .filter(({y}) => y > 0.001)
+                }
+              ],
+              title: {
+                text: ''
+              },
+              tooltip: {
+                pointFormat: '<span style="color:{series.color}">{series.name}</span>: {point.prefix}{point.y}%',
+                valueDecimals: 2
+              }
+            });
+          })
+        );
 
   }
 

@@ -196,12 +196,7 @@
                     </tbody>
                   </table>
                 </div>
-              </div>
-
-              <div class="optDescription mb-10" *ngIf="opt.description">
-                <h3 class="mat-subheading-2">Portfolio Strategy</h3>
-                <p>{{ opt.description }}</p>
-              </div>
+              </div>              
               
             </mat-card-content>
           </mat-card>
@@ -211,9 +206,10 @@
       <div *ngIf="showDetails">
         <results-details 
           [optimizationResult$]="optimizationResult$" 
+          [equalWeightResults$]="equalWeightResults$"
           [benchmarkIndex]="p.benchmark_index"
           [priceDates]="p.price_dates"
-          [equalWeightResults$]="equalWeightResults$"></results-details>
+          [tickers]="p.parameters.tickers"></results-details>
       </div>
 
     </div>

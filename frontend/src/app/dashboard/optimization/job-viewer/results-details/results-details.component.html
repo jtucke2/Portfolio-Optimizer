@@ -1,6 +1,28 @@
-<div id="resultsDetailsComponent" *ngIf="optimizationResult$ | async as optimizationResult">
-  <hr>
-  <h1 class="mat-h1">{{ optimizationResult.goal }}{{ optimizationResult.shorting_ok ? ' (Long/Short)' : '' }} Portfolio Details</h1>
+<div id="resultsDetailsComponent" *ngIf="optimizationResult$ | async as opt">
+  <h1 class="mat-h1">{{ opt.goal }}{{ opt.shorting_ok ? ' (Long/Short)' : '' }} Portfolio Details</h1>
+
+  <div class="row mb-30">
+    <div class="col-lg-6 col-md-12 mb-30" *ngIf="weightsChart$ | async as weightsChart">
+      <mat-card class="full-height">
+        <mat-card-header>
+          <mat-card-title>Portfolio Weights</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div [chart]="weightsChart"></div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-lg-6 col-md-12 mb-30" *ngIf="opt.description">
+      <mat-card class="full-height">
+        <mat-card-header>
+          <mat-card-title>Strategy Details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ opt.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>    
+  </div>
 
   <div class="row mb-30" *ngIf="comparisonChart$ | async as comparisonChart">
     <div class="col-12">
@@ -9,7 +31,7 @@
           <mat-card-title>Portfolio Returns vs. Benchmark Index</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div [chart]="comparisonChart" #comparisonChartRef id="comparisonChart"></div>
+          <div [chart]="comparisonChart"></div>
         </mat-card-content>
       </mat-card>
     </div>
