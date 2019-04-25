@@ -81,9 +81,9 @@ export default class ChartHelpers {
      */
     public static pricesToStockChart(prices: Price[], name: string, height: string = '250px'): StockChart {
         const priceValues = prices.map(p => parseFloat(parseFloat(p.close as any).toFixed(2)));
-        const priceDates = prices.map(p => p.date);
+        const priceDates = prices.map(p => ChartHelpers.stringToUnix(p.date));
         const seriesData = priceValues
-            .map((ret, i) => [ChartHelpers.stringToUnix(priceDates[i]), ret])
+            .map((ret, i) => [priceDates[i], ret])
             .reverse();
 
         return new StockChart({

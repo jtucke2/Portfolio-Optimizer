@@ -1,9 +1,9 @@
-<mat-sidenav-container id="optimizationComponent" [class.opened]="opened">
-  <mat-sidenav #sidenav mode="side" class="mat-elevation-z8" [opened]="opened" id="sidenav">
+<mat-sidenav-container id="optimizationComponent" [class.opened]="dashboardService.sidenavOpened">
+  <mat-sidenav #sidenav mode="side" class="mat-elevation-z8" [opened]="dashboardService.sidenavOpened" id="sidenav">
     <job-list></job-list>
   </mat-sidenav>
   <mat-sidenav-content id="sidenavContent">
-    <button mat-icon-button (click)="opened=!opened" id="sidenavToggle">
+    <button mat-icon-button (click)="dashboardService.toggleSidenav()" id="sidenavToggle">
       <i class="material-icons">keyboard_arrow_right</i>
     </button>
     <router-outlet></router-outlet>

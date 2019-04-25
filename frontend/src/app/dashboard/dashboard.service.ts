@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../global/services/api.service';
 import { IntervalEnum, Portfolio } from '../models/portfolio';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Prices, AssetData } from '../models/price';
 import { OptimizeJob } from '../models/optimize';
 
 @Injectable()
 export class DashboardService {
+  public sidenavOpened = true;
+  public sidenavOpened$: BehaviorSubject<boolean> = new BehaviorSubject(this.sidenavOpened);
   private pricesUrl = '/api/prices/';
   private optimizeUrl = '/api/optimize/';
 
@@ -42,5 +44,10 @@ export class DashboardService {
 
   public getPortfolioById(id: string): Observable<Portfolio> {
     return this.api.get(`${this.optimizeUrl}portfolio/${id}`);
+  }
+
+  public toggleSidenav() {
+    this.sidenavOpened = !this.sidenavOpened;
+    this.sidenavOpened$.next(this.sidenavOpened);
   }
 }
