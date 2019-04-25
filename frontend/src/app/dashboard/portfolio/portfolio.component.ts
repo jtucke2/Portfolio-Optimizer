@@ -8,6 +8,7 @@ import { PricesExtended } from './tickers/tickers.component';
 import { switchMap, map, startWith, catchError, debounceTime } from 'rxjs/operators';
 import ArrayHelpers from 'src/app/global/helpers/array-helpers';
 import { Prices } from 'src/app/models/price';
+import ChartHelpers from 'src/app/global/helpers/chart-helpers';
 
 @Component({
   selector: 'portfolio',
@@ -62,20 +63,17 @@ export class PortfolioComponent implements OnInit {
         }),
         map(priceData => {
           this.lastValidPriceData = priceData;
-          const prices = priceData.prices.map(p => parseFloat(parseFloat(p.close as any).toFixed(2)));
-          const chartData = [{ data: prices, label: priceData.ticker }];
-          const chartLabels = priceData.prices.map(p => p.date);
           const rawPrices = priceData.prices.map(p => p.close);
           let returnPercent: string | number = (rawPrices[rawPrices.length - 1] - rawPrices[0]) / rawPrices[0] * 100;
           returnPercent = returnPercent > 0 ? `+${returnPercent.toFixed(2)}` : returnPercent.toFixed(2);
+          const chart = ChartHelpers.pricesToStockChart(priceData.prices, priceData.ticker);
 
           // Update name to full string
           const labelEl = this.benchmarkIndexes.find(bi => bi.value === priceData.ticker);
           priceData.ticker = labelEl.name;
           return {
             ...priceData,
-            chartData,
-            chartLabels,
+            chart,
             returnPercent,
             startDate: this.form.get('start_date').value,
             endDate: this.form.get('end_date').value

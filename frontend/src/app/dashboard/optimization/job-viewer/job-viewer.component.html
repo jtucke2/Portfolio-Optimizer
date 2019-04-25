@@ -148,8 +148,8 @@
       </div>
 
       <div class="row">
-        <div *ngFor="let opt of p.results" class="col-lg-6 col-md-12 mb-30">
-          <mat-card class="full-height" class="optimizationResultCard">
+        <div *ngFor="let opt of p.results" class="col-lg-6 col-md-12 mb-30 full-height">
+          <mat-card class="optimizationResultCard full-height" (click)="optimizationResult$.next(opt)">
             <mat-card-header>
               <mat-card-title>{{ opt.goal }}</mat-card-title>
               <mat-card-subtitle>{{ opt.shorting_ok ? "Short Selling OK" : "No Short Selling" }}</mat-card-subtitle>
@@ -174,7 +174,7 @@
                     </tr>
                     <tr>
                       <th class="text-right">Total Return:&nbsp;</th>
-                      <td>{{ (opt.portfolio_returns.total_return * 100).toFixed(4) }}%</td>
+                      <td>{{ (opt.portfolio_returns.total_return * 100).toFixed(2) }}%</td>
                     </tr>
                   </tbody>
                 </table>
@@ -196,16 +196,20 @@
                     </tbody>
                   </table>
                 </div>
-              </div>
-
-              <div class="optDescription mb-10" *ngIf="opt.description">
-                <h3 class="mat-subheading-2">Portfolio Strategy</h3>
-                <p>{{ opt.description }}</p>
-              </div>
+              </div>              
               
             </mat-card-content>
           </mat-card>
         </div>
+      </div>
+
+      <div *ngIf="showDetails">
+        <results-details 
+          [optimizationResult$]="optimizationResult$" 
+          [equalWeightResults$]="equalWeightResults$"
+          [benchmarkIndex]="p.benchmark_index"
+          [priceDates]="p.price_dates"
+          [tickers]="p.parameters.tickers"></results-details>
       </div>
 
     </div>

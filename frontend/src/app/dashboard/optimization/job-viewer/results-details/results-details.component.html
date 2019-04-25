@@ -1,0 +1,58 @@
+<div id="resultsDetailsComponent" *ngIf="optimizationResult$ | async as opt">
+  <h1 class="mat-h1">{{ opt.goal }}{{ opt.shorting_ok ? ' (Long/Short)' : '' }} Portfolio Details</h1>
+
+  <div class="row mb-30">
+    <div class="col-lg-6 col-md-12 mb-30" *ngIf="weightsChart$ | async as weightsChart">
+      <mat-card class="full-height">
+        <mat-card-header>
+          <mat-card-title>Portfolio Weights</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div [chart]="weightsChart"></div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-lg-6 col-md-12 mb-30" *ngIf="opt.description">
+      <mat-card class="full-height">
+        <mat-card-header>
+          <mat-card-title>Strategy Details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ opt.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>    
+  </div>
+
+  <div class="row mb-30" *ngIf="comparisonChart$ | async as comparisonChart">
+    <div class="col-12">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Portfolio Returns vs. Benchmark Index</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div [chart]="comparisonChart"></div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row mb-30" *ngIf="volatilityChart$ | async as volatilityChart">
+    <div class="col-12">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Portfolio Returns Volatility</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div [chart]="volatilityChart"></div>
+          <div class="mt-3 text-muted">
+            <small>A Bollinger Band® is a technical analysis tool defined by a set of lines
+              plotted two standard deviations (positively and negatively) away from a simple moving average (SMA) of the
+              security's price.</small>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+</div>

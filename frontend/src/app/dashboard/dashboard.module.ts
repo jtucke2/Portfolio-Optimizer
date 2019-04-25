@@ -14,15 +14,17 @@ import {
   MatSidenavModule,
   MatListModule
 } from '@angular/material';
+import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
 import { DashboardService } from './dashboard.service';
-import { ChartsModule } from 'ng2-charts';
 import { OptimizationComponent } from './optimization/optimization.component';
 import { JobListComponent } from './optimization/job-list/job-list.component';
 import { JobViewerComponent } from './optimization/job-viewer/job-viewer.component';
 import { SelectJobMsgComponent } from './optimization/select-job-msg/select-job-msg.component';
 import { RouterModule } from '@angular/router';
 import { AssetCardComponent } from './portfolio/asset-card/asset-card.component';
+import ChartHelpers from '../global/helpers/chart-helpers';
+import { ResultsDetailsComponent } from './optimization/job-viewer/results-details/results-details.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { AssetCardComponent } from './portfolio/asset-card/asset-card.component'
     JobListComponent,
     JobViewerComponent,
     SelectJobMsgComponent,
-    AssetCardComponent
+    AssetCardComponent,
+    ResultsDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -48,11 +51,12 @@ import { AssetCardComponent } from './portfolio/asset-card/asset-card.component'
     MatTooltipModule,
     MatSidenavModule,
     MatListModule,
-    ChartsModule,
-    RouterModule
+    RouterModule,
+    ChartModule
   ],
   providers: [
-    DashboardService
+    DashboardService,
+    { provide: HIGHCHARTS_MODULES, useFactory: () => ChartHelpers.highchartsProviders }
   ]
 })
 export class DashboardModule { }
