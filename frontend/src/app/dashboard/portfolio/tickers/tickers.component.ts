@@ -2,16 +2,15 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DashboardService } from '../../dashboard.service';
 import { Prices } from 'src/app/models/price';
-import { Label as ng2ChartLabel} from 'ng2-charts';
-import { ChartDataSets } from 'chart.js';
+import { StockChart } from 'angular-highcharts';
 import ArrayHelpers from 'src/app/global/helpers/array-helpers';
 import { map, switchMap, startWith, debounceTime, filter, tap } from 'rxjs/operators';
 import { merge as observableMerge } from 'rxjs';
 import { globalVars } from 'src/app/global/global-vars';
+import ChartHelpers from 'src/app/global/helpers/chart-helpers';
 
 export interface PricesExtended extends Prices {
-  chartData: ChartDataSets[];
-  chartLabels: ng2ChartLabel[];
+  chart: StockChart;
   returnPercent: number | string;
   startDate: Date;
   endDate: Date;
@@ -75,17 +74,14 @@ export class TickersComponent implements OnDestroy {
         )
         .subscribe(
           (priceData) => {
-            const pricesRounded = priceData.prices.map(p => parseFloat(parseFloat(p.close as any).toFixed(2)));
-            const chartData = [{ data: pricesRounded, label: ticker }];
-            const chartLabels = priceData.prices.map(p => p.date);
             const rawPrices = priceData.prices.map(p => p.close);
             let returnPercent: string | number = (rawPrices[rawPrices.length - 1] - rawPrices[0]) / rawPrices[0] * 100;
             returnPercent = returnPercent > 0 ? `+${returnPercent.toFixed(2)}` : returnPercent.toFixed(2);
+            const chart = ChartHelpers.pricesToStockChart(priceData.prices, priceData.ticker);
 
             const data = {
               ...priceData,
-              chartData,
-              chartLabels,
+              chart,
               returnPercent,
               startDate: this.form.get('start_date').value,
               endDate: this.form.get('end_date').value,

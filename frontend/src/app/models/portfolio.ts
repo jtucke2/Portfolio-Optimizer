@@ -25,10 +25,7 @@ export interface Portfolio {
         interval: IntervalEnum;
         tickers: string[]
     };
-    benchmark_index: {
-        asset_data: AssetData;
-        returns: PortfolioReturns;
-    };
+    benchmark_index: BenchmarkIndex;
     asset_data: AssetData[];
     matrices: Matricies;
     results: OptimizationResult[];
@@ -40,6 +37,11 @@ export interface AssetData {
     returns: number[];
     std_dev: number;
     ticker: string;
+}
+
+export interface BenchmarkIndex {
+    asset_data: AssetData;
+    returns: PortfolioReturns;
 }
 
 export interface Matricies {
