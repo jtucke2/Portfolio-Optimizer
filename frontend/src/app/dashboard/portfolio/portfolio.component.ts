@@ -9,6 +9,9 @@ import { switchMap, map, startWith, catchError, debounceTime } from 'rxjs/operat
 import ArrayHelpers from 'src/app/global/helpers/array-helpers';
 import { Prices } from 'src/app/models/price';
 import ChartHelpers from 'src/app/global/helpers/chart-helpers';
+import { SnackbarService } from 'src/app/global/services/snackbar.service';
+import { Router } from '@angular/router';
+import { CeleryState } from 'src/app/models/celery';
 
 @Component({
   selector: 'portfolio',
@@ -26,10 +29,15 @@ export class PortfolioComponent implements OnInit {
     tickers: new FormControl([], Validators.required),
     benchmark_index: new FormControl(globalVars.BENCHMARK_INDEXES[0].value, Validators.required)
   });
+  public errorMessage = '';
 
   public benchmarkIndexes = globalVars.BENCHMARK_INDEXES;
 
-  constructor(private dashboardService: DashboardService) { }
+  constructor(
+    private dashboardService: DashboardService,
+    private snackbarService: SnackbarService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     const lastYear = new Date();
@@ -85,11 +93,19 @@ export class PortfolioComponent implements OnInit {
   onFormSubmit() {
     this.dashboardService.submitJob(this.form.value)
       .subscribe(
-        (jobReturn) => {
-          console.log(jobReturn);
+        ({ task_id }) => {
+          this.dashboardService.portfolioTasks.unshift({
+            task_id,
+            name: this.form.get('name').value,
+            state: CeleryState.PENDING
+          });
+          console.log('~ portfolioTasks:\n', this.dashboardService.portfolioTasks);
+          this.snackbarService.openSnackbar('Portfolio Successfully Created', null, 'Success');
+          this.router.navigate(['dashboard', 'optimization']);
         },
         (err) => {
           console.log(err);
+          this.errorMessage = 'Unable to Create Portfolio';
         }
       );
   }

@@ -1,0 +1,10 @@
+export enum CeleryState {
+    SUCCESS = 'SUCCESS',
+    FAILURE = 'FAILURE',
+    REVOKED = 'REVOKED',
+    STARTED = 'STARTED',
+    RECEIVED = 'RECEIVED',
+    REJECTED = 'REJECTED',
+    RETRY = 'RETRY',
+    PENDING = 'PENDING'
+}

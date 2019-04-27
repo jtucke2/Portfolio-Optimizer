@@ -34,6 +34,7 @@ export const globalVars = {
     FONT_FAMILY: '\'Rubik\', monospace',
     NUMBER_OF_PRICES_TO_GRAPH: 100,
     THEME: theme,
+    SNACKBAR_DURATION: 3000,
     COLOR_SCALES: {
         CATEGORICAL: [
             theme.PRIMARY,

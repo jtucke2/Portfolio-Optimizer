@@ -1,14 +1,21 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../global/services/api.service';
-import { IntervalEnum, Portfolio } from '../models/portfolio';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Prices, AssetData } from '../models/price';
+
+import { ApiService } from '../global/services/api.service';
+import { IntervalEnum, Portfolio, PortfolioTask } from '../models/portfolio';
+import { Prices } from '../models/price';
 import { OptimizeJob } from '../models/optimize';
+import { CeleryState } from '../models/celery';
 
 @Injectable()
 export class DashboardService {
   public sidenavOpened = true;
   public sidenavOpened$: BehaviorSubject<boolean> = new BehaviorSubject(this.sidenavOpened);
+  // TODO delete this sample task
+  public portfolioTasks: PortfolioTask[] = [
+    {task_id: '1234', name: 'Testing only, delete me', state: CeleryState.PENDING},
+    { task_id: '5234', name: 'Testing only, delete me #2', state: CeleryState.PENDING }
+  ];
   private pricesUrl = '/api/prices/';
   private optimizeUrl = '/api/optimize/';
 
