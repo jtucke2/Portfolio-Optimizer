@@ -1,3 +1,5 @@
+import { CeleryState } from './celery';
+
 export enum IntervalEnum {
     DAILY = 'daily',
     WEEKLY = 'weekly',
@@ -5,6 +7,23 @@ export enum IntervalEnum {
 }
 
 export const Intervals = [IntervalEnum.DAILY, IntervalEnum.WEEKLY, IntervalEnum.MONTHLY];
+
+export interface PortfolioTask {
+    task_id: string;
+    name: string;
+    state: CeleryState;
+}
+
+export interface CeleryTask {
+    _id: string;
+    status: CeleryState;
+    result: string;
+    date_done: {
+        $date: number
+    };
+    traceback: string;
+    children: string;
+}
 
 export interface Portfolio {
     name: string;

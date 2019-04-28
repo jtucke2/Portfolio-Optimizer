@@ -1,4 +1,10 @@
+@import "modules/variables";
+
 .listPadding {
     padding-left: 16px;
     padding-right: 16px;
+}
+
+.active-link {
+    background-color: $page-background-color !important;
 }

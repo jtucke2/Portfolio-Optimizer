@@ -1,14 +1,32 @@
 import { Injectable } from '@angular/core';
+import { Observable, BehaviorSubject, Subject, ReplaySubject } from 'rxjs';
+
 import { ApiService } from '../global/services/api.service';
-import { IntervalEnum, Portfolio } from '../models/portfolio';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { Prices, AssetData } from '../models/price';
+import { IntervalEnum, Portfolio, PortfolioTask, CeleryTask } from '../models/portfolio';
+import { Prices } from '../models/price';
 import { OptimizeJob } from '../models/optimize';
+import { CeleryState } from '../models/celery';
+
+export interface CheckJobReturn {
+  found: boolean;
+  task: CeleryTask;
+  result: Portfolio | null;
+  message: string;
+}
+
+export interface ListBadge {
+  message: string;
+  type: 'primary' | 'secondary' | 'info' | 'success';
+}
 
 @Injectable()
 export class DashboardService {
   public sidenavOpened = true;
   public sidenavOpened$: BehaviorSubject<boolean> = new BehaviorSubject(this.sidenavOpened);
+  public portfolioTasks: PortfolioTask[] = [];
+  public listBadge: { [s: string]: ListBadge } = {};
+  public runPoller$ = new Subject();
+  public retrievePortfolios$ = new BehaviorSubject<Partial<Portfolio>>(null);
   private pricesUrl = '/api/prices/';
   private optimizeUrl = '/api/optimize/';
 
@@ -44,6 +62,10 @@ export class DashboardService {
 
   public getPortfolioById(id: string): Observable<Portfolio> {
     return this.api.get(`${this.optimizeUrl}portfolio/${id}`);
+  }
+
+  public checkJobs(task_ids: string): Observable<CheckJobReturn[]> {
+    return this.api.get(`${this.optimizeUrl}check-job/${task_ids}`);
   }
 
   public toggleSidenav() {

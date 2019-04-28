@@ -15,3 +15,7 @@
         transform: rotate(180deg);
     }
 }
+
+::ng-deep #sidenav {
+    border-right: none !important;
+}

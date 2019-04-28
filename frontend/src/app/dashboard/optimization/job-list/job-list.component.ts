@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { share, map, filter, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { share, map, filter, tap, switchMap, withLatestFrom, startWith } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
 
 import { DashboardService } from '../../dashboard.service';
 import { UserService } from 'src/app/global/services/user.service';
@@ -15,15 +15,16 @@ export class JobListComponent implements OnInit {
   public publishedPortfolios$: Observable<any>;
 
   constructor(
-    private dashboardService: DashboardService,
+    public dashboardService: DashboardService,
     private userService: UserService
   ) { }
 
   ngOnInit() {
-    const masterList$ = this.dashboardService.getPortfolios()
+    const masterList$ = this.dashboardService.retrievePortfolios$
       .pipe(
         filter(() => !!this.userService.user && !!this.userService.user.user_id),
-        map((portfolios) => portfolios.sort((a, b) => {
+        switchMap(() => this.dashboardService.getPortfolios()),
+        map(portfolios => portfolios.sort((a, b) => {
           if (a.job_end.$date < b.job_end.$date) {
             return 1;
           } else {

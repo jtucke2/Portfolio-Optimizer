@@ -7,10 +7,12 @@ $frontend-warn: mat-palette($mat-deep-orange);
 $frontend-theme: mat-dark-theme($frontend-primary, $frontend-accent, $frontend-warn);
 @include angular-material-theme($frontend-theme);
 
+$page-background-color: #303030;
+
 body {
   margin: 0;
   font-family: 'Rubik', "Helvetica Neue", sans-serif;
-  background: #303030;
+  background: $page-background-color;
   color: $light-primary-text;
 }
 

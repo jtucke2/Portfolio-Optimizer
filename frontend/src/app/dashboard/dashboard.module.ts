@@ -12,7 +12,8 @@ import {
   MatCardModule,
   MatTooltipModule,
   MatSidenavModule,
-  MatListModule
+  MatListModule,
+  MatTableModule
 } from '@angular/material';
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
@@ -52,7 +53,8 @@ import { ResultsDetailsComponent } from './optimization/job-viewer/results-detai
     MatSidenavModule,
     MatListModule,
     RouterModule,
-    ChartModule
+    ChartModule,
+    MatTableModule
   ],
   providers: [
     DashboardService,
