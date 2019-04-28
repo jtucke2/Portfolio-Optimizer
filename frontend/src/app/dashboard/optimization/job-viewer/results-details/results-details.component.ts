@@ -49,7 +49,7 @@ export class ResultsDetailsComponent implements OnInit {
             chart: {
               events: {
                 load() {
-                  sidenavOpened$.subscribe(() => this.reflow());
+                  sidenavOpened$.subscribe(() => Object.keys(this).length && this.reflow());
                 }
               }
             },
@@ -84,7 +84,7 @@ export class ResultsDetailsComponent implements OnInit {
             chart: {
               events: {
                 load() {
-                  sidenavOpened$.subscribe(() => this.reflow());
+                  sidenavOpened$.subscribe(() => Object.keys(this).length && this.reflow());
                 }
               }
             },
@@ -116,7 +116,7 @@ export class ResultsDetailsComponent implements OnInit {
               chart: {
                 events: {
                   load() {
-                    sidenavOpened$.subscribe(() => this.reflow());
+                    sidenavOpened$.subscribe(() => Object.keys(this).length && this.reflow());
                   }
                 },
                 type: 'pie'

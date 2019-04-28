@@ -1,16 +1,22 @@
+// Vendor
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatToolbarModule, MatProgressSpinnerModule } from '@angular/material';
-import { LandingPageComponent } from './components/landing-page/landing-page.component';
-import { NavComponent } from './components/nav/nav.component';
+import { MatButtonModule, MatCardModule, MatToolbarModule, MatProgressSpinnerModule, MatSnackBarModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+// Components
+import { NavComponent } from './components/nav/nav.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { PageTitleComponent } from './components/page-title/page-title.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+
+// Services
 import { ApiService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
 import { AuthInterceptor } from './services/auth-interceptor.service';
-import { PageTitleComponent } from './components/page-title/page-title.component';
-import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { SnackbarService } from './services/snackbar.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +32,8 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     MatToolbarModule,
     MatProgressSpinnerModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule
   ],
   exports: [
     LandingPageComponent,
@@ -38,7 +45,8 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     ApiService,
     AuthService,
     AuthGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    SnackbarService
   ]
 })
 export class GlobalModule { }
