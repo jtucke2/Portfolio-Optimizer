@@ -39,12 +39,12 @@ class SubmitOptimizeJob(Resource):
         return {'task_id': str(task_id)}
 
 
-@api.route('/check-job/<id>')
-@api.doc(params={'id': 'id of job'})
+@api.route('/check-job/<task_ids>')
+@api.doc(params={'task_ids': 'id of task in Celery, use comma delimiter if multiple tasks'})
 class CheckJob(Resource):
     @jwt_required
-    def get(self, id):
-        return portfolios.get_by_task_id(id)
+    def get(self, task_ids):
+        return [portfolios.get_by_task_id(task_id) for task_id in task_ids.split(',')]
 
 
 @api.route('/portfolio/<id>')

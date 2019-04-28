@@ -14,6 +14,17 @@ export interface PortfolioTask {
     state: CeleryState;
 }
 
+export interface CeleryTask {
+    _id: string;
+    status: CeleryState;
+    result: string;
+    date_done: {
+        $date: number
+    };
+    traceback: string;
+    children: string;
+}
+
 export interface Portfolio {
     name: string;
     _id: string;

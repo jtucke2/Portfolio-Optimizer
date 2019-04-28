@@ -2,10 +2,17 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { ApiService } from '../global/services/api.service';
-import { IntervalEnum, Portfolio, PortfolioTask } from '../models/portfolio';
+import { IntervalEnum, Portfolio, PortfolioTask, CeleryTask } from '../models/portfolio';
 import { Prices } from '../models/price';
 import { OptimizeJob } from '../models/optimize';
 import { CeleryState } from '../models/celery';
+
+export interface CheckJobReturn {
+  found: boolean;
+  task: CeleryTask;
+  result: Portfolio | null;
+  message: string;
+}
 
 @Injectable()
 export class DashboardService {
@@ -51,6 +58,10 @@ export class DashboardService {
 
   public getPortfolioById(id: string): Observable<Portfolio> {
     return this.api.get(`${this.optimizeUrl}portfolio/${id}`);
+  }
+
+  public checkJob(task_ids: string): Observable<CheckJobReturn> {
+    return this.api.get(`${this.optimizeUrl}check-job/${task_ids}`);
   }
 
   public toggleSidenav() {
