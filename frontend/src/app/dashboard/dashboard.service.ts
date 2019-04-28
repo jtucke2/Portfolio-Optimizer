@@ -23,7 +23,6 @@ export interface ListBadge {
 export class DashboardService {
   public sidenavOpened = true;
   public sidenavOpened$: BehaviorSubject<boolean> = new BehaviorSubject(this.sidenavOpened);
-  // TODO delete this sample task
   public portfolioTasks: PortfolioTask[] = [];
   public listBadge: { [s: string]: ListBadge } = {};
   public runPoller$ = new Subject();

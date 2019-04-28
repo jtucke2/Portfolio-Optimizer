@@ -99,7 +99,6 @@ export class PortfolioComponent implements OnInit {
             name: this.form.get('name').value,
             state: CeleryState.PENDING
           });
-          console.log('~ portfolioTasks:\n', this.dashboardService.portfolioTasks);
           this.snackbarService.openSnackbar('Portfolio Successfully Created', null, 'Success');
           this.router.navigate(['dashboard', 'optimization']);
         },

@@ -54,8 +54,8 @@ export class OptimizationComponent implements OnInit, OnDestroy {
                 this.dashboardService.retrievePortfolios$.next(null);
                 const { _id: resultId } = result;
                 this.dashboardService.listBadge[resultId] = { message: 'New', type: 'primary' };
-                console.log(this.dashboardService.listBadge);
               }
+              // TODO handle failures
             }
           }
         });
