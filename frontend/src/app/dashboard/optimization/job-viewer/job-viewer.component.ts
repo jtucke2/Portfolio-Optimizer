@@ -61,6 +61,11 @@ export class JobViewerComponent implements OnInit {
           } else {
             this.showDetails = true;
           }
+
+          // Remove badge if it exists
+          if (this.dashboardService.listBadge[portfolio._id]) {
+            delete this.dashboardService.listBadge[portfolio._id];
+          }
         })
       );
   }

@@ -30,7 +30,16 @@ def get_by_task_id(task_id: str) -> dict:
         ret_val['task'] = json.loads(json.dumps(task_doc, default=json_util.default))
         if task_doc['status'] == 'SUCCESS':
             portfolio_id = task_doc['result'][1:-1]  # Remove extra quotations
-            result_doc = portfolios_col.find_one({'_id': ObjectId(portfolio_id)})
+            project = {
+                'job_start': 1,
+                'job_end': 1,
+                'parameters': 1,
+                'user_id': 1,
+                'task_id': 1,
+                'published': 1,
+                'name': 1
+            }
+            result_doc = portfolios_col.find_one({'_id': ObjectId(portfolio_id)}, project)
             if result_doc:
                 ret_val['result'] = json.loads(json.dumps(_id_to_str_util(result_doc), default=json_util.default))
             else:

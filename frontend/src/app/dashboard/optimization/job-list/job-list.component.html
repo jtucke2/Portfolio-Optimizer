@@ -1,12 +1,18 @@
 <div id="jobListComponent">
 
+  <!-- TODO move the list display logic to a component -->
+
   <div *ngIf="userPortfolios$ | async as userPortfolios">
     <div *ngIf="userPortfolios.length">  
       <h3 class="listPadding">My Portfolios</h3>
       <mat-nav-list>
         <mat-list-item *ngFor="let userPortfolio of userPortfolios" routerLink="job/{{ userPortfolio._id }}" routerLinkActive="active-link">
           <div matLine class="flex">
-            <span>{{ userPortfolio.name }}</span>
+            <span>{{ userPortfolio.name }}&nbsp;</span>
+            <span *ngIf="dashboardService.listBadge[userPortfolio._id]" 
+              class="badge badge-{{ dashboardService.listBadge[userPortfolio._id].type }}">
+              {{ dashboardService.listBadge[userPortfolio._id].message }}
+            </span>
             <span class="flex1">&nbsp;</span>
             <small>{{ userPortfolio.job_end.$date | date }}</small>
           </div>
@@ -21,7 +27,11 @@
       <mat-nav-list>
         <mat-list-item *ngFor="let publishedPortfolio of publishedPortfolios" routerLink="job/{{ publishedPortfolio._id }}" routerLinkActive="active-link">
           <div matLine  class="flex">
-            <span>{{ publishedPortfolio.name }}</span>
+            <span>{{ publishedPortfolio.name }}&nbsp;</span>
+            <span *ngIf="dashboardService.listBadge[publishedPortfolio._id]"
+              class="badge badge-{{ dashboardService.listBadge[publishedPortfolio._id].type }}">
+              {{ dashboardService.listBadge[publishedPortfolio._id].message }}
+            </span>
             <span class="flex1">&nbsp;</span>
             <small>{{ publishedPortfolio.job_end.$date | date }}</small>
           </div>
