@@ -8,6 +8,7 @@ $frontend-theme: mat-dark-theme($frontend-primary, $frontend-accent, $frontend-w
 @include angular-material-theme($frontend-theme);
 
 $page-background-color: #303030;
+$card-background-color: map-get($mat-grey, 800);
 
 body {
   margin: 0;

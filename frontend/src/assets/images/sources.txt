@@ -1,2 +1,6 @@
-stock-chart.jpg: https://www.pexels.com/photo/stock-exchange-board-210607/
 bull.svg: Modified from https://image.flaticon.com/icons/svg/578/578366.svg
+bull2.svg: Modified from https://image.flaticon.com/icons/svg/40/40585.svg
+decisions.jpg: https://www.pexels.com/photo/arrows-box-business-chalk-533189/
+stock-chart.jpg: https://www.pexels.com/photo/stock-exchange-board-210607/
+
+

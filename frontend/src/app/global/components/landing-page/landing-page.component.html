@@ -1,11 +1,70 @@
-<div class="container">
-  <div class="row">
-    <div class="col-12">
-      <br><br>
-      <div *ngIf="userService.user && !userService.user.approved" class="mt-5 mb-10 alert alert-primary">You have successfully registered and are pending approval.</div>
-      <div class="mat-display-3 text-center">Portfolio Optimizer</div>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem cumque, excepturi dignissimos tempore rerum fuga error reprehenderit neque, illo, esse ad odio. Nesciunt sit aliquam, autem beatae aut iste porro.</p>
-      <p><img src="/assets/images/stock-chart.jpg" alt="Stock Chart" id="stockChart" class="lp-img"></p>
+<div id="landingPageComponent">
+
+  <header class="container-fluid" id="header">
+    <div class="mat-display-4 text-center">Portfolio Optimizer</div>
+  </header>
+
+  <section class="container" id="descriptionCardWrapper">
+    <div class="row">
+      <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-12">
+        <mat-card>
+          <mat-card-content>
+            <div class="lead">You create portfolios, and we adjust the adjust the weights of the assets to yield the best risk adjusted returns.</div>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
+  </section>
+
+  <div class="mt-30 mb-30">&nbsp;</div>
+
+  <section class="container">
+    <div class="row flex flexItemsCenter">
+      <div class="col-md-5">
+        <img src="/assets/images/stock-chart.jpg" alt="Stock Chart" class="full-width">
+      </div>
+      <div class="col-md-7">
+        <h1 class="mat-h1">Lorem Ipsum</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam culpa doloribus perspiciatis eveniet neque possimus eligendi fugiat adipisci distinctio repellat consequuntur sed rem deleniti iusto numquam, sequi dolorum dolorem quibusdam.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="mt-30">&nbsp;</div>
+
+  <div class="full-width altSection">
+
+    <section class="container">
+      <div class="row flex flexItemsCenter">
+        <div class="col-md-7">
+          <h1 class="mat-h1">Lorem Ipsum</h1>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam culpa doloribus perspiciatis eveniet neque
+            possimus eligendi fugiat adipisci distinctio repellat consequuntur sed rem deleniti iusto numquam, sequi
+            dolorum dolorem quibusdam.</p>
+          </div>
+          <div class="col-md-5">
+            <img src="/assets/images/decisions.jpg" alt="Decisions" class="full-width">
+          </div>
+        </div>     
+      </section>
   </div>
+
+  <div class="mb-30">&nbsp;</div>
+
+  <section class="container">
+    <div class="row flex flexItemsCenter">
+      <div class="col-md-5">
+        <img src="/assets/images/stock-chart.jpg" alt="Stock Chart" class="full-width">
+      </div>
+      <div class="col-md-7">
+        <h1 class="mat-h1">Lorem Ipsum</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam culpa doloribus perspiciatis eveniet neque
+          possimus eligendi fugiat adipisci distinctio repellat consequuntur sed rem deleniti iusto numquam, sequi
+          dolorum dolorem quibusdam.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="mt-30 mb-30">&nbsp;</div>
+
 </div>
