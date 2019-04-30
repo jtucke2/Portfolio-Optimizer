@@ -1,7 +1,14 @@
 // Vendor
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatToolbarModule, MatProgressSpinnerModule, MatSnackBarModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatToolbarModule,
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+  MatSliderModule
+} from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -17,6 +24,7 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth.guard';
 import { AuthInterceptor } from './services/auth-interceptor.service';
 import { SnackbarService } from './services/snackbar.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -33,7 +41,9 @@ import { SnackbarService } from './services/snackbar.service';
     MatProgressSpinnerModule,
     RouterModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSliderModule,
+    FormsModule
   ],
   exports: [
     LandingPageComponent,

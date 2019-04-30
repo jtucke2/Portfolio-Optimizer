@@ -64,3 +64,12 @@
 .highcharts-credits {
   display: none !important;
 }
+
+.selectedCard {
+  border-bottom: 4px solid $accent;
+}
+
+a {
+  text-decoration: none !important;
+  color: map-get($mat-blue, 500);
+}
