@@ -1,11 +1,17 @@
-<mat-sidenav-container id="optimizationComponent" [class.opened]="dashboardService.sidenavOpened">
-  <mat-sidenav #sidenav mode="side" class="mat-elevation-z8" [opened]="dashboardService.sidenavOpened" id="sidenav">
-    <job-list></job-list>
-  </mat-sidenav>
-  <mat-sidenav-content id="sidenavContent">
-    <button mat-icon-button (click)="dashboardService.toggleSidenav()" id="sidenavToggle">
-      <i class="material-icons">keyboard_arrow_right</i>
+<div id="optimizationComponent" [class.closed]="!dashboardService.sidenavOpened">
+  <div id="menuIconWrapper">
+    <button mat-mini-fab (click)="dashboardService.toggleSidenav()" id="sidenavToggle">
+      <i class="material-icons">{{ dashboardService.sidenavOpened ? 'keyboard_arrow_left' : 'menu' }}</i>
     </button>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+  <mat-sidenav-container id="matContainer">
+    <mat-sidenav #sidenav mode="side" class="mat-elevation-z8" [opened]="dashboardService.sidenavOpened" id="sidenav">
+      <br>
+      <job-list></job-list>
+    </mat-sidenav>
+    <mat-sidenav-content id="sidenavContent">    
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+  

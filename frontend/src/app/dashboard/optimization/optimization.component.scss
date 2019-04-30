@@ -1,21 +1,40 @@
-// TODO get navbar height from var
+@import "modules/variables";
+
+$component-border-height: 10px;
+$menu-button-pos: 30px;
+$sidenav-width: 350px;
+
 #optimizationComponent {
-    min-height: calc(100vh - 64px);
+    border-bottom: #{$component-border-height} solid map-get($mat-grey, 500);
+    position: relative;
+}
+
+#matContainer {
+    min-height: calc(100vh - #{$navbar-height - $component-border-height});
 }
 
 #sidenav {
     width: 30vw;
-    max-width: 350px;
-}
-
-#sidenavToggle {
-    transition: all 0.2s ease-in-out;
-    
-    .opened & {
-        transform: rotate(180deg);
-    }
+    max-width: $sidenav-width;
 }
 
 ::ng-deep #sidenav {
     border-right: none !important;
+}
+
+#menuIconWrapper {
+    position: absolute;
+    z-index: 100;
+    top: $menu-button-pos / 2;
+    left: $sidenav-width - 55px;
+
+    transition: {
+      duration: $swift-ease-out-duration;
+      timing-function: $swift-ease-out-timing-function;
+      property: left;
+    }
+
+    .closed & {
+        left: $menu-button-pos;
+    }
 }

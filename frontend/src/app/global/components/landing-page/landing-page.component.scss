@@ -68,18 +68,3 @@
     padding: 48px 24px;
     pointer-events: none;
 }
-
-footer {
-    padding-top: 75px;
-    padding-bottom: 50px;
-    background: $card-background-color;
-
-    #tuLogo {
-        max-width: 200px;
-    }
-
-    #githubLogo {
-        height: 20px;
-        transform: translateY(-2px);
-    }
-}
