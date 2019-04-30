@@ -15,8 +15,10 @@ export interface CheckJobReturn {
 }
 
 export interface ListBadge {
-  message: string;
-  type: 'primary' | 'secondary' | 'info' | 'success';
+  [s: string]: {
+    message: string;
+    type: 'primary' | 'secondary' | 'info' | 'success';
+  };
 }
 
 @Injectable()
@@ -24,7 +26,7 @@ export class DashboardService {
   public sidenavOpened = true;
   public sidenavOpened$: BehaviorSubject<boolean> = new BehaviorSubject(this.sidenavOpened);
   public portfolioTasks: PortfolioTask[] = [];
-  public listBadge: { [s: string]: ListBadge } = {};
+  public listBadge: ListBadge = {};
   public runPoller$ = new Subject();
   public retrievePortfolios$ = new BehaviorSubject<Partial<Portfolio>>(null);
   private pricesUrl = '/api/prices/';

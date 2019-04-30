@@ -66,10 +66,35 @@
 }
 
 .selectedCard {
-  border-bottom: 4px solid $accent;
+  border-bottom: 4px solid $accent !important;
 }
 
 a {
   text-decoration: none !important;
   color: map-get($mat-blue, 500);
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+.marginAuto {
+  margin: 0 auto;
+}
+
+// ~~~ Optimization ~~~
+
+#pageHeaderText {
+  // Make room for the absolutely positioned menu icon
+  padding-left: 0px;
+
+  transition: {
+    duration: $swift-ease-out-duration;
+    timing-function: $swift-ease-out-timing-function;
+    property: padding-left;
+  }
+
+  .closed & {
+    padding-left: 50px;
+  }
 }

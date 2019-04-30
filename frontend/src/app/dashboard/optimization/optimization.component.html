@@ -1,6 +1,6 @@
 <div id="optimizationComponent" [class.closed]="!dashboardService.sidenavOpened">
   <div id="menuIconWrapper">
-    <button mat-mini-fab (click)="dashboardService.toggleSidenav()" id="sidenavToggle">
+    <button mat-mini-fab (click)="dashboardService.toggleSidenav()" id="sidenavToggle" color="primary">
       <i class="material-icons">{{ dashboardService.sidenavOpened ? 'keyboard_arrow_left' : 'menu' }}</i>
     </button>
   </div>

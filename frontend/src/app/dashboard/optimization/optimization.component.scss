@@ -15,7 +15,7 @@ $sidenav-width: 350px;
 
 #sidenav {
     width: 30vw;
-    max-width: $sidenav-width;
+    width: $sidenav-width;
 }
 
 ::ng-deep #sidenav {
@@ -25,7 +25,7 @@ $sidenav-width: 350px;
 #menuIconWrapper {
     position: absolute;
     z-index: 100;
-    top: $menu-button-pos / 2;
+    top: ($menu-button-pos / 2) + 5px;
     left: $sidenav-width - 55px;
 
     transition: {

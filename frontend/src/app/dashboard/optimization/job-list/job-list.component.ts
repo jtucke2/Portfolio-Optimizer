@@ -4,6 +4,7 @@ import { Observable, combineLatest } from 'rxjs';
 
 import { DashboardService } from '../../dashboard.service';
 import { UserService } from 'src/app/global/services/user.service';
+import { Portfolio } from 'src/app/models/portfolio';
 
 @Component({
   selector: 'job-list',
@@ -11,8 +12,8 @@ import { UserService } from 'src/app/global/services/user.service';
   styleUrls: ['./job-list.component.scss']
 })
 export class JobListComponent implements OnInit {
-  public userPortfolios$: Observable<any>;
-  public publishedPortfolios$: Observable<any>;
+  public userPortfolios$: Observable<Partial<Portfolio>[]>;
+  public publishedPortfolios$: Observable<Partial<Portfolio>[]>;
 
   constructor(
     public dashboardService: DashboardService,
