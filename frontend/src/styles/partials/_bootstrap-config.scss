@@ -67,3 +67,9 @@ $theme-colors: (
   padding-left: 30px !important;
   padding-right: 30px !important;
 }
+
+.lead {
+  @include font-size($lead-font-size);
+  font-weight: $lead-font-weight;
+  line-height: 1.75rem;
+}
