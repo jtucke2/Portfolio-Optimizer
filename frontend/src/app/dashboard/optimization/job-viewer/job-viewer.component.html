@@ -1,20 +1,34 @@
-<div id="jobViewerComponent" class="container-fluid paddedContainer">
+<div id="jobViewerComponent">
   <div *ngIf="loading">
     <loading-spinner></loading-spinner>
   </div>
   <div *ngIf="portfolio$ | async as p" [class.hidden]="loading">
 
-    <div class="row">
-      <div class="col-12">
-        <h1 class="mat-display-3">{{ p.name }}</h1>
-      </div>
+    <div id="pageHeader" class="paddedContainer">
+      <h1 class="mat-display-3" id="pageHeaderText">{{ p.name }}</h1>
     </div>
 
-    <div id="pInfo" class="mb-10">
-
+    <div id="pInfo" class="container-fluid paddedContainer mb-10">
+      <br><br>
       <div class="row">
         <div class="col-12">
-          <h2 class="mat-h2">Portfolio Information</h2>
+          <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12  flex flexItemsCenter">
+          <span class="mat-h2">Portfolio Information</span>
+          <span class="flex1">&nbsp;</span>
+          <span>
+            <ng-container *ngIf="p.published || tempPublished; else notPublished">
+              <i class="material-icons alignIcon text-accent">check</i>
+              <span>&nbsp;Published</span>
+            </ng-container>
+            <ng-template #notPublished>
+              <button mat-raised-button color="primary" (click)="publishPortfolio(p._id)">Publish Portfolio</button>
+            </ng-template>
+            
+          </span>
         </div>
       </div>
 
@@ -141,23 +155,28 @@
         </div> 
     </div>
 
-    <div id="optimizations" class="mb-10">
+    <div id="optimizations" class="mb-10" *ngIf="optimizationResult$ | async as selectedOptRes">
 
       <div class="row">
-        <h2 class="mat-h2 col-12">Optimization Results</h2>
+        <div class="col-12">
+          <h2 class="mat-h2">Optimization Results</h2>
+          <p class="text-muted"><small>Select optimization strategy to view full results.</small></p>
+        </div>
       </div>
 
       <div class="row">
-        <div *ngFor="let opt of p.results" class="col-lg-6 col-md-12 mb-30 full-height">
-          <mat-card class="optimizationResultCard full-height" (click)="optimizationResult$.next(opt)">
+        <div *ngFor="let opt of p.results" class="col-lg-4 col-md-6 col-sm-12 mb-30 full-height">
+          <mat-card 
+            class="optimizationResultCard full-height cursorPointer"
+            (click)="optimizationResult$.next(opt)"
+            [class.selectedCard]="selectedOptRes?.goal === opt.goal && selectedOptRes?.shorting_ok === opt.shorting_ok">
             <mat-card-header>
               <mat-card-title>{{ opt.goal }}</mat-card-title>
-              <mat-card-subtitle>{{ opt.shorting_ok ? "Short Selling OK" : "No Short Selling" }}</mat-card-subtitle>
+              <mat-card-subtitle>{{ opt.shorting_ok ? 'Long / Short Positions' : 'Long Positions Only' }}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
 
               <div class="performance mb-10">
-                <h3 class="mat-subheading-2">{{ p.parameters.interval | titlecase }} Performance</h3>
                 <table>
                   <tbody>
                     <tr>
@@ -165,38 +184,12 @@
                       <td>{{ (opt.returns * 100).toFixed(4) }}%</td>
                     </tr>
                     <tr>
-                      <th class="text-right">Standard Deviation:&nbsp;</th>
-                      <td>{{ opt.std_dev.toFixed(4) }}</td>
-                    </tr>
-                    <tr>
                       <th class="text-right">Sharpe Ratio:&nbsp;</th>
                       <td>{{ opt.sharpe_ratio.toFixed(4) }}</td>
                     </tr>
-                    <tr>
-                      <th class="text-right">Total Return:&nbsp;</th>
-                      <td>{{ (opt.portfolio_returns.total_return * 100).toFixed(2) }}%</td>
-                    </tr>
                   </tbody>
                 </table>
-              </div>
-
-              <div class="weights mb-10">
-                <h3 class="mat-subheading-2">Asset Weights</h3>
-                <div class="overflowX">
-                  <table class="gridTable">
-                    <thead>
-                      <tr>
-                        <th *ngFor="let ticker of p.parameters.tickers" class="text-left">{{ ticker }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>                    
-                      <tr>
-                        <td *ngFor="let weight of opt.weights">{{ (weight * 100).toFixed(2) }}%</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>              
+              </div>            
               
             </mat-card-content>
           </mat-card>
@@ -207,9 +200,7 @@
         <results-details 
           [optimizationResult$]="optimizationResult$" 
           [equalWeightResults$]="equalWeightResults$"
-          [benchmarkIndex]="p.benchmark_index"
-          [priceDates]="p.price_dates"
-          [tickers]="p.parameters.tickers"></results-details>
+          [portfolio]="p"></results-details>
       </div>
 
     </div>

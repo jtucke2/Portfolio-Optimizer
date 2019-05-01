@@ -1,14 +1,28 @@
 <div id="resultsDetailsComponent" *ngIf="optimizationResult$ | async as opt">
   <h1 class="mat-h1">{{ opt.goal }}{{ opt.shorting_ok ? ' (Long/Short)' : '' }} Portfolio Details</h1>
 
-  <div class="row mb-30">
+  <div class="row">
     <div class="col-lg-6 col-md-12 mb-30" *ngIf="weightsChart$ | async as weightsChart">
       <mat-card class="full-height">
         <mat-card-header>
-          <mat-card-title>Portfolio Weights</mat-card-title>
+          <mat-card-title>Asset Weights</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <div [chart]="weightsChart"></div>
+          <div class="overflowX text-center">
+            <table class="gridTable marginAuto">
+              <thead>
+                <tr>
+                  <th *ngFor="let ticker of portfolio.parameters.tickers" class="text-left">{{ ticker }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td *ngFor="let weight of opt.weights">{{ (weight * 100).toFixed(2) }}%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>
@@ -19,6 +33,29 @@
         </mat-card-header>
         <mat-card-content>
           <p>{{ opt.description }}</p>
+          <h2 class="mat-h2">{{ portfolio.parameters.interval | titlecase }} Performance</h2>
+          <div class="performance mb-10">
+            <table>
+              <tbody>
+                <tr>
+                  <th class="text-right">Average Returns:&nbsp;</th>
+                  <td>{{ (opt.returns * 100).toFixed(4) }}%</td>
+                </tr>
+                <tr>
+                  <th class="text-right">Standard Deviation:&nbsp;</th>
+                  <td>{{ opt.std_dev.toFixed(4) }}</td>
+                </tr>
+                <tr>
+                  <th class="text-right">Sharpe Ratio:&nbsp;</th>
+                  <td>{{ opt.sharpe_ratio.toFixed(4) }}</td>
+                </tr>
+                <tr>
+                  <th class="text-right">Total Return:&nbsp;</th>
+                  <td>{{ (opt.portfolio_returns.total_return * 100).toFixed(2) }}%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>    
@@ -28,7 +65,7 @@
     <div class="col-12">
       <mat-card>
         <mat-card-header>
-          <mat-card-title>Portfolio Returns vs. Benchmark Index</mat-card-title>
+          <mat-card-title>Portfolio Returns vs. Benchmark Indices</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <div [chart]="comparisonChart"></div>

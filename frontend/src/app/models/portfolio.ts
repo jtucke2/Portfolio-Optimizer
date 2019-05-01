@@ -12,6 +12,7 @@ export interface PortfolioTask {
     task_id: string;
     name: string;
     state: CeleryState;
+    result_id?: string;
 }
 
 export interface CeleryTask {

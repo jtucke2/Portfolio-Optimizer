@@ -1,4 +1,4 @@
-<mat-toolbar id="navComponent" color="primary" class="mat-elevation-z6">
+<mat-toolbar id="navComponent" color="primary" class="mat-elevation-z5">
   <a mat-icon-button routerLink="/home">
     <img src="/assets/images/bull2.svg" alt="Bull Logo" height="35">
   </a>
@@ -6,7 +6,19 @@
   <a mat-button routerLink="/dashboard/portfolio" *ngIf="userService.loggedIn">Create Portfolio</a>
   <a mat-button routerLink="/dashboard/optimization" *ngIf="userService.loggedIn">Optimization Results</a>
   <a mat-button routerLink="/admin" *ngIf="userService.loggedIn && userService.user && userService.user.role === 'ADMIN'">Admin</a>
-  <a mat-button routerLink="/home" *ngIf="userService.loggedIn" (click)="userService.logout()">Sign out</a>
+  <!-- <a mat-button routerLink="/home" *ngIf="userService.loggedIn" (click)="userService.logout()">Sign out</a> -->
+  <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="userService.loggedIn">
+    <i class="material-icons">account_circle</i>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item disabled="true">
+      <span>{{ userService.user.email }}</span>
+    </button>
+    <a mat-menu-item routerLink="/home" (click)="userService.logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Sign out</span>
+    </a>
+  </mat-menu>
 
   <a mat-button routerLink="/user/login" *ngIf="!userService.loggedIn">Sign in</a>
   <a mat-button routerLink="/user/register" *ngIf="!userService.loggedIn">Register</a>

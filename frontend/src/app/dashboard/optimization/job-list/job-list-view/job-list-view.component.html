@@ -1,0 +1,14 @@
+<mat-nav-list>
+  <mat-list-item *ngFor="let portfolio of portfolios" routerLink="job/{{ portfolio._id }}"
+    routerLinkActive="active-link">
+    <div matLine class="flex">
+      <span>{{ portfolio.name }}&nbsp;</span>
+      <span *ngIf="listBadge && listBadge[portfolio._id]"
+        class="badge badge-{{ listBadge[portfolio._id].type }}">
+        {{ listBadge[portfolio._id].message }}
+      </span>
+      <span class="flex1">&nbsp;</span>
+      <small>{{ portfolio.job_end.$date | date }}</small>
+    </div>
+  </mat-list-item>
+</mat-nav-list>

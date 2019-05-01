@@ -13,7 +13,8 @@ import {
   MatTooltipModule,
   MatSidenavModule,
   MatListModule,
-  MatTableModule
+  MatTableModule,
+  MatProgressBarModule
 } from '@angular/material';
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
@@ -26,6 +27,7 @@ import { RouterModule } from '@angular/router';
 import { AssetCardComponent } from './portfolio/asset-card/asset-card.component';
 import ChartHelpers from '../global/helpers/chart-helpers';
 import { ResultsDetailsComponent } from './optimization/job-viewer/results-details/results-details.component';
+import { JobListViewComponent } from './optimization/job-list/job-list-view/job-list-view.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { ResultsDetailsComponent } from './optimization/job-viewer/results-detai
     JobViewerComponent,
     SelectJobMsgComponent,
     AssetCardComponent,
-    ResultsDetailsComponent
+    ResultsDetailsComponent,
+    JobListViewComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +57,8 @@ import { ResultsDetailsComponent } from './optimization/job-viewer/results-detai
     MatListModule,
     RouterModule,
     ChartModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressBarModule
   ],
   providers: [
     DashboardService,

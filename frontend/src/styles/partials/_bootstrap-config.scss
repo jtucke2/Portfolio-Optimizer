@@ -31,8 +31,12 @@ $theme-colors: (
   background: $primary;
 }
 
-.text-accent {
+.text-accent, .text-secondary {
   color: $accent;
+}
+
+.bg-accent, .bg-secondary {
+  background: $accent;
 }
 
 .text-warn {
