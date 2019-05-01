@@ -13,7 +13,8 @@ import {
   MatTooltipModule,
   MatSidenavModule,
   MatListModule,
-  MatTableModule
+  MatTableModule,
+  MatProgressBarModule
 } from '@angular/material';
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
@@ -56,7 +57,8 @@ import { JobListViewComponent } from './optimization/job-list/job-list-view/job-
     MatListModule,
     RouterModule,
     ChartModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressBarModule
   ],
   providers: [
     DashboardService,

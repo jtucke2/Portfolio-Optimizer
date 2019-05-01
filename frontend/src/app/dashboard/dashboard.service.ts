@@ -12,7 +12,7 @@ export interface CheckJobReturn {
   found: boolean;
   task: CeleryTask;
   result: Portfolio | null;
-  message: string;
+  message?: string;
 }
 
 export interface ListBadge {

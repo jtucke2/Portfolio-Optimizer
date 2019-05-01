@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
 import { DashboardService } from '../../dashboard.service';
+import { CeleryState } from 'src/app/models/celery';
 
 @Component({
   selector: 'select-job-msg',
@@ -14,4 +16,5 @@ export class SelectJobMsgComponent implements OnInit {
   ngOnInit() {
   }
 
+  public get celeryState() { return CeleryState; }
 }

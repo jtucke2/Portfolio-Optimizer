@@ -10,18 +10,36 @@
   </div>
   <div class="row">
     <div class="col-12">
-          <!-- TODO style this better -->
       <ng-container *ngIf="dashboardService.portfolioTasks.length; else elseTemplate">
         <h2 class="mat-h2">Pending Portfolios</h2>   
-        <table mat-table [dataSource]="dashboardService.portfolioTasks" class="mat-elevation-z8 mb-10">
+        <table mat-table [dataSource]="dashboardService.portfolioTasks" class="mat-elevation-z8 mb-10" id="taskTable">
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let row">&nbsp;{{ row.name }}&nbsp;</td>
           </ng-container>
 
           <ng-container matColumnDef="state">
-            <th mat-header-cell *matHeaderCellDef>Task State</th>
-            <td mat-cell *matCellDef="let row">&nbsp;{{ row.state }}&nbsp;</td>
+            <th mat-header-cell *matHeaderCellDef>&nbsp;Task State&nbsp;</th>
+            <td mat-cell *matCellDef="let row">
+              <div [ngSwitch]="row.state">
+                <div *ngSwitchCase="celeryState.SUCCESS">
+                  Complete
+                  <a routerLink="job/{{ row.result_id}}" mat-icon-button color="accent">
+                    <i class="material-icons">launch</i>
+                  </a>               
+                </div>
+                <div *ngSwitchCase="celeryState.PENDING">
+                  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+                <div *ngSwitchCase="celeryState.STARTED">
+                  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+                <div *ngSwitchCase="celeryState.FAILURE">
+                  <i class="material-icons text-warn alignIcon">warning</i> Failed
+                </div>
+                <div *ngSwitchDefault>Unknown</div>
+              </div>
+            </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
