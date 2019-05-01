@@ -9,7 +9,8 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-12">    
+    <div class="col-12">
+          <!-- TODO style this better -->
       <ng-container *ngIf="dashboardService.portfolioTasks.length; else elseTemplate">
         <h2 class="mat-h2">Pending Portfolios</h2>   
         <table mat-table [dataSource]="dashboardService.portfolioTasks" class="mat-elevation-z8 mb-10">

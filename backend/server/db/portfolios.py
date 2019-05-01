@@ -77,3 +77,11 @@ def get_portfolios_by_user(user_id: str, include_published: bool = True) -> List
     str_id_list = [_id_to_str_util(doc) for doc in doc_list]
     ret_val = json.loads(json.dumps(str_id_list, default=json_util.default))
     return ret_val
+
+
+def publish_portfolio(portfolio_id: str) -> dict:
+    res = portfolios_col.update_one({'_id': ObjectId(portfolio_id)}, {'$set': {'published': True}})
+    return {
+        'found': bool(res.matched_count),
+        'updated': bool(res.modified_count)
+    }

@@ -18,6 +18,9 @@ export class JobViewerComponent implements OnInit {
   public benchmarkName: string;
   public loading = true;
   public showDetails = false;
+  public errorMessage  = '';
+  // This is to toggle the published icon without reloading the portfolio
+  public tempPublished = false;
   public optimizationResult$: ReplaySubject<OptimizationResult> = new ReplaySubject();
   public equalWeightResults$: ReplaySubject<OptimizationResult> = new ReplaySubject();
 
@@ -32,6 +35,7 @@ export class JobViewerComponent implements OnInit {
         debounceTime(50),
         map((params) => params.get('id')),
         tap(() => {
+          this.tempPublished = false;
           this.loading = true;
           this.maxReturnsIdx = -1;
           this.minStdDevIdx = -1;
@@ -73,6 +77,18 @@ export class JobViewerComponent implements OnInit {
             this.dashboardService.portfolioTasks.splice(taskIdx, 1);
           }
         })
+      );
+  }
+
+  public publishPortfolio(id: string) {
+    this.dashboardService.publishPortfolio(id)
+      .subscribe(
+        (res) => {
+          this.tempPublished = true;
+        },
+        (err) => {
+          this.errorMessage = err.message || 'An unknown error occured.';
+        }
       );
   }
 

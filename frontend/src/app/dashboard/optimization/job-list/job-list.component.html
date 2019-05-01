@@ -1,7 +1,5 @@
 <div id="jobListComponent">
 
-  <!-- TODO move the list display logic to a component -->
-
   <div *ngIf="userPortfolios$ | async as userPortfolios">
     <h3 class="listPadding">My Portfolios</h3>
     <ng-container *ngIf="userPortfolios.length; else noUserPortfolios">
@@ -14,6 +12,8 @@
       </div>
     </ng-template>    
   </div>
+
+  <hr>
 
   <div *ngIf="publishedPortfolios$ | async as publishedPortfolios">
     <h3 class="listPadding">Community Portfolios</h3>

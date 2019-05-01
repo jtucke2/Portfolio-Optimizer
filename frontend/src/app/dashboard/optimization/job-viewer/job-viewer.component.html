@@ -10,10 +10,25 @@
 
     <div id="pInfo" class="container-fluid paddedContainer mb-10">
       <br><br>
-
       <div class="row">
         <div class="col-12">
-          <h2 class="mat-h2">Portfolio Information</h2>
+          <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12  flex flexItemsCenter">
+          <span class="mat-h2">Portfolio Information</span>
+          <span class="flex1">&nbsp;</span>
+          <span>
+            <ng-container *ngIf="p.published || tempPublished; else notPublished">
+              <i class="material-icons alignIcon text-accent">check</i>
+              <span>&nbsp;Published</span>
+            </ng-container>
+            <ng-template #notPublished>
+              <button mat-raised-button color="primary" (click)="publishPortfolio(p._id)">Publish Portfolio</button>
+            </ng-template>
+            
+          </span>
         </div>
       </div>
 

@@ -33,7 +33,7 @@
         </mat-card-header>
         <mat-card-content>
           <p>{{ opt.description }}</p>
-          <h3 class="mat-subheading-2">{{ portfolio.parameters.interval | titlecase }} Performance</h3>
+          <h2 class="mat-h2">{{ portfolio.parameters.interval | titlecase }} Performance</h2>
           <div class="performance mb-10">
             <table>
               <tbody>
@@ -65,7 +65,7 @@
     <div class="col-12">
       <mat-card>
         <mat-card-header>
-          <mat-card-title>Portfolio Returns vs. Benchmark Index</mat-card-title>
+          <mat-card-title>Portfolio Returns vs. Benchmark Indices</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <div [chart]="comparisonChart"></div>

@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from flask_restplus import Namespace, Resource, fields
-from flask import request, jsonify
+from flask import request
 from flask_jwt_extended import jwt_required, current_user
 
 from server.app import task_optimize
@@ -62,3 +62,31 @@ class Portfolio(Resource):
     def get(self):
         user_id = current_user.get('user_id')
         return portfolios.get_portfolios_by_user(user_id)
+
+
+@api.route('/publish-portfolio/<id>')
+@api.doc(params={'id': 'Database ID of portfolio'})
+class PublishPortfolio(Resource):
+    @jwt_required
+    def get(self, id):
+        user_id = current_user.get('user_id')
+        portfolio = portfolios.get_portfolio(id)
+        if not portfolio:
+            return {
+                'success': False,
+                'message': 'Portfolio not found'
+            }, 404
+        elif portfolio['user_id'] != user_id:
+            return {
+                'success': False,
+                'message': 'You are only allowed to publish your own portfolios'
+            }, 403
+
+        publish_res = portfolios.publish_portfolio(id)
+        if publish_res['updated']:
+            return {'success': True}
+        else:
+            return {
+                'success': False,
+                'message': 'Portfolio already published'
+            }
