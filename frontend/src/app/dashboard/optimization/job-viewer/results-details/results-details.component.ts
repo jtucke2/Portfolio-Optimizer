@@ -27,7 +27,6 @@ export class ResultsDetailsComponent implements OnInit {
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit() {
-    let a = this.portfolio.benchmark_index.asset_data.ticker;
     // Reflow graphs after sidenav is opened/closed, wait for open/close to finish
     const sidenavOpened$ = this.dashboardService.sidenavOpened$
       .pipe(
