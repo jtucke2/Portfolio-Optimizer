@@ -7,7 +7,9 @@ import {
   MatToolbarModule,
   MatProgressSpinnerModule,
   MatSnackBarModule,
-  MatSliderModule
+  MatSliderModule,
+  MatMenuModule,
+  MatIconModule
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -25,6 +27,7 @@ import { AuthGuard } from './services/auth.guard';
 import { AuthInterceptor } from './services/auth-interceptor.service';
 import { SnackbarService } from './services/snackbar.service';
 import { FormsModule } from '@angular/forms';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,7 @@ import { FormsModule } from '@angular/forms';
     NavComponent,
     PageTitleComponent,
     LoadingSpinnerComponent,
+    FooterComponent,
   ],
   imports: [
     CommonModule,
@@ -43,13 +47,16 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     MatSnackBarModule,
     MatSliderModule,
-    FormsModule
+    FormsModule,
+    MatMenuModule,
+    MatIconModule
   ],
   exports: [
     LandingPageComponent,
     NavComponent,
     PageTitleComponent,
     LoadingSpinnerComponent,
+    FooterComponent
   ],
   providers: [
     ApiService,

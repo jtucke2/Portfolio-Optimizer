@@ -1,0 +1,15 @@
+@import "modules/variables";
+
+#pageHeaderText {
+    padding-top: 8px;
+}
+
+#pageHeader {
+    background: $primary-lighter;
+    height: 80px;
+}
+
+.optimizationResultCard {
+    // This is to match the selectedCard border
+    border-bottom: 4px solid rgba(0,0,0,0);
+}
