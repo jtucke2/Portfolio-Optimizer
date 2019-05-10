@@ -38,6 +38,13 @@ class AssetData(object):
             ret_val.append(np.log(prices[i] / prices[i + 1]))
         return ret_val
 
+    @property
+    def excess_returns(self) -> List[float]:
+        """
+        Returns minus the mean return
+        """
+        return [x - self.avg_return for x in self.returns]
+
     def as_dict(self) -> dict:
         return {
             'ticker': self.ticker,
@@ -54,8 +61,8 @@ class AssetMatrices(object):
         self.n = len(asset_data[0].returns)
         self.avg_returns_vec = self.generate_avg_returns_vec()
         self.std_dev_vec = self.generate_std_dev_vec()
-        self.returns_matrix = self.generate_returns_matrix()
-        self.x_transpose_x_matrix = self.generate__transpose_x_matrix()
+        self.excess_returns_matrix = self.generate_excess_returns_matrix()
+        self.x_transpose_x_matrix = self.generate_x_transpose_x_matrix()
         self.variance_covariance_matrix = self.generate_variance_covariance_matrix()
         self.std_dev_matrix = self.generate_std_dev_matrix()
         self.correlation_matrix = self.generate_correlation_matrix()
@@ -66,14 +73,14 @@ class AssetMatrices(object):
     def generate_std_dev_vec(self) -> np.ndarray:
         return np.array([asset_data.std_dev for asset_data in self.asset_data])
 
-    def generate_returns_matrix(self) -> np.matrix:
-        return np.matrix([asset_data.returns for asset_data in self.asset_data])
+    def generate_excess_returns_matrix(self) -> np.matrix:
+        return np.matrix([asset_data.excess_returns for asset_data in self.asset_data])
 
-    def generate__transpose_x_matrix(self) -> np.ndarray:
-        return np.matmul(self.returns_matrix, self.returns_matrix.T)
+    def generate_x_transpose_x_matrix(self) -> np.ndarray:
+        return np.matmul(self.excess_returns_matrix, self.excess_returns_matrix.T)
 
     def generate_variance_covariance_matrix(self) -> np.matrix:
-        return self.x_transpose_x_matrix / (self.n - 1)
+        return self.x_transpose_x_matrix / self.n
 
     def generate_std_dev_matrix(self) -> np.ndarray:
         return np.outer(self.std_dev_vec, self.std_dev_vec.T)
@@ -86,7 +93,6 @@ class AssetMatrices(object):
             'n': self.n,
             'avg_returns_vec': self.avg_returns_vec.tolist(),
             'std_dev_vec': self.std_dev_vec.tolist(),
-            'returns_matrix': self.returns_matrix.tolist(),
             'x_transpose_x_matrix': self.x_transpose_x_matrix.tolist(),
             'variance_covariance_matrix': self.variance_covariance_matrix.tolist(),
             'std_dev_matrix': self.std_dev_matrix.tolist(),
