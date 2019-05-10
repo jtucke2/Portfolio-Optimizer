@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DashboardService } from '../../dashboard.service';
 import { Prices } from 'src/app/models/price';
@@ -30,6 +30,7 @@ export class TickersComponent implements OnDestroy {
   public priceDataArr: PricesExtended[] = [];
   public hideTickerInput = false;
   public getPricesArr = [];
+  public tempTickers = [];
 
   constructor(private dashboardService: DashboardService) { }
 
@@ -43,10 +44,10 @@ export class TickersComponent implements OnDestroy {
     const ticker = this.tickerForm.get('ticker').value.toUpperCase();
     if (this.form.get('tickers').value.includes(ticker)) {
       this.errorMessage = `${ticker} is already included in the portfolio.`;
+    } else if (this.tempTickers.includes(ticker)) {
+      this.errorMessage = `${ticker} was already submitted.`;
     } else {
-      const tickers = this.form.get('tickers').value;
-      tickers.push(ticker);
-      this.form.get('tickers').patchValue(tickers);
+      this.tempTickers.push(ticker);
       this.tickerForm.get('ticker').reset();
       const { start_date, end_date, interval } = this.form.value;
       const getPrices$ = this.dashboardService.getPrices(ticker, start_date, end_date, interval)
@@ -74,6 +75,20 @@ export class TickersComponent implements OnDestroy {
         )
         .subscribe(
           (priceData) => {
+            // Add ticker to parent form
+            const tickers = this.form.get('tickers').value;
+            if (!tickers.includes(ticker)) {
+              tickers.push(ticker);
+              this.form.get('tickers').patchValue(tickers);
+            }
+
+            // Remove ticker from temp arr
+            const tempTickerIdx = this.tempTickers.indexOf(ticker);
+            if (tempTickerIdx > 0) {
+              this.tempTickers.splice(tempTickerIdx, 1);
+            }
+
+            // Generate chart data
             const rawPrices = priceData.prices.map(p => p.close);
             let returnPercent: string | number = (rawPrices[rawPrices.length - 1] - rawPrices[0]) / rawPrices[0] * 100;
             returnPercent = returnPercent > 0 ? `+${returnPercent.toFixed(2)}` : returnPercent.toFixed(2);
@@ -104,6 +119,12 @@ export class TickersComponent implements OnDestroy {
               console.log('Unable to find ticker to remove from parent form');
             }
             this.errorMessage = `Unable to retrieve price data for ${ticker}.`;
+
+            // Remove ticker from temp arr
+            const tempTickerIdx = this.tempTickers.indexOf(ticker);
+            if (tempTickerIdx > 0) {
+              this.tempTickers.splice(tempTickerIdx, 1);
+            }
           }
         );
       this.getPricesArr.push(getPrices$);
