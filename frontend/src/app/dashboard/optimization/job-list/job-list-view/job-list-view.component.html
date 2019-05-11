@@ -1,5 +1,5 @@
 <mat-nav-list>
-  <mat-list-item *ngFor="let portfolio of portfolios" routerLink="job/{{ portfolio._id }}"
+  <mat-list-item *ngFor="let portfolio of portfolios; trackBy: trackByFn" routerLink="job/{{ portfolio._id }}"
     routerLinkActive="active-link">
     <div matLine class="flex">
       <span>{{ portfolio.name }}&nbsp;</span>

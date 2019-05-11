@@ -22,7 +22,7 @@
   </form>
 
   <div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-12 mb-30" *ngFor="let priceData of priceDataArr; index as i">
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-30" *ngFor="let priceData of priceDataArr; index as i; trackBy: trackByFn">
       <asset-card [priceData]="priceData" (removeAsset)="removeAsset(i, $event)"></asset-card>
     </div>
   </div>
