@@ -29,6 +29,7 @@ export class PortfolioComponent implements OnInit {
     tickers: new FormControl([], Validators.required),
     benchmark_index: new FormControl(globalVars.BENCHMARK_INDEXES[0].value, Validators.required)
   });
+  public dateSync = true;
   public errorMessage = '';
 
   public benchmarkIndexes = globalVars.BENCHMARK_INDEXES;
@@ -84,7 +85,8 @@ export class PortfolioComponent implements OnInit {
             chart,
             returnPercent,
             startDate: this.form.get('start_date').value,
-            endDate: this.form.get('end_date').value
+            endDate: this.form.get('end_date').value,
+            dateSyncError: false
           };
         })
       );

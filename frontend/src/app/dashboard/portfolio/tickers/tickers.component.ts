@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DashboardService } from '../../dashboard.service';
 import { Prices } from 'src/app/models/price';
@@ -14,6 +14,7 @@ export interface PricesExtended extends Prices {
   returnPercent: number | string;
   startDate: Date;
   endDate: Date;
+  dateSyncError: boolean;
 }
 
 @Component({
@@ -31,6 +32,17 @@ export class TickersComponent implements OnDestroy {
   public hideTickerInput = false;
   public getPricesArr = [];
   public tempTickers = [];
+
+  @Output() public dateSyncChange = new EventEmitter<boolean>();
+
+  @Input() public get dateSync() { return this.dateSyncValue; }
+
+  public set dateSync(sync) {
+    this.dateSyncValue = true;
+    this.dateSyncChange.emit(sync);
+  }
+
+  private dateSyncValue = true;
 
   constructor(private dashboardService: DashboardService) { }
 
@@ -82,11 +94,7 @@ export class TickersComponent implements OnDestroy {
               this.form.get('tickers').patchValue(tickers);
             }
 
-            // Remove ticker from temp arr
-            const tempTickerIdx = this.tempTickers.indexOf(ticker);
-            if (tempTickerIdx > 0) {
-              this.tempTickers.splice(tempTickerIdx, 1);
-            }
+            this.removeTempTicker(ticker);
 
             // Generate chart data
             const rawPrices = priceData.prices.map(p => p.close);
@@ -100,6 +108,7 @@ export class TickersComponent implements OnDestroy {
               returnPercent,
               startDate: this.form.get('start_date').value,
               endDate: this.form.get('end_date').value,
+              dateSyncError: false
             };
             const currentIndex = this.priceDataArr.findIndex(pd => pd.ticker === priceData.ticker);
             if (currentIndex > -1) {
@@ -107,6 +116,7 @@ export class TickersComponent implements OnDestroy {
             } else {
               this.priceDataArr.push(data);
             }
+            this.validateDateSync();
           },
           (err) => {
             console.log(err);
@@ -119,12 +129,7 @@ export class TickersComponent implements OnDestroy {
               console.log('Unable to find ticker to remove from parent form');
             }
             this.errorMessage = `Unable to retrieve price data for ${ticker}.`;
-
-            // Remove ticker from temp arr
-            const tempTickerIdx = this.tempTickers.indexOf(ticker);
-            if (tempTickerIdx > 0) {
-              this.tempTickers.splice(tempTickerIdx, 1);
-            }
+            this.removeTempTicker(ticker);
           }
         );
       this.getPricesArr.push(getPrices$);
@@ -132,6 +137,7 @@ export class TickersComponent implements OnDestroy {
   }
 
   public removeAsset(idx: number, ticker: string) {
+    this.removeTempTicker(ticker);
     const priceDataCp = [...this.priceDataArr];
     priceDataCp.splice(idx, 1);
     this.priceDataArr = priceDataCp;
@@ -143,9 +149,40 @@ export class TickersComponent implements OnDestroy {
     } else {
       console.log('Unable to find ticker to remove from parent form');
     }
+    this.validateDateSync();
   }
 
   public trackByFn(index: number, item: PricesExtended) {
     return item.ticker;
+  }
+
+  private removeTempTicker(ticker: string) {
+    const tempTickerIdx = this.tempTickers.indexOf(ticker);
+    if (tempTickerIdx > 0) {
+      this.tempTickers.splice(tempTickerIdx, 1);
+    }
+  }
+
+  /**
+   * @description Validate that the date of the asset prices are synchronized
+   */
+  private validateDateSync() {
+    const priceLengths = this.priceDataArr
+      .map(pD => pD.prices.length);
+
+    const lengthsEqual = priceLengths
+      .every((el, _, arr) => el === arr[0]);
+
+    this.dateSync = lengthsEqual;
+
+    const maxLength = Math.max(...priceLengths);
+
+    priceLengths.forEach((pL, i) => {
+      if (pL < maxLength) {
+        this.priceDataArr[i].dateSyncError = true;
+      } else {
+        this.priceDataArr[i].dateSyncError = false;
+      }
+    });
   }
 }
