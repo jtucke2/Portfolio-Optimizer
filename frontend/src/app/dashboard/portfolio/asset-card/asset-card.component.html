@@ -1,8 +1,10 @@
 <div class="assetCardComponent">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{ priceData.ticker }}</mat-card-title>
-      <mat-card-subtitle>Prices from {{ priceData.startDate | date:'shortDate' }} to {{ priceData.endDate | date:'shortDate' }}</mat-card-subtitle>
+      <mat-card-title [class.text-warn]="priceData.dateSyncError">{{ priceData.ticker }}</mat-card-title>
+      <mat-card-subtitle *ngIf="!priceData.dateSyncError">Prices from {{ priceData.startDate | date:'shortDate' }} to
+        {{ priceData.endDate | date:'shortDate' }}</mat-card-subtitle>
+      <mat-card-subtitle *ngIf="priceData.dateSyncError" class="text-warn">This asset is missing prices from the date range</mat-card-subtitle>
       <button mat-icon-button matTooltip="Remove Asset" (click)="removeAsset.emit(priceData.ticker)" *ngIf="removable">
         <i class="material-icons">close</i>
       </button>

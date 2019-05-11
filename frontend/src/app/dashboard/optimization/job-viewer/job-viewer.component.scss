@@ -1,15 +1,11 @@
 @import "modules/variables";
 
-#pageHeaderText {
-    padding-top: 8px;
-}
-
-#pageHeader {
-    background: $primary-lighter;
-    height: 80px;
-}
-
 .optimizationResultCard {
     // This is to match the selectedCard border
     border-bottom: 4px solid rgba(0,0,0,0);
+    transition: background 0.1s ease-in-out;
+
+    &:hover {
+        background: darken(map-get($mat-grey, 800), 4%);
+    }
 }

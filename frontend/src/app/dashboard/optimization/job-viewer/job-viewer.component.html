@@ -4,9 +4,7 @@
   </div>
   <div *ngIf="portfolio$ | async as p" [class.hidden]="loading">
 
-    <div id="pageHeader" class="paddedContainer">
-      <h1 class="mat-display-3" id="pageHeaderText">{{ p.name }}</h1>
-    </div>
+    <page-title [title]="p.name" containerType="container-fluid paddedContainer"></page-title>
 
     <div id="pInfo" class="container-fluid paddedContainer mb-10">
       <br><br>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DashboardService } from '../../dashboard.service';
 import { Prices } from 'src/app/models/price';
@@ -14,6 +14,7 @@ export interface PricesExtended extends Prices {
   returnPercent: number | string;
   startDate: Date;
   endDate: Date;
+  dateSyncError: boolean;
 }
 
 @Component({
@@ -30,6 +31,18 @@ export class TickersComponent implements OnDestroy {
   public priceDataArr: PricesExtended[] = [];
   public hideTickerInput = false;
   public getPricesArr = [];
+  public tempTickers = [];
+
+  @Output() public dateSyncChange = new EventEmitter<boolean>();
+
+  @Input() public get dateSync() { return this.dateSyncValue; }
+
+  public set dateSync(sync) {
+    this.dateSyncValue = true;
+    this.dateSyncChange.emit(sync);
+  }
+
+  private dateSyncValue = true;
 
   constructor(private dashboardService: DashboardService) { }
 
@@ -43,10 +56,10 @@ export class TickersComponent implements OnDestroy {
     const ticker = this.tickerForm.get('ticker').value.toUpperCase();
     if (this.form.get('tickers').value.includes(ticker)) {
       this.errorMessage = `${ticker} is already included in the portfolio.`;
+    } else if (this.tempTickers.includes(ticker)) {
+      this.errorMessage = `${ticker} was already submitted.`;
     } else {
-      const tickers = this.form.get('tickers').value;
-      tickers.push(ticker);
-      this.form.get('tickers').patchValue(tickers);
+      this.tempTickers.push(ticker);
       this.tickerForm.get('ticker').reset();
       const { start_date, end_date, interval } = this.form.value;
       const getPrices$ = this.dashboardService.getPrices(ticker, start_date, end_date, interval)
@@ -74,6 +87,16 @@ export class TickersComponent implements OnDestroy {
         )
         .subscribe(
           (priceData) => {
+            // Add ticker to parent form
+            const tickers = this.form.get('tickers').value;
+            if (!tickers.includes(ticker)) {
+              tickers.push(ticker);
+              this.form.get('tickers').patchValue(tickers);
+            }
+
+            this.removeTempTicker(ticker);
+
+            // Generate chart data
             const rawPrices = priceData.prices.map(p => p.close);
             let returnPercent: string | number = (rawPrices[rawPrices.length - 1] - rawPrices[0]) / rawPrices[0] * 100;
             returnPercent = returnPercent > 0 ? `+${returnPercent.toFixed(2)}` : returnPercent.toFixed(2);
@@ -85,6 +108,7 @@ export class TickersComponent implements OnDestroy {
               returnPercent,
               startDate: this.form.get('start_date').value,
               endDate: this.form.get('end_date').value,
+              dateSyncError: false
             };
             const currentIndex = this.priceDataArr.findIndex(pd => pd.ticker === priceData.ticker);
             if (currentIndex > -1) {
@@ -92,6 +116,7 @@ export class TickersComponent implements OnDestroy {
             } else {
               this.priceDataArr.push(data);
             }
+            this.validateDateSync();
           },
           (err) => {
             console.log(err);
@@ -104,6 +129,7 @@ export class TickersComponent implements OnDestroy {
               console.log('Unable to find ticker to remove from parent form');
             }
             this.errorMessage = `Unable to retrieve price data for ${ticker}.`;
+            this.removeTempTicker(ticker);
           }
         );
       this.getPricesArr.push(getPrices$);
@@ -111,6 +137,7 @@ export class TickersComponent implements OnDestroy {
   }
 
   public removeAsset(idx: number, ticker: string) {
+    this.removeTempTicker(ticker);
     const priceDataCp = [...this.priceDataArr];
     priceDataCp.splice(idx, 1);
     this.priceDataArr = priceDataCp;
@@ -122,9 +149,40 @@ export class TickersComponent implements OnDestroy {
     } else {
       console.log('Unable to find ticker to remove from parent form');
     }
+    this.validateDateSync();
   }
 
   public trackByFn(index: number, item: PricesExtended) {
     return item.ticker;
+  }
+
+  private removeTempTicker(ticker: string) {
+    const tempTickerIdx = this.tempTickers.indexOf(ticker);
+    if (tempTickerIdx > 0) {
+      this.tempTickers.splice(tempTickerIdx, 1);
+    }
+  }
+
+  /**
+   * @description Validate that the date of the asset prices are synchronized
+   */
+  private validateDateSync() {
+    const priceLengths = this.priceDataArr
+      .map(pD => pD.prices.length);
+
+    const lengthsEqual = priceLengths
+      .every((el, _, arr) => el === arr[0]);
+
+    this.dateSync = lengthsEqual;
+
+    const maxLength = Math.max(...priceLengths);
+
+    priceLengths.forEach((pL, i) => {
+      if (pL < maxLength) {
+        this.priceDataArr[i].dateSyncError = true;
+      } else {
+        this.priceDataArr[i].dateSyncError = false;
+      }
+    });
   }
 }
