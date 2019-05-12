@@ -32,18 +32,18 @@ def create_admin_user():
 
 def create_example_portfolio():
     print('Task: Create example portfolio')
-    example_portfolio = portfolios_col.find_one({'_id': ObjectId('5cd7383037a484c573a4c696')})
-    if example_portfolio:
-        print('Example portfolio already exists')
-    else:
-        print('Creating example portfolio')
-        try:
-            example_portfolio_content = open('example-portfolio.json').read()
-            portfolio_bson = bson_loads(example_portfolio_content)
+    try:
+        example_portfolio_content = open('example-portfolio.json').read()
+        portfolio_bson = bson_loads(example_portfolio_content)
+        example_portfolio = portfolios_col.find_one({'_id': portfolio_bson['_id']})
+        if example_portfolio:
+            print('Example portfolio already exists')
+        else:
+            print('Creating example portfolio')
             portfolios_col.insert_one(portfolio_bson)
             print('Successfully inserted example portfolio')
-        except Exception as e:
-            print('Unable to insert example portfolio')
+    except Exception as e:
+        print('Unable to insert example portfolio')
 
 
 if __name__ == '__main__':
