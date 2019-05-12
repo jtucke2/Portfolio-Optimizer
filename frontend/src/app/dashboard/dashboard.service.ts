@@ -6,7 +6,7 @@ import { IntervalEnum, Portfolio, PortfolioTask, CeleryTask } from '../models/po
 import { Prices } from '../models/price';
 import { OptimizeJob } from '../models/optimize';
 import { CeleryState } from '../models/celery';
-import { BasicApiResponse } from '../models/api';
+import { BasicApiResponse, PortfolioApiResponse } from '../models/api';
 
 export interface CheckJobReturn {
   found: boolean;
@@ -67,8 +67,16 @@ export class DashboardService {
     return this.api.get(`${this.optimizeUrl}portfolio/${id}`);
   }
 
+  public deletePortfolio(id: string): Observable<BasicApiResponse> {
+    return this.api.get(`${this.optimizeUrl}delete-portfolio/${id}`);
+  }
+
   public publishPortfolio(id: string): Observable<BasicApiResponse> {
     return this.api.get(`${this.optimizeUrl}publish-portfolio/${id}`);
+  }
+
+  public renamePortfolio(id: string, newName: string): Observable<PortfolioApiResponse> {
+    return this.api.get(`${this.optimizeUrl}rename-portfolio/${id}/${newName}`);
   }
 
   public checkJobs(task_ids: string): Observable<CheckJobReturn[]> {
