@@ -4,3 +4,6 @@ venv*
 *.code-workspace
 .idea
 db/*
+!db/.gitkeep
+certs/*
+!certs/.gitkeep

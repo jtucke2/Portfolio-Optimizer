@@ -21,6 +21,7 @@ pytest = "*"
 scipy = "*"
 flask-jwt-extended = "*"
 bcrypt = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
@@ -30,3 +31,4 @@ test = "pytest"
 start = "python start_server.py"
 codestyle = "pycodestyle"
 processor = "python processor.py"
+deploy = "gunicorn --config gunicorn_config.py --access-logfile - app:app"

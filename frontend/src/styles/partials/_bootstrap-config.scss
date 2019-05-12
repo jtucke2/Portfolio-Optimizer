@@ -40,7 +40,7 @@ $theme-colors: (
 }
 
 .text-warn {
-  color: $warn;
+  color: $warn !important;
 }
 
 .text-right {

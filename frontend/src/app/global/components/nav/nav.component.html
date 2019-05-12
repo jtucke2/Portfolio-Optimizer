@@ -11,8 +11,8 @@
     <i class="material-icons">account_circle</i>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item disabled="true">
-      <span>{{ userService.user.email }}</span>
+    <button mat-menu-item disabled="true" *ngIf="userService.loggedIn">
+      <span>{{ userService.user?.email }}</span>
     </button>
     <a mat-menu-item routerLink="/home" (click)="userService.logout()">
       <mat-icon>exit_to_app</mat-icon>

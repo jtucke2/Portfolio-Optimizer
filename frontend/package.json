@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-docker": "npm run build-docker-loading-page && npm run build && npm run build-docker-cp-dist",
+    "build-docker": "npm run build-docker-loading-page && ng build --prod && npm run build-docker-cp-dist",
     "build-docker-cp-dist": "cp -r ./dist/frontend/* /html",
     "build-docker-loading-page": "cp ./static-html/build-in-progress.html /html/index.html",
     "test": "ng test",
