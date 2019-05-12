@@ -5,6 +5,6 @@ export interface BasicApiResponse {
     message?: string;
 }
 
-export interface PortfolioApiResponse extends BasicApiResponse{
+export interface PortfolioApiResponse extends BasicApiResponse {
     portfolio?: Portfolio;
 }
