@@ -79,9 +79,17 @@ def get_portfolios_by_user(user_id: str, include_published: bool = True) -> List
     return ret_val
 
 
-def publish_portfolio(portfolio_id: str) -> dict:
-    res = portfolios_col.update_one({'_id': ObjectId(portfolio_id)}, {'$set': {'published': True}})
+def update_portfolio(portfolio_id: str, update: dict) -> dict:
+    res = portfolios_col.update_one({'_id': ObjectId(portfolio_id)}, update)
     return {
         'found': bool(res.matched_count),
         'updated': bool(res.modified_count)
     }
+
+
+def publish_portfolio(portfolio_id: str) -> dict:
+    return update_portfolio(portfolio_id, {'$set': {'published': True}})
+
+
+def rename_portfolio(portfolio_id: str, name: str) -> dict:
+    return update_portfolio(portfolio_id, {'$set': {'name': name}})
