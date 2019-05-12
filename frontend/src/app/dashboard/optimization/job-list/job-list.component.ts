@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { share, map, filter, tap, switchMap, withLatestFrom, startWith } from 'rxjs/operators';
 import { Observable, combineLatest } from 'rxjs';
 
@@ -9,7 +9,8 @@ import { Portfolio } from 'src/app/models/portfolio';
 @Component({
   selector: 'job-list',
   templateUrl: './job-list.component.html',
-  styleUrls: ['./job-list.component.scss']
+  styleUrls: ['./job-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class JobListComponent implements OnInit {
   public userPortfolios$: Observable<Partial<Portfolio>[]>;

@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, ReplaySubject, combineLatest, of as observableOf } from 'rxjs';
 import { StockChart, Chart } from 'angular-highcharts';
 
-import { OptimizationResult, BenchmarkIndex, OptimizeGoal, Portfolio } from 'src/app/models/portfolio';
+import { OptimizationResult, OptimizeGoal, Portfolio } from 'src/app/models/portfolio';
 import { map, switchMap, delay, share } from 'rxjs/operators';
 import ChartHelpers from 'src/app/global/helpers/chart-helpers';
 import { globalVars } from 'src/app/global/global-vars';
@@ -11,7 +11,8 @@ import { DashboardService } from 'src/app/dashboard/dashboard.service';
 @Component({
   selector: 'results-details',
   templateUrl: './results-details.component.html',
-  styleUrls: ['./results-details.component.scss']
+  styleUrls: ['./results-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResultsDetailsComponent implements OnInit {
   @Input() public optimizationResult$: ReplaySubject<OptimizationResult>;

@@ -54,7 +54,6 @@ export interface Portfolio {
 export interface AssetData {
     avg_return: number;
     price_data: number[];
-    returns: number[];
     std_dev: number;
     ticker: string;
 }
