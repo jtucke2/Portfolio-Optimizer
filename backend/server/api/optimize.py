@@ -5,6 +5,7 @@ from flask import request
 from flask_jwt_extended import jwt_required, current_user
 
 from server.app import task_optimize
+from server.shared.auth import UserRoles
 from .rest_models import *
 from server.db import portfolios
 
@@ -35,8 +36,7 @@ class SubmitOptimizeJob(Resource):
         print('Processing optimization job submission for', args)
         user_id = current_user.get('user_id')
         task_id = task_optimize.delay(args['name'], args['tickers'], args['benchmark_index'], args['start_date'], args['end_date'], user_id, args['interval'])
-        # TODO stub out entry in results db with task and user id
-        return {'task_id': str(task_id)}
+        return {'task_id': str(task_id)}, 202
 
 
 @api.route('/check-job/<task_ids>')
@@ -70,13 +70,14 @@ class PublishPortfolio(Resource):
     @jwt_required
     def get(self, id):
         user_id = current_user.get('user_id')
+        role = current_user.get('role')
         portfolio = portfolios.get_portfolio(id)
         if not portfolio:
             return {
                 'success': False,
                 'message': 'Portfolio not found'
             }, 404
-        elif portfolio['user_id'] != user_id:
+        elif portfolio['user_id'] != user_id and role != UserRoles.ADMIN.value:
             return {
                 'success': False,
                 'message': 'You are only allowed to publish your own portfolios'
@@ -89,4 +90,63 @@ class PublishPortfolio(Resource):
             return {
                 'success': False,
                 'message': 'Portfolio already published'
+            }
+
+
+@api.route('/rename-portfolio/<id>/<name>')
+@api.doc(params={'id': 'Database ID of portfolio', 'name': 'The new name for the portfolio'})
+class RenamePortfolio(Resource):
+    @jwt_required
+    def get(self, id, name):
+        user_id = current_user.get('user_id')
+        role = current_user.get('role')
+        portfolio = portfolios.get_portfolio(id)
+        if not portfolio:
+            return {
+                'success': False,
+                'message': 'Portfolio not found'
+            }, 404
+        elif portfolio['user_id'] != user_id and role != UserRoles.ADMIN.value:
+            return {
+                'success': False,
+                'message': 'You are only allowed to rename your own portfolios'
+            }, 403
+
+        rename_res = portfolios.rename_portfolio(id, name)
+        if rename_res['updated']:
+            portfolio['name'] = name
+            return {'success': True, 'portfolio': portfolio}
+        else:
+            return {
+                'success': False,
+                'message': 'Portfolio name is unchanged'
+            }
+
+
+@api.route('/delete-portfolio/<id>')
+@api.doc(params={'id': 'Database ID of portfolio'})
+class DeletePortfolio(Resource):
+    @jwt_required
+    def get(self, id):
+        user_id = current_user.get('user_id')
+        role = current_user.get('role')
+        portfolio = portfolios.get_portfolio(id)
+        if not portfolio:
+            return {
+                'success': False,
+                'message': 'Portfolio not found'
+            }, 404
+        elif portfolio['user_id'] != user_id and role != UserRoles.ADMIN.value:
+            return {
+                'success': False,
+                'message': 'You are only allowed to delete your own portfolios'
+            }, 403
+
+        rename_res = portfolios.delete_portfolio(id)
+        if rename_res['deleted']:
+            return {'success': True, 'message': f'Successfully deleted {portfolio["name"]}.'}
+        else:
+            return {
+                'success': False,
+                'message': 'Portfolio does not exist or could not be deleted'
             }

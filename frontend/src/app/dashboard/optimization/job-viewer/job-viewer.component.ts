@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map, switchMap, tap, debounceTime } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, switchMap, tap, debounceTime, take } from 'rxjs/operators';
 import { DashboardService } from '../../dashboard.service';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, EMPTY, Subject, merge } from 'rxjs';
 import { Portfolio, OptimizationResult, OptimizeGoal } from 'src/app/models/portfolio';
 import { globalVars } from 'src/app/global/global-vars';
+import { MatDialog } from '@angular/material';
+import { RenamePortfolioDialogComponent, RenameCloseResult } from './rename-portfolio-dialog/rename-portfolio-dialog.component';
+import { DeletePortfolioDialogComponent } from './delete-portfolio-dialog/delete-portfolio-dialog.component';
+import { SnackbarService } from 'src/app/global/services/snackbar.service';
+import { UserService } from 'src/app/global/services/user.service';
 
 @Component({
   selector: 'job-viewer',
@@ -15,6 +20,7 @@ export class JobViewerComponent implements OnInit {
   public maxReturnsIdx = -1;
   public minStdDevIdx = -1;
   public portfolio$: Observable<Portfolio>;
+  public updatePortfolio$: Subject<Portfolio> = new Subject();
   public benchmarkName: string;
   public loading = true;
   public showDetails = false;
@@ -26,11 +32,15 @@ export class JobViewerComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private dashboardService: DashboardService
+    private router: Router,
+    private dashboardService: DashboardService,
+    private snackbarService: SnackbarService,
+    private dialog: MatDialog,
+    public userService: UserService
   ) { }
 
   ngOnInit() {
-    this.portfolio$ = this.route.paramMap
+    const portfolioFromRoute$ = this.route.paramMap
       .pipe(
         debounceTime(50),
         map((params) => params.get('id')),
@@ -78,6 +88,10 @@ export class JobViewerComponent implements OnInit {
           }
         })
       );
+
+    this.portfolio$ = merge(portfolioFromRoute$, this.updatePortfolio$);
+
+    this.updatePortfolio$.subscribe(() => this.dashboardService.retrievePortfolios$.next(null));
   }
 
   public publishPortfolio(id: string) {
@@ -90,6 +104,61 @@ export class JobViewerComponent implements OnInit {
           this.errorMessage = err.message || 'An unknown error occured.';
         }
       );
+  }
+
+  public openRenameDialog(portfolio: Portfolio) {
+    const dialogRef = this.dialog.open(RenamePortfolioDialogComponent, {
+      width: '400px',
+      maxWidth: '90vh',
+      data: portfolio
+    });
+
+    dialogRef.afterClosed()
+      .pipe(
+        take(1),
+        switchMap((result: RenameCloseResult) => {
+          if (result && result.action === 'save' && result.nameChanged) {
+            return this.dashboardService.renamePortfolio(result.portfolioState._id, result.portfolioState.name);
+          } else {
+            return EMPTY;
+          }
+        })
+      )
+      .subscribe(res => {
+        if (res && res.success && res.portfolio) {
+          this.updatePortfolio$.next(res.portfolio);
+        }
+      });
+  }
+
+  public openDeleteDialog(portfolio: Portfolio) {
+    const dialogRef = this.dialog.open(DeletePortfolioDialogComponent, {
+      width: '400px',
+      maxWidth: '90vh',
+      data: portfolio
+    });
+
+    dialogRef.afterClosed()
+      .pipe(
+        take(1),
+        switchMap((result) => {
+          if (result && result.action === 'delete' && result.portfolioState) {
+            return this.dashboardService.deletePortfolio(result.portfolioState._id);
+          } else {
+            return EMPTY;
+          }
+        })
+      )
+      .subscribe(res => {
+        if (res && res.success) {
+          this.router.navigate(['dashboard', 'optimization']);
+          this.dashboardService.retrievePortfolios$.next(null);
+
+          if (res.message) {
+            this.snackbarService.openSnackbar(res.message);
+          }
+        }
+      });
   }
 
 }

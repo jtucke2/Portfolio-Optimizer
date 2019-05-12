@@ -102,6 +102,9 @@ export class PortfolioComponent implements OnInit {
             state: CeleryState.PENDING
           });
           this.snackbarService.openSnackbar('Portfolio Successfully Created', null, 'Success');
+          if (window.scroll) {
+            window.scroll(0, 0);
+          }
           this.router.navigate(['dashboard', 'optimization']);
         },
         (err) => {

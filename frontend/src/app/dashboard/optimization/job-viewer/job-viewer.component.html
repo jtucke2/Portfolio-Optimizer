@@ -3,6 +3,21 @@
     <loading-spinner></loading-spinner>
   </div>
   <div *ngIf="portfolio$ | async as p" [class.hidden]="loading">
+    <div id="menuWrapper" *ngIf="userService.user.user_id === p.user_id || userService.user.role === 'ADMIN'">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openRenameDialog(p)">
+          <mat-icon>edit</mat-icon>
+          <span>Rename</span>
+        </button>
+        <button mat-menu-item (click)="openDeleteDialog(p)">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
+    </div>
 
     <page-title [title]="p.name" containerType="container-fluid paddedContainer"></page-title>
 
