@@ -80,6 +80,8 @@ export interface PortfolioReturns {
     portfolio_values: number[];
     portfolio_returns: number[];
     total_return: number;
+    alpha?: number;
+    beta?: number;
 }
 
 export enum OptimizeGoal {
