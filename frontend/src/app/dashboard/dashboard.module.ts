@@ -14,7 +14,9 @@ import {
   MatSidenavModule,
   MatListModule,
   MatTableModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatIconModule,
+  MatMenuModule
 } from '@angular/material';
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
@@ -28,6 +30,8 @@ import { AssetCardComponent } from './portfolio/asset-card/asset-card.component'
 import ChartHelpers from '../global/helpers/chart-helpers';
 import { ResultsDetailsComponent } from './optimization/job-viewer/results-details/results-details.component';
 import { JobListViewComponent } from './optimization/job-list/job-list-view/job-list-view.component';
+import { RenamePortfolioDialogComponent } from './optimization/job-viewer/rename-portfolio-dialog/rename-portfolio-dialog.component';
+import { DeletePortfolioDialogComponent } from './optimization/job-viewer/delete-portfolio-dialog/delete-portfolio-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +44,13 @@ import { JobListViewComponent } from './optimization/job-list/job-list-view/job-
     SelectJobMsgComponent,
     AssetCardComponent,
     ResultsDetailsComponent,
-    JobListViewComponent
+    JobListViewComponent,
+    RenamePortfolioDialogComponent,
+    DeletePortfolioDialogComponent
+  ],
+  entryComponents: [
+    RenamePortfolioDialogComponent,
+    DeletePortfolioDialogComponent
   ],
   imports: [
     CommonModule,
@@ -58,7 +68,9 @@ import { JobListViewComponent } from './optimization/job-list/job-list-view/job-
     RouterModule,
     ChartModule,
     MatTableModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatIconModule,
+    MatMenuModule,
   ],
   providers: [
     DashboardService,

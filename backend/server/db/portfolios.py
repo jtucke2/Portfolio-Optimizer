@@ -93,3 +93,11 @@ def publish_portfolio(portfolio_id: str) -> dict:
 
 def rename_portfolio(portfolio_id: str, name: str) -> dict:
     return update_portfolio(portfolio_id, {'$set': {'name': name}})
+
+
+def delete_portfolio(portfolio_id: str) -> dict:
+    res = portfolios_col.delete_one({'_id': ObjectId(portfolio_id)})
+    return {
+        'deleted_count': res.deleted_count,
+        'deleted': bool(res.deleted_count)
+    }

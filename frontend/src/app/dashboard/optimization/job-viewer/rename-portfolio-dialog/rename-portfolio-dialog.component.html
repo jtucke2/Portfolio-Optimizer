@@ -1,0 +1,14 @@
+<h2 class="mat-h2" mat-dialog-title>Rename Portfolio</h2>
+<div mat-dialog-content>
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Name" [formControl]="nameForm">
+    <mat-error *ngIf="nameForm.hasError('required')">
+      Name is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="text-right">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <span>&nbsp;</span>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="nameForm.status !== 'VALID'">Save</button>
+</div>

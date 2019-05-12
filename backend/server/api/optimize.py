@@ -121,3 +121,32 @@ class RenamePortfolio(Resource):
                 'success': False,
                 'message': 'Portfolio name is unchanged'
             }
+
+
+@api.route('/delete-portfolio/<id>')
+@api.doc(params={'id': 'Database ID of portfolio'})
+class DeletePortfolio(Resource):
+    @jwt_required
+    def get(self, id):
+        user_id = current_user.get('user_id')
+        role = current_user.get('role')
+        portfolio = portfolios.get_portfolio(id)
+        if not portfolio:
+            return {
+                'success': False,
+                'message': 'Portfolio not found'
+            }, 404
+        elif portfolio['user_id'] != user_id and role != UserRoles.ADMIN.value:
+            return {
+                'success': False,
+                'message': 'You are only allowed to delete your own portfolios'
+            }, 403
+
+        rename_res = portfolios.delete_portfolio(id)
+        if rename_res['deleted']:
+            return {'success': True, 'message': f'Successfully deleted {portfolio["name"]}.'}
+        else:
+            return {
+                'success': False,
+                'message': 'Portfolio does not exist or could not be deleted'
+            }
