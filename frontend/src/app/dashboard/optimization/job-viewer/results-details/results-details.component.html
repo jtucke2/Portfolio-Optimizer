@@ -33,12 +33,12 @@
         </mat-card-header>
         <mat-card-content>
           <p>{{ opt.description }}</p>
-          <h2 class="mat-h2">{{ portfolio.parameters.interval | titlecase }} Performance</h2>
+          <h2 class="mat-h2">Portfolio Performance</h2>
           <div class="performance mb-10">
             <table>
               <tbody>
                 <tr>
-                  <th class="text-right">Average Returns:&nbsp;</th>
+                  <th class="text-right">Average {{ portfolio.parameters.interval | titlecase }} Returns:&nbsp;</th>
                   <td>{{ (opt.returns * 100).toFixed(4) }}%</td>
                 </tr>
                 <tr>
@@ -55,11 +55,15 @@
                 </tr>
                 <tr *ngIf="opt.portfolio_returns.beta">
                   <th class="text-right">Beta:&nbsp;</th>
-                  <td>{{ opt.portfolio_returns.beta.toFixed(2) }}</td>
+                  <td>{{ opt.portfolio_returns.beta.toFixed(4) }}</td>
+                </tr>
+                <tr *ngIf="opt.portfolio_returns.capm">
+                  <th class="text-right">CAPM:&nbsp;</th>
+                  <td>{{ opt.portfolio_returns.capm.toFixed(4) }}</td>
                 </tr>
                 <tr *ngIf="opt.portfolio_returns.alpha">
                   <th class="text-right">Alpha:&nbsp;</th>
-                  <td>{{ opt.portfolio_returns.alpha.toFixed(2) }}</td>
+                  <td>{{ opt.portfolio_returns.alpha.toFixed(4) }}</td>
                 </tr>
               </tbody>
             </table>

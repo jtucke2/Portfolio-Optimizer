@@ -24,10 +24,12 @@ class PortfolioReturns(object):
             self.beta = self.calculate_beta(self.portfolio_returns, benchmark_data.returns)
             b_total_return = (benchmark_data.price_data[0] - benchmark_data.price_data[-1]) \
                 / benchmark_data.price_data[-1]
-            self.alpha = self.calculate_alpha(self.beta, self.total_return, b_total_return)
+            self.capm = self.calculate_capm(self.beta, b_total_return)
+            self.alpha = self.calculate_alpha(self.total_return, self.capm)
         else:
             self.beta = None
             self.alpha = None
+            self.capm = None
 
     def generate_portfolio_prices(self):
         ret_val = []
@@ -57,8 +59,12 @@ class PortfolioReturns(object):
         return float(slope)
 
     @staticmethod
-    def calculate_alpha(beta: float, p_tot_ret: float, b_tot_ret: float, risk_free_ret=0):
-        return p_tot_ret - (risk_free_ret - beta * (b_tot_ret - risk_free_ret))
+    def calculate_capm(beta: float, b_tot_ret: float, risk_free_ret=0) -> float:
+        return risk_free_ret + beta * (b_tot_ret - risk_free_ret)
+
+    @staticmethod
+    def calculate_alpha(p_tot_ret: float, capm: float) -> float:
+        return p_tot_ret - capm
 
     def as_dict(self) -> dict:
         ret_val = {
@@ -71,4 +77,6 @@ class PortfolioReturns(object):
             ret_val['alpha'] = self.alpha
         if self.beta is not None:
             ret_val['beta'] = self.beta
+        if self.capm is not None:
+            ret_val['capm'] = self.capm
         return ret_val

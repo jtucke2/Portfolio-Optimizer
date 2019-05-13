@@ -14,7 +14,7 @@ def test_alpha_beta():
     b_transformed_data, dates = prep_data.transform_yahoo_finance_dict(b_data)
     b_asset_data = prep_data.generate_asset_data_array(b_transformed_data)
 
-    data = prep_data.get_data(['FB'], '2016-05-01', '2019-05-01', 'monthly')
+    data = prep_data.get_data(['FB', 'MSFT'], '2016-05-01', '2019-05-01', 'monthly')
     transformed_data, dates = prep_data.transform_yahoo_finance_dict(data)
     asset_data = prep_data.generate_asset_data_array(transformed_data)
     matrices = prep_data.AssetMatrices(asset_data)
