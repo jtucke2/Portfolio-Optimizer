@@ -1,7 +1,7 @@
 <div id="jobListComponent">
 
   <div *ngIf="userPortfolios$ | async as userPortfolios">
-    <h3 class="listPadding">My Portfolios</h3>
+    <h2 class="listPadding mat-h2" style="padding-top: 4px;">My Portfolios</h2>
     <ng-container *ngIf="userPortfolios.length; else noUserPortfolios">
       <job-list-view [portfolios]="userPortfolios" [listBadge]="dashboardService.listBadge"></job-list-view>      
     </ng-container>
@@ -14,8 +14,8 @@
   </div>
 
   <div *ngIf="publishedPortfolios$ | async as publishedPortfolios">
-    <hr>
-    <h3 class="listPadding">Community Portfolios</h3>
+    <mat-divider></mat-divider>
+    <h2 class="listPadding mat-h2 mt-5" style="padding-top: 16px;">Community Portfolios</h2>
     <ng-container *ngIf="publishedPortfolios.length; else noPublishedPortfolios">
       <job-list-view [portfolios]="publishedPortfolios" [listBadge]="dashboardService.listBadge"></job-list-view>      
     </ng-container>

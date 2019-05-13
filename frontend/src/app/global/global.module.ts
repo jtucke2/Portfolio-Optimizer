@@ -9,7 +9,8 @@ import {
   MatSnackBarModule,
   MatSliderModule,
   MatMenuModule,
-  MatIconModule
+  MatIconModule,
+  MatDividerModule
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -53,7 +54,8 @@ import { NumberPipe } from './pipes/number.pipe';
     MatSliderModule,
     FormsModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    MatDividerModule
   ],
   exports: [
     LandingPageComponent,
