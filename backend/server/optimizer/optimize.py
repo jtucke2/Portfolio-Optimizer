@@ -132,10 +132,19 @@ class Optimize(object):
     def process_weights(self, weights: Union[np.ndarray, List[float]]) -> dict:
         returns = self.calculate_returns(weights, self.asset_matrices.avg_returns_vec)
         std_dev = self.calculate_std_dev(weights, self.asset_matrices.variance_covariance_matrix)
+
+        # Normalize weights if there are shorts
+        if sum(w for w in weights if w < 0):
+            abs_weight_tot = sum(abs(w) for w in weights)
+            normalized_weights = weights * (1 / abs_weight_tot)
+        else:
+            normalized_weights = weights
+
         return {
             'returns': returns,
             'std_dev': std_dev,
-            'sharpe_ratio': returns / std_dev
+            'sharpe_ratio': returns / std_dev,
+            'normalized_weights': normalized_weights
         }
 
     def generate_max_sharpe_ratio(self, shorting_allowed=False) -> OptimizeOutcome:
@@ -155,9 +164,10 @@ class Optimize(object):
         )
 
         pw = self.process_weights(optimize_result.x)
-        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x, self.benchmark_data)
+        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, pw['normalized_weights'],
+                                             self.benchmark_data)
 
-        return OptimizeOutcome(OptimizeGoal.MAX_SHARPE, shorting_allowed, optimize_result.x,
+        return OptimizeOutcome(OptimizeGoal.MAX_SHARPE, shorting_allowed, pw['normalized_weights'],
                                pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result, portfolio_returns)
 
     def generate_max_returns(self, shorting_allowed=False) -> OptimizeOutcome:
@@ -175,9 +185,10 @@ class Optimize(object):
         )
 
         pw = self.process_weights(optimize_result.x)
-        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x, self.benchmark_data)
+        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, pw['normalized_weights'],
+                                             self.benchmark_data)
 
-        return OptimizeOutcome(OptimizeGoal.MAX_RETURNS, shorting_allowed, optimize_result.x,
+        return OptimizeOutcome(OptimizeGoal.MAX_RETURNS, shorting_allowed, pw['normalized_weights'],
                                pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result, portfolio_returns)
 
     def generate_min_std_dev(self, shorting_allowed=False) -> OptimizeOutcome:
@@ -195,9 +206,10 @@ class Optimize(object):
         )
 
         pw = self.process_weights(optimize_result.x)
-        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x, self.benchmark_data)
+        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, pw['normalized_weights'],
+                                             self.benchmark_data)
 
-        return OptimizeOutcome(OptimizeGoal.MIN_STD_DEV, shorting_allowed, optimize_result.x,
+        return OptimizeOutcome(OptimizeGoal.MIN_STD_DEV, shorting_allowed, pw['normalized_weights'],
                                pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result, portfolio_returns)
 
     def optimize_all(self) -> List[OptimizeOutcome]:

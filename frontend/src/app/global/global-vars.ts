@@ -38,7 +38,7 @@ export const globalVars = {
     COLOR_SCALES: {
         CATEGORICAL: [
             theme.PRIMARY,
-            theme.WARN,
+            orange['600'],
             theme.SUCCESS,
             red['500'],
             purple['500'],
