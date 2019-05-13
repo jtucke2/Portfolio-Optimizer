@@ -38,7 +38,7 @@
               <span>&nbsp;Published</span>
             </ng-container>
             <ng-template #notPublished>
-              <button mat-raised-button color="primary" (click)="publishPortfolio(p._id)">Publish Portfolio</button>
+              <button mat-raised-button color="primary" (click)="publishPortfolio(p._id)" matTooltip="Publish as a community portfolio">Publish Portfolio</button>
             </ng-template>
             
           </span>
@@ -184,16 +184,18 @@
             (click)="optimizationResult$.next(opt)"
             [class.selectedCard]="selectedOptRes?.goal === opt.goal && selectedOptRes?.shorting_ok === opt.shorting_ok">
             <mat-card-header>
+              <div mat-card-avatar class="radioWrapper">
+                <mat-radio-button [checked]="selectedOptRes?.goal === opt.goal && selectedOptRes?.shorting_ok === opt.shorting_ok"></mat-radio-button>
+              </div>
               <mat-card-title>{{ opt.goal }}</mat-card-title>
               <mat-card-subtitle>{{ opt.shorting_ok ? 'Long / Short Positions' : 'Long Positions Only' }}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-
-              <div class="performance mb-10">
+              <div class="performance mb-10">                
                 <table>
                   <tbody>
                     <tr>
-                      <th class="text-right">Average Returns:&nbsp;</th>
+                      <th class="text-right">Average {{ p.parameters.interval | titlecase }} Returns:&nbsp;</th>
                       <td>{{ opt.returns | percent }}</td>
                     </tr>
                     <tr>

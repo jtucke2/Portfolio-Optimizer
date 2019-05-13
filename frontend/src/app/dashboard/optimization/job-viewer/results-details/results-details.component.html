@@ -33,37 +33,52 @@
         </mat-card-header>
         <mat-card-content>
           <p>{{ opt.description }}</p>
-          <h2 class="mat-h2">Strategy Performance</h2>
+          <h2 class="mat-h2">Portfolio Performance</h2>
           <div class="performance mb-10">
             <table>
+              <thead>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>Portfolio&nbsp;</th>
+                  <th>Benchmark</th>
+                </tr>
+              </thead>
               <tbody>
                 <tr>
                   <th class="text-right">Average {{ portfolio.parameters.interval | titlecase }} Return:&nbsp;</th>
                   <td>{{ opt.returns | percent }}</td>
+                  <td>{{ portfolio?.benchmark_index?.asset_data?.avg_return | percent }}</td>
                 </tr>
                 <tr>
                   <th class="text-right">Standard Deviation:&nbsp;</th>
                   <td>{{ opt.std_dev | number }}</td>
+                  <td>{{ portfolio?.benchmark_index?.asset_data?.std_dev | number }}</td>
                 </tr>
                 <tr>
                   <th class="text-right">Sharpe Ratio:&nbsp;</th>
                   <td>{{ opt.sharpe_ratio | number }}</td>
+                  <td>{{ portfolio?.benchmark_index?.asset_data?.avg_return / portfolio?.benchmark_index?.asset_data?.std_dev | number }}
+                  </td>
                 </tr>
                 <tr>
                   <th class="text-right">Total Return:&nbsp;</th>
                   <td>{{ opt.portfolio_returns.total_return | percent:'2' }}</td>
+                  <td>{{ portfolio?.benchmark_index?.returns?.total_return | percent:'2' }}</td>
                 </tr>
                 <tr *ngIf="opt.portfolio_returns.beta">
                   <th class="text-right">Beta:&nbsp;</th>
                   <td>{{ opt.portfolio_returns.beta | number }}</td>
+                  <td class="text-muted">-</td>
                 </tr>
                 <tr *ngIf="opt.portfolio_returns.capm">
                   <th class="text-right">CAPM:&nbsp;</th>
                   <td>{{ opt.portfolio_returns.capm | number }}</td>
+                  <td class="text-muted">-</td>
                 </tr>
                 <tr *ngIf="opt.portfolio_returns.alpha">
                   <th class="text-right">Alpha:&nbsp;</th>
                   <td>{{ opt.portfolio_returns.alpha | number }}</td>
+                  <td class="text-muted">-</td>
                 </tr>
               </tbody>
             </table>

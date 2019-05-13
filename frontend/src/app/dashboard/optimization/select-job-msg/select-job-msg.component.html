@@ -13,7 +13,7 @@
     <div class="col-12">
       <ng-container *ngIf="dashboardService.portfolioTasks.length; else elseTemplate">
         <h2 class="mat-h2">Pending Portfolios</h2>   
-        <table mat-table [dataSource]="dashboardService.portfolioTasks" class="mat-elevation-z8 mb-10" id="taskTable">
+        <table mat-table [dataSource]="dashboardService.portfolioTasks" class="mat-elevation-z8 mb-10 full-width" id="taskTable">
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let row">&nbsp;{{ row.name }}&nbsp;</td>
