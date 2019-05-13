@@ -13,9 +13,8 @@
     </ng-template>    
   </div>
 
-  <hr>
-
   <div *ngIf="publishedPortfolios$ | async as publishedPortfolios">
+    <hr>
     <h3 class="listPadding">Community Portfolios</h3>
     <ng-container *ngIf="publishedPortfolios.length; else noPublishedPortfolios">
       <job-list-view [portfolios]="publishedPortfolios" [listBadge]="dashboardService.listBadge"></job-list-view>      

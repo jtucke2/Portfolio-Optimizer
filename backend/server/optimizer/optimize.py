@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import Optional
 from enum import Enum
 
-from server.optimizer.prep_data import AssetMatrices
+from server.optimizer.prep_data import AssetMatrices, AssetData
 from server.optimizer.returns import PortfolioReturns
 
 
@@ -51,7 +51,7 @@ class OptimizeOutcome:
                        'portfolio at or below the standard deviation of the least volatile asset in the portfolio. ' + \
                        'If this is not possible, the least volatile asset will be weighed at 100%.'
         elif self.goal == OptimizeGoal.MIN_STD_DEV:
-            ret_val += 'will minimize the portfolio\'s standard deviation of returns while keeping the portfolio\'s ' + \
+            ret_val += 'will minimize the portfolio\'s standard deviation of returns while keeping the ' + \
                        'overall return at or above the returns of the highest returning asset in the ' + \
                        'portfolio.  If this is not possible, and the highest returning asset will be ' + \
                        'weighed at 100%.'
@@ -76,8 +76,9 @@ class Optimize(object):
         'fun': lambda arr: reduce(lambda acc, cur: acc + cur, arr) - 1
     }
 
-    def __init__(self, asset_matrices: AssetMatrices):
+    def __init__(self, asset_matrices: AssetMatrices, benchmark_data: AssetData):
         self.asset_matrices = asset_matrices
+        self.benchmark_data = benchmark_data
 
         # Bounds for optimizer must match length of data
         self.long_only_bnds = [[0, 1] for x in asset_matrices.asset_data]
@@ -86,7 +87,7 @@ class Optimize(object):
         # Generate equal returns data as a baseline
         self.equal_weights = np.array([1 / len(asset_matrices.asset_data)] * len(asset_matrices.asset_data))
         equal_weights_results = self.process_weights(self.equal_weights)
-        equal_weights_returns = PortfolioReturns(self.asset_matrices.asset_data, self.equal_weights)
+        equal_weights_returns = PortfolioReturns(self.asset_matrices.asset_data, self.equal_weights, benchmark_data)
         self.equal_weights_outcome = OptimizeOutcome(OptimizeGoal.EQUAL_WEIGHT, False, self.equal_weights,
                                                      equal_weights_results['returns'], equal_weights_results['std_dev'],
                                                      equal_weights_results['sharpe_ratio'], None, equal_weights_returns)
@@ -154,7 +155,7 @@ class Optimize(object):
         )
 
         pw = self.process_weights(optimize_result.x)
-        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x)
+        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x, self.benchmark_data)
 
         return OptimizeOutcome(OptimizeGoal.MAX_SHARPE, shorting_allowed, optimize_result.x,
                                pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result, portfolio_returns)
@@ -174,7 +175,7 @@ class Optimize(object):
         )
 
         pw = self.process_weights(optimize_result.x)
-        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x)
+        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x, self.benchmark_data)
 
         return OptimizeOutcome(OptimizeGoal.MAX_RETURNS, shorting_allowed, optimize_result.x,
                                pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result, portfolio_returns)
@@ -194,7 +195,7 @@ class Optimize(object):
         )
 
         pw = self.process_weights(optimize_result.x)
-        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x)
+        portfolio_returns = PortfolioReturns(self.asset_matrices.asset_data, optimize_result.x, self.benchmark_data)
 
         return OptimizeOutcome(OptimizeGoal.MIN_STD_DEV, shorting_allowed, optimize_result.x,
                                pw['returns'], pw['std_dev'], pw['sharpe_ratio'], optimize_result, portfolio_returns)

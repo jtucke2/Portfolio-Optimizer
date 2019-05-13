@@ -97,7 +97,7 @@
                     <tr *ngFor="let row of p.matrices.correlation_matrix; index as rowIdx">
                       <th class="text-right">{{ p.parameters.tickers[rowIdx] }}</th>
                       <td *ngFor="let column of p.matrices.correlation_matrix[rowIdx]; index as colIdx">
-                        {{ rowIdx === colIdx ? 1 : column.toFixed(3) }}</td>
+                        {{ column | number:'3' }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -115,7 +115,7 @@
             </mat-card-header>
             <mat-card-content>
               <p>
-                <strong>Benchmark: </strong>{{ (p.benchmark_index.asset_data.avg_return * 100).toFixed(4) }}%
+                <strong>Benchmark: </strong>{{ p.benchmark_index.asset_data.avg_return | percent }}
               </p>
               <div class="overflowX">
                 <table class="gridTable">
@@ -126,7 +126,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td *ngFor="let ret of p.matrices?.avg_returns_vec; index as i" [class.text-accent]="i === maxReturnsIdx">{{ (ret * 100).toFixed(4) }}%</td>
+                      <td *ngFor="let ret of p.matrices?.avg_returns_vec; index as i" [class.text-accent]="i === maxReturnsIdx">{{ ret | percent }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -144,7 +144,7 @@
             </mat-card-header>
             <mat-card-content>
               <p>
-                <strong>Benchmark: </strong>{{ p.benchmark_index.asset_data.std_dev.toFixed(4) }}
+                <strong>Benchmark: </strong>{{ p.benchmark_index.asset_data.std_dev | number }}
               </p>
               <div class="overflowX">              
                 <table class="gridTable">
@@ -155,7 +155,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td *ngFor="let stdDev of p.matrices?.std_dev_vec; index as i" [class.text-accent]="i === minStdDevIdx">{{ stdDev.toFixed(4) }}</td>
+                      <td *ngFor="let stdDev of p.matrices?.std_dev_vec; index as i" [class.text-accent]="i === minStdDevIdx">{{ stdDev | number }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -194,11 +194,11 @@
                   <tbody>
                     <tr>
                       <th class="text-right">Average Returns:&nbsp;</th>
-                      <td>{{ (opt.returns * 100).toFixed(4) }}%</td>
+                      <td>{{ opt.returns | percent }}</td>
                     </tr>
                     <tr>
                       <th class="text-right">Sharpe Ratio:&nbsp;</th>
-                      <td>{{ opt.sharpe_ratio.toFixed(4) }}</td>
+                      <td>{{ opt.sharpe_ratio | number }}</td>
                     </tr>
                   </tbody>
                 </table>
