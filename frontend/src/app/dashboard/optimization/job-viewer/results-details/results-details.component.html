@@ -18,7 +18,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td *ngFor="let weight of opt.weights">{{ (weight * 100).toFixed(2) }}%</td>
+                  <td *ngFor="let weight of opt.weights">{{ weight | percent:'2' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -33,25 +33,37 @@
         </mat-card-header>
         <mat-card-content>
           <p>{{ opt.description }}</p>
-          <h2 class="mat-h2">{{ portfolio.parameters.interval | titlecase }} Performance</h2>
+          <h2 class="mat-h2">Strategy Performance</h2>
           <div class="performance mb-10">
             <table>
               <tbody>
                 <tr>
-                  <th class="text-right">Average Returns:&nbsp;</th>
-                  <td>{{ (opt.returns * 100).toFixed(4) }}%</td>
+                  <th class="text-right">Average {{ portfolio.parameters.interval | titlecase }} Return:&nbsp;</th>
+                  <td>{{ opt.returns | percent }}</td>
                 </tr>
                 <tr>
                   <th class="text-right">Standard Deviation:&nbsp;</th>
-                  <td>{{ opt.std_dev.toFixed(4) }}</td>
+                  <td>{{ opt.std_dev | number }}</td>
                 </tr>
                 <tr>
                   <th class="text-right">Sharpe Ratio:&nbsp;</th>
-                  <td>{{ opt.sharpe_ratio.toFixed(4) }}</td>
+                  <td>{{ opt.sharpe_ratio | number }}</td>
                 </tr>
                 <tr>
                   <th class="text-right">Total Return:&nbsp;</th>
-                  <td>{{ (opt.portfolio_returns.total_return * 100).toFixed(2) }}%</td>
+                  <td>{{ opt.portfolio_returns.total_return | percent:'2' }}</td>
+                </tr>
+                <tr *ngIf="opt.portfolio_returns.beta">
+                  <th class="text-right">Beta:&nbsp;</th>
+                  <td>{{ opt.portfolio_returns.beta | number }}</td>
+                </tr>
+                <tr *ngIf="opt.portfolio_returns.capm">
+                  <th class="text-right">CAPM:&nbsp;</th>
+                  <td>{{ opt.portfolio_returns.capm | number }}</td>
+                </tr>
+                <tr *ngIf="opt.portfolio_returns.alpha">
+                  <th class="text-right">Alpha:&nbsp;</th>
+                  <td>{{ opt.portfolio_returns.alpha | number }}</td>
                 </tr>
               </tbody>
             </table>

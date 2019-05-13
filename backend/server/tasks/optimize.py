@@ -21,7 +21,7 @@ def do_task_optimize(name, tickers, benchmark_index: str, start_date, end_date, 
 
     # Optimize portfolio
     matrices = prep_data.AssetMatrices(asset_data)
-    optimizer = optimize.Optimize(matrices)
+    optimizer = optimize.Optimize(matrices, benchmark_asset_data[0])
     results = optimizer.optimize_all()
 
     job_end = datetime.now()
