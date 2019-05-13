@@ -28,6 +28,8 @@ import { AuthInterceptor } from './services/auth-interceptor.service';
 import { SnackbarService } from './services/snackbar.service';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './components/footer/footer.component';
+import { PercentPipe } from './pipes/percent.pipe';
+import { NumberPipe } from './pipes/number.pipe';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { FooterComponent } from './components/footer/footer.component';
     PageTitleComponent,
     LoadingSpinnerComponent,
     FooterComponent,
+    PercentPipe,
+    NumberPipe,
   ],
   imports: [
     CommonModule,
@@ -56,7 +60,9 @@ import { FooterComponent } from './components/footer/footer.component';
     NavComponent,
     PageTitleComponent,
     LoadingSpinnerComponent,
-    FooterComponent
+    FooterComponent,
+    PercentPipe,
+    NumberPipe,
   ],
   providers: [
     ApiService,
