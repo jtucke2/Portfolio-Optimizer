@@ -16,7 +16,8 @@ import {
   MatTableModule,
   MatProgressBarModule,
   MatIconModule,
-  MatMenuModule
+  MatMenuModule,
+  MatRadioModule
 } from '@angular/material';
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import { TickersComponent } from './portfolio/tickers/tickers.component';
@@ -71,6 +72,7 @@ import { DeletePortfolioDialogComponent } from './optimization/job-viewer/delete
     MatProgressBarModule,
     MatIconModule,
     MatMenuModule,
+    MatRadioModule
   ],
   providers: [
     DashboardService,
