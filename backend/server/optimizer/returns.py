@@ -32,14 +32,43 @@ class PortfolioReturns(object):
             self.capm = None
 
     def generate_portfolio_prices(self):
-        ret_val = []
+        long_prices = []
         # Calculate how many shares you would have with a $100 portfolio on day 1
         shares = [(w * 100) / p if w > 0 else 0 for w, p in zip(self.weights, self.asset_prices_acs[0])]
         for prices in self.asset_prices_acs:
-            ret_val.append([s * p for s, p in zip(shares, prices)])
+            long_prices.append([s * p for s, p in zip(shares, prices)])
 
-        # Inverse to match dsc date ordering
-        return ret_val[::-1]
+        # See if there are any short shares
+        if sum(1 for x in self.weights if x < 0):
+            short_prices = []
+            short_shares = [(abs(w) * 100) / p if w < 0 else 0 for w, p in zip(self.weights, self.asset_prices_acs[0])]
+            starting_prices = self.asset_prices_acs[0]
+            for prices in self.asset_prices_acs:
+                short_prices_row = []
+                for i in range(0, len(prices)):
+                    # Calculate short shares using inverse price movements
+                    synthetic_short_price = starting_prices[i] + (starting_prices[i] - prices[i])
+                    short_prices_row.append(short_shares[i] * synthetic_short_price)
+                short_prices.append(short_prices_row)
+
+            # Since short shares are calculated separated, need to merge them with long shares
+            merged_prices = []
+            for i in range(0, len(long_prices)):
+                merged_prices_row = []
+                for j in range(0, len(self.weights)):
+                    weight = self.weights[j]
+                    if weight == 0:
+                        merged_prices_row.append(0)
+                    elif weight > 0:
+                        merged_prices_row.append(long_prices[i][j])
+                    elif weight < 0:
+                        merged_prices_row.append(short_prices[i][j])
+                merged_prices.append(merged_prices_row)
+            # Inverse to match dsc date ordering
+            return merged_prices[::-1]
+        else:
+            # Inverse to match dsc date ordering
+            return long_prices[::-1]
 
     @staticmethod
     def generate_prices(asset_data: List[AssetData]) -> List[List[float]]:
