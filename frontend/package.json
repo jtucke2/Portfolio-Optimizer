@@ -1,6 +1,20 @@
 {
   "name": "frontend",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "description": "Frontend for Portfolio Optimizer project",
+  "keywords": [
+    "finance",
+    "optimization"
+  ],
+  "author": {
+    "name": "Jason Tucker",
+    "email": "jtucke2@students.towson.edu"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jtucke2/Portfolio-Optimizer.git"
+  },
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
