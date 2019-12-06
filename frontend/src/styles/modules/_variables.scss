@@ -7,6 +7,7 @@ $accent: mat-color($frontend-accent);
 $accent-lighter: mat-color($frontend-accent, lighter);
 $accent-darker: mat-color($frontend-accent, darker);
 $warn: mat-color($frontend-warn);
+$muted: mat-color(map-get($frontend-theme, background), hover);
 
 $success: map-get($mat-green, 500);
 

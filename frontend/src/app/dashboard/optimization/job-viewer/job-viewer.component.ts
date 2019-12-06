@@ -19,6 +19,8 @@ import { UserService } from 'src/app/global/services/user.service';
 export class JobViewerComponent implements OnInit {
   public maxReturnsIdx = -1;
   public minStdDevIdx = -1;
+  public highlightCorrelationColumnIdx = -1;
+  public highlightCorrelationRowIdx = -1;
   public portfolio$: Observable<Portfolio>;
   public updatePortfolio$: Subject<Portfolio> = new Subject();
   public benchmarkName: string;
