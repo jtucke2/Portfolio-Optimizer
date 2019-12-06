@@ -85,19 +85,33 @@
               <mat-card-title>Asset Return Correlations</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <div class="overflowX">              
-                <table class="gridTable">
+              <div class="overflowX">
+                <table class="gridTable" (mouseleave)="highlightCorrelationColumnIdx = -1; highlightCorrelationRowIdx = -1;">
                   <thead>
                     <tr>
-                      <th>&nbsp;</th>
-                      <th *ngFor="let ticker of p.parameters.tickers" class="text-left">{{ ticker }}</th>
+                      <th (mouseenter)="highlightCorrelationColumnIdx = -1; highlightCorrelationRowIdx = -1;">&nbsp;</th>
+                      <th *ngFor="let ticker of p.parameters.tickers; index as colIdx" 
+                        class="text-left" 
+                        (mouseenter)="highlightCorrelationColumnIdx = colIdx"
+                        [class.bg-hover]="highlightCorrelationColumnIdx === colIdx"
+                        [class.text-primary]="highlightCorrelationColumnIdx === colIdx">
+                        {{ ticker }}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let row of p.matrices.correlation_matrix; index as rowIdx">
-                      <th class="text-right">{{ p.parameters.tickers[rowIdx] }}</th>
-                      <td *ngFor="let column of p.matrices.correlation_matrix[rowIdx]; index as colIdx">
-                        {{ column | number:'3' }}</td>
+                    <tr *ngFor="let row of p.matrices.correlation_matrix; index as rowIdx" 
+                      (mouseenter)="highlightCorrelationRowIdx = rowIdx" 
+                      [class.bg-hover]="highlightCorrelationRowIdx === rowIdx">
+                      <th class="text-right" [class.text-primary]="highlightCorrelationRowIdx === rowIdx">
+                        {{ p.parameters.tickers[rowIdx] }}
+                      </th>
+                      <td *ngFor="let column of p.matrices.correlation_matrix[rowIdx]; index as colIdx" 
+                        (mouseenter)="highlightCorrelationColumnIdx = colIdx"
+                        [class.bg-hover]="highlightCorrelationColumnIdx === colIdx"
+                        [class.text-primary]="highlightCorrelationRowIdx === rowIdx && highlightCorrelationColumnIdx === colIdx">
+                        {{ column | number:'3' }}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
