@@ -86,6 +86,10 @@ a {
   transform: translateY(5px);
 }
 
+.bg-hover {
+  background: $muted;
+}
+
 // ~~~ Optimization ~~~
 
 #pageHeaderText {
