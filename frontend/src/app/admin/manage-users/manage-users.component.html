@@ -1,6 +1,0 @@
-<div id="manageUsersComponent">
-  <h2 class="mat-h2 mt-10">Users Pending Approval</h2>
-  <manage-users-table [users$]="pendingUsers$" [actions]="['approve', 'delete']" (userApproved)="userApproved($event)"></manage-users-table>
-  <h2 class="mat-h2 mt-10">Manage Existing Users</h2>
-  <manage-users-table [users$]="approvedUsers$" [actions]="['promote', 'delete']"></manage-users-table>
-</div>

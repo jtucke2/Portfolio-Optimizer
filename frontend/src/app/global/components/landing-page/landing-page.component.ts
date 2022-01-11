@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from "@angular/core";
 
-import { UserService } from '../../services/user.service';
-import { Subject, interval } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { UserService } from "../../services/user.service";
+import { Subject, interval } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
-  selector: 'landing-page',
-  templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.scss']
+  selector: "landing-page",
+  templateUrl: "./landing-page.component.html",
+  styleUrls: ["./landing-page.component.scss"],
 })
 export class LandingPageComponent implements OnInit, OnDestroy {
   public onDestroy$ = new Subject<null>();
@@ -26,11 +26,11 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       aapl: 0.0,
       googl: 0.3,
       msft: 0.7,
-    }
+    },
   ];
   public percentMixer = this.percentMixers[0];
 
-  constructor(public userService: UserService) { }
+  constructor() {}
 
   ngOnDestroy() {
     this.onDestroy$.next();
@@ -45,5 +45,4 @@ export class LandingPageComponent implements OnInit, OnDestroy {
         counter++;
       });
   }
-
 }

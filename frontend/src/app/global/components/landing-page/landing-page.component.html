@@ -1,5 +1,16 @@
+<a
+  href="https://github.com/jtucke2/Portfolio-Optimizer"
+  style="position: absolute; right: 0"
+  ><img
+    loading="lazy"
+    width="149"
+    height="149"
+    src="https://github.blog/wp-content/uploads/2008/12/forkme_right_white_ffffff.png?resize=149%2C149"
+    class="attachment-full size-full"
+    alt="Fork me on GitHub"
+    data-recalc-dims="1"
+/></a>
 <div id="landingPageComponent">
-
   <header class="container-fluid" id="header">
     <div class="mat-display-4 text-center">Portfolio Optimizer</div>
   </header>
@@ -9,7 +20,10 @@
       <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-12">
         <mat-card class="selectedCard">
           <mat-card-content>
-            <div class="lead">Automated adjustment of assets weights to yield the optimum risk adjusted returns of a portfolio.</div>
+            <div class="lead">
+              Automated adjustment of assets weights to yield the optimum risk
+              adjusted returns of a portfolio.
+            </div>
           </mat-card-content>
         </mat-card>
       </div>
@@ -21,14 +35,24 @@
   <section class="container paddedSection">
     <div class="row flex flexItemsCenter">
       <div class="col-md-5">
-        <img src="/assets/images/stock-chart.jpg" alt="Stock Chart" class="full-width">
+        <img
+          src="/portfolio-optimizer/assets/images/stock-chart.jpg"
+          alt="Stock Chart"
+          class="full-width"
+        />
       </div>
       <div class="col-md-7 sectionContent">
-        <h1 class="mat-h1 sectionContentHeader">Select <i class="material-icons">ballot</i></h1>
-        <p>Our <a routerLink="/dashboard/portfolio">Create Portfolio</a> section allows users to set the parameters of the portfolio.
-        Then users will be able to search and chart all financial assets traded on major exchanges, in accordance to the portfolio
-        parameters.  Once the right assets are found, select them for the portfolio, and select a benchmark include to compare the portfolios to.
-      </p>
+        <h1 class="mat-h1 sectionContentHeader">
+          Select <i class="material-icons">ballot</i>
+        </h1>
+        <p>
+          Our Create Portfolio section allows users to set the parameters of the
+          portfolio. Then users will be able to search and chart all financial
+          assets traded on major exchanges, in accordance to the portfolio
+          parameters. Once the right assets are found, select them for the
+          portfolio, and select a benchmark include to compare the portfolios
+          to.
+        </p>
       </div>
     </div>
   </section>
@@ -36,22 +60,33 @@
   <div class="mt-30">&nbsp;</div>
 
   <div class="full-width altSection">
-
     <section class="container paddedSection">
       <div class="row flex flexItemsCenter">
         <div class="col-md-7 sectionContent">
-          <h1 class="mat-h1 sectionContentHeader">Strategize <i class="material-icons">autorenew</i></h1>
-          <p>Our portfolio optimization will automatically consider multiple strategies.  
-            These include maximum Sharpe Ratio, maximum returns, and minimum volalitly strategies.
-            All strategies will be implemented on all portfolios, both considering long only and long/short approaches.
+          <h1 class="mat-h1 sectionContentHeader">
+            Strategize <i class="material-icons">autorenew</i>
+          </h1>
+          <p>
+            Our portfolio optimization will automatically consider multiple
+            strategies. These include maximum Sharpe Ratio, maximum returns, and
+            minimum volalitly strategies. All strategies will be implemented on
+            all portfolios, both considering long only and long/short
+            approaches.
           </p>
-          <p>Additionally, we include an equal weight portfolio as a reference point, in addition to information of the selected benchmark index.</p>
-          </div>
-          <div class="col-md-5">
-            <img src="/assets/images/decisions.jpg" alt="Decisions" class="full-width">
-          </div>
-        </div>     
-      </section>
+          <p>
+            Additionally, we include an equal weight portfolio as a reference
+            point, in addition to information of the selected benchmark index.
+          </p>
+        </div>
+        <div class="col-md-5">
+          <img
+            src="/portfolio-optimizer/assets/images/decisions.jpg"
+            alt="Decisions"
+            class="full-width"
+          />
+        </div>
+      </div>
+    </section>
   </div>
 
   <div class="mb-30">&nbsp;</div>
@@ -64,27 +99,45 @@
             <tbody>
               <tr>
                 <td>
-                  <mat-slider min="0" max="1" step="0.1" class="full-width" [(ngModel)]="percentMixer.aapl">
+                  <mat-slider
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    class="full-width"
+                    [(ngModel)]="percentMixer.aapl"
+                  >
                   </mat-slider>
                 </td>
                 <th>{{ percentMixer.aapl * 100 }}% AAPL</th>
               </tr>
               <tr>
-                <td colspan=2>&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
               </tr>
               <tr>
                 <td>
-                  <mat-slider min="0" max="1" step="0.1" class="full-width" [(ngModel)]="percentMixer.googl">
+                  <mat-slider
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    class="full-width"
+                    [(ngModel)]="percentMixer.googl"
+                  >
                   </mat-slider>
                 </td>
                 <th>{{ percentMixer.googl * 100 }}% GOOGL</th>
               </tr>
               <tr>
-                <td colspan=2>&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
               </tr>
               <tr>
                 <td>
-                  <mat-slider min="0" max="1" step="0.1" class="full-width" [(ngModel)]="percentMixer.msft">
+                  <mat-slider
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    class="full-width"
+                    [(ngModel)]="percentMixer.msft"
+                  >
                   </mat-slider>
                 </td>
                 <th>{{ percentMixer.msft * 100 }}% MSFT</th>
@@ -94,16 +147,23 @@
         </div>
       </div>
       <div class="col-md-7 sectionContent">
-        <h1 class="mat-h1 sectionContentHeader">Optimize <i class="material-icons">android</i></h1>
-        <p>Once a portfolio is submitted, just sit back and let us do our magic.  We will automatically adjust the weights
-          of the assets in the portfolio to reach the optimum for each strategy.  Once we are complete, you can view, visualize, and compare
-          the results at <a routerLink="/dashboard/optimization">Optimization Results</a>.
+        <h1 class="mat-h1 sectionContentHeader">
+          Optimize <i class="material-icons">android</i>
+        </h1>
+        <p>
+          Once a portfolio is submitted, just sit back and let us do our magic.
+          We will automatically adjust the weights of the assets in the
+          portfolio to reach the optimum for each strategy. Once we are
+          complete, you can view, visualize, and compare the results at
+          Optimization Results.
         </p>
-        <p>Like what results have been provided? Feel free to share the portfolio with other Portfolio Optimizers users by publishing the portfolio.</p>
+        <p>
+          Like what results have been provided? Feel free to share the portfolio
+          with other Portfolio Optimizers users by publishing the portfolio.
+        </p>
       </div>
     </div>
   </section>
 
   <div class="mt-30 mb-30">&nbsp;</div>
-
 </div>
